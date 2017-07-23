@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+
+    <title>Powder Day</title>
+
+    <!--<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.5, maximum-scale=1.5, target-densitydpi=device-dpi, user-scalable=0">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=device-dpi, user-scalable=0" />-->
+
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/bundle.js"></script>
+
+    <!--<script type="text/javascript" charset="utf-8" src="js/framework/scene.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/framework/scene.object.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/framework/scene.intersections.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/framework/scene.layer.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="js/app/resources.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/app/model.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/app/playerObject.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/app/treeObject.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/app/main.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/app/app.js"></script>-->
+    
+  </head>
+  <body>
+    <div id="scene" width="100" height="100">
+
+        <div id="startGameScene">
+            <div class="blueOverlay"></div>
+            <div class="container">
+                <div class="button">Start game</div>
+            </div>
+        </div>
+
+        <div id="endGameScene">
+            <div class="blueOverlay"></div>
+            <div class="container">
+                <div class="end">
+                    You hit a tree!
+                    <br>Score: <span id="score">100</span>
+                </div>
+                <div class="button">Replay</div>
+            </div>
+        </div>
+
+    </div>
+
+    <img src="img/player.png" id="player" style="display: none;">
+    <img src="img/tree-1.png" id="tree1" style="display: none;">
+    <img src="img/tree-2.png" id="tree2" style="display: none;">
+    <img src="img/tree-3.png" id="tree3" style="display: none;">
+    <img src="img/tree-4.png" id="tree4" style="display: none;">
+
+    <script type="text/javascript" charset="utf-8">
+        //window.app = new App();
+        window.App.start();
+    </script>
+    
+  </body>
+</html>

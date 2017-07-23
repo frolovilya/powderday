@@ -1,0 +1,13 @@
+{
+  "name": "powderday",
+  "version": "1.0.0",
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.2.1",
+    "copy-webpack-plugin": "^4.0.1",
+    "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "@types/jquery": "^3.2.9",
+    "jquery": "^3.2.1"
+  }
+}
