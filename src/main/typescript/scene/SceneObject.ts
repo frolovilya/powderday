@@ -3,7 +3,7 @@
  */
 
 import SceneLayer from "./SceneLayer";
-import Circle from "./intersections/points/Circle";
+import Circle from "./shapes/Circle";
 
 export interface SceneObject {
 

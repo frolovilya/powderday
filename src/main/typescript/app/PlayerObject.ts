@@ -1,15 +1,19 @@
 import {SceneObject} from "../scene/SceneObject";
-import Circle from "../scene/intersections/points/Circle";
 import SceneLayer from "../scene/SceneLayer";
+import Sprite from "../scene/Sprite";
+import PlayerSprite from "./PlayerSprite";
+import Circle from "../scene/shapes/Circle";
 
 export default class PlayerObject implements SceneObject {
 
-    private image;
+    private sprite: PlayerSprite;
 
-    private spriteWidth: number;
+    //private image;
 
-    private positions;
-    private position: number;
+    //private spriteWidth: number;
+
+    //private positions;
+    //private position: number;
 
     private width;
     private height;
@@ -17,21 +21,28 @@ export default class PlayerObject implements SceneObject {
 
     private pos;
 
-    private point;
+    //private point;
+
+    private shape: Circle;
 
     constructor(playerResource) {
-        this.image = new Image();
-        this.image.src = playerResource.src;
+        //this.image = new Image();
+        //this.image.src = playerResource.src;
 
-        this.spriteWidth = playerResource.spriteWidth;
+        this.sprite = new PlayerSprite(playerResource.sprite.src, playerResource.sprite.size);
+
+        this.sprite.setPositions(playerResource.positions);
+        this.sprite.setPosition(0);
+
+        //this.spriteWidth = playerResource.spriteWidth;
         // sprite positions
-        this.positions = playerResource.positions;
-        this.position = 0;
+        //this.positions = playerResource.positions;
+        //this.position = 0;
 
         // single sprite size
         this.width = 80;
         this.height = 80;
-        this.scaleNum = this.spriteWidth / this.width;
+        this.scaleNum = this.sprite.getSize().width / this.width;
 
         this.pos = {
             x: -this.width / 2,
@@ -42,7 +53,9 @@ export default class PlayerObject implements SceneObject {
         (<any>window).playerRotateAngle = 0;
 
         // intersection point
-        this.point = playerResource.point;
+        //this.point = playerResource.point;
+
+        this.shape = new Circle(playerResource.shape.coords, playerResource.shape.radius)
     }
 
     render(layer: SceneLayer) {
@@ -58,7 +71,8 @@ export default class PlayerObject implements SceneObject {
          ctx.closePath();*/
 
         // draw circle
-        ctx.beginPath();
+        this.shape.draw(ctx, this.pos, this.scaleNum);
+        /*ctx.beginPath();
         let iPoint = Circle.toLayerCoords(this.point, this.pos, this.scaleNum);
         ctx.arc(
             iPoint.x,
@@ -69,7 +83,7 @@ export default class PlayerObject implements SceneObject {
         ctx.lineWidth = 2;
         ctx.strokeStyle = '#FFDBC9';
         ctx.stroke();
-        ctx.closePath();
+        ctx.closePath();*/
 
         // set new position
         if(ra > 30 && ra < 75 && this.position != this.positions.frontRight) {

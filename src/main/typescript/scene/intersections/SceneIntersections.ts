@@ -1,4 +1,4 @@
-import Circle from "./points/Circle";
+import Circle from "../shapes/Circle";
 
 export default class SceneIntersections {
 

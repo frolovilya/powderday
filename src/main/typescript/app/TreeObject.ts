@@ -2,94 +2,108 @@
  * Trees
  */
 import {SceneObject} from "../scene/SceneObject";
-import Circle from "../scene/intersections/points/Circle";
 import SceneLayer from "../scene/SceneLayer";
+import Sprite from "../scene/Sprite";
+import {Coords} from "../scene/types/Coords";
+import Circle from "../scene/shapes/Circle";
+import {SceneObjectConfig} from "../scene/types/SceneObjectConfig";
+import TreeSprite from "./TreeSprite";
 
 export default class TreeObject implements SceneObject {
+
+    private sprite: TreeSprite;
+
+    private shape: Circle;
     
-    private image;
+    //private image;
     
-    private pos;
+    private position: Coords;
     
-    public width;
+    //public width;
     
-    private height;
+    //private height;
     
-    private ratio;
+    //private ratio;
     
     private scaleNum;
 
-    private point;
+    //private point;
 
-    constructor(treeResource, posX, posY) {
-        this.image = new Image();
-        this.image.src = treeResource.src;
+    constructor(treeResource: SceneObjectConfig, position: Coords) {
+        //this.image = new Image();
+        //this.image.src = treeResource.src;
 
-        this.pos = {
-            x: posX,
-            y: posY
-        }
+        this.sprite = new TreeSprite(treeResource.sprite.src, treeResource.sprite.size);
 
-        // sprite size
-        //this.width = this.image.width;
-        //this.height = this.image.height;
-        //this.ratio = this.image.width / this.image.height;
-        this.width = treeResource.size.width;
-        this.height = treeResource.size.height;
-        this.ratio = this.width / this.height;
+        this.shape = new Circle(treeResource.shape.coords, treeResource.shape.radius);
 
-        // resize sprite
+        this.position = position;
+
         this.scaleNum = 1;
 
+        // sprite size
+        //this.width = treeResource.size.width;
+        //this.height = treeResource.size.height;
+        //this.ratio = this.width / this.height;
+
+        // resize sprite
+        //this.scaleNum = 1;
+
         // intersection point
-        this.point = treeResource.point;
+        //this.point = treeResource.point;
     }
 
     scale(scaleNum) {
         this.scaleNum = scaleNum;
-        this.width = this.width / scaleNum;
-        this.height = this.height / scaleNum;
+        /*this.width = this.width / scaleNum;
+        this.height = this.height / scaleNum;*/
+
+        //this.sprite.scale(scaleNum);
+        //this.shape.scale(scaleNum);
     };
 
     render(layer: SceneLayer) {
-        var ctx = layer.context;
+        this.drawCircle(layer.context);
+        this.drawTreeImage(layer.context);
+    }
 
-        // draw circle
-        ctx.beginPath();
-        var iPoint = Circle.toLayerCoords(this.point, this.pos, this.scaleNum);
-        ctx.arc(
+    private drawCircle(context: CanvasRenderingContext2D) {
+        /*context.beginPath();
+        let iPoint = Circle.toLayerCoords(this.point, this.position, this.scaleNum);
+        context.arc(
             iPoint.x,
             iPoint.y,
             iPoint.radius,
             0, 2 * Math.PI, false
         );
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#FFDBC9';
-        ctx.stroke();
-        ctx.closePath();
+        context.lineWidth = 2;
+        context.strokeStyle = '#FFDBC9';
+        context.stroke();
+        context.closePath();*/
 
-        // draw image
-        ctx.beginPath();
-        ctx.drawImage(this.image, this.pos.x, this.pos.y, this.width, this.height);
-        ctx.closePath();
+        this.shape.draw(context, this.position, this.scaleNum)
+    }
+
+    private drawTreeImage(context: CanvasRenderingContext2D) {
+        this.sprite.draw(context, this.position, this.scaleNum);
     }
 
     isVisible(layer: SceneLayer) {
-        var topX = layer.translation.x + this.pos.x;
-        var topY = layer.translation.y + this.pos.y;
+        let topX = layer.translation.x + this.position.x;
+        let topY = layer.translation.y + this.position.y;
 
         return ( layer.isPointVisible(topX, topY)
-            || layer.isPointVisible(topX + this.width, topY)
-            || layer.isPointVisible(topX, topY + this.height)
-            || layer.isPointVisible(topX + this.width, topY + this.height) );
+            || layer.isPointVisible(topX + this.sprite.getSize().width, topY)
+            || layer.isPointVisible(topX, topY + this.sprite.getSize().height)
+            || layer.isPointVisible(topX + this.sprite.getSize().width, topY + this.sprite.getSize().height) );
     }
 
     isActual(layer: SceneLayer) {
-        return layer.translation.y + this.pos.y + this.height > 0;
+        return layer.translation.y + this.position.y + this.sprite.getSize().height > 0;
     }
 
     getIntersectionPoints(layer: SceneLayer) {
-        var absolutePoint = Circle.toAbsoluteCoords(layer, this.point, this.pos, this.scaleNum);
+        let absolutePoint = Circle.toAbsoluteCoords(layer, this.shape, this.position, this.scaleNum);
         absolutePoint.className = "tree";
 
         return [absolutePoint];

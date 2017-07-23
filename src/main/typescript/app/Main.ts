@@ -16,13 +16,15 @@ export default class Main {
 
         for(let i = 0; i < treeCount; i++) {
             // position on area
-            let randX = x + Math.floor(Math.random() * width);
-            let randY = y + Math.floor(Math.random() * height);
+            let randomPosition = {
+                x: x + Math.floor(Math.random() * width),
+                y: y + Math.floor(Math.random() * height)
+            };
 
             // get random tree
             let treeNum = Math.round( Math.random() * (Resources.trees.length - 1) );
             let tree = Resources.trees[treeNum];
-            let treeObject = new TreeObject(tree, randX, randY);
+            let treeObject = new TreeObject(tree, randomPosition);
 
             // sizes
             let maxSize = 160;
