@@ -1,22 +1,16 @@
+import Circle from "./points/Circle";
+
 export default class SceneIntersections {
 
     private intersectPoints = {};
 
     private intersectCallbacks = {};
 
-    checkCircles(c1, c2) {
-        let d = Math.sqrt( Math.pow(c2.x - c1.x, 2) + Math.pow(c2.y - c1.y, 2) );
-
-        return d <= (c1.radius + c2.radius);
-    }
-
     check() {
-        var classes = [];
-        var fire = false;
-
         // get callback classes
         for(let k in this.intersectCallbacks) {
-            classes = k.split(",");
+            let classes = k.split(",");
+            let fire = false;
 
             let a = this.intersectPoints[classes[0]];
             let b = this.intersectPoints[classes[1]];
@@ -28,7 +22,7 @@ export default class SceneIntersections {
 
                 for(let j = 0; j < b.length; j++) {
                     // TODO: add point type check
-                    if(this.checkCircles(a[i], b[j])) {
+                    if(Circle.checkCircles(a[i], b[j])) {
                         fire = true;
                         break;
                     }
@@ -42,13 +36,11 @@ export default class SceneIntersections {
         }
     }
 
-    addPoint(point) {
-        let _class = point._class;
+    addPoint(point: Circle) {
+        if(this.intersectPoints[point.className] == undefined)
+            this.intersectPoints[point.className] = [];
 
-        if(this.intersectPoints[_class] == undefined)
-            this.intersectPoints[_class] = [];
-
-        this.intersectPoints[_class].push(point);
+        this.intersectPoints[point.className].push(point);
     }
 
     clearPoints() {
@@ -66,7 +58,7 @@ export default class SceneIntersections {
         this.intersectCallbacks[id].push(callback);
     }
 
-    fireCallbacks(a, b) {
+    fireCallbacks(a: string, b: string) {
         let id = [a, b].sort().join(",");
 
         if(this.intersectCallbacks[id] == undefined)

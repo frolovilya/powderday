@@ -1,8 +1,9 @@
 /*
  * Trees
  */
-import SceneIntersectionsPoint from "../framework/SceneIntersectionsPoint";
-import {SceneObject} from "../framework/SceneObject";
+import {SceneObject} from "../scene/SceneObject";
+import Circle from "../scene/intersections/points/Circle";
+import SceneLayer from "../scene/SceneLayer";
 
 export default class TreeObject implements SceneObject {
     
@@ -50,17 +51,12 @@ export default class TreeObject implements SceneObject {
         this.height = this.height / scaleNum;
     };
 
-    isPointVisible(layer, x, y) {
-        return ( x > 0 && x < layer.scene.getWidth()
-        && y > 0 && y < layer.scene.getHeight() );
-    }
-
-    render(layer) {
-        var ctx = layer.ctx;
+    render(layer: SceneLayer) {
+        var ctx = layer.context;
 
         // draw circle
         ctx.beginPath();
-        var iPoint = SceneIntersectionsPoint.toLayerCoords(this.point, this.pos, this.scaleNum);
+        var iPoint = Circle.toLayerCoords(this.point, this.pos, this.scaleNum);
         ctx.arc(
             iPoint.x,
             iPoint.y,
@@ -78,24 +74,23 @@ export default class TreeObject implements SceneObject {
         ctx.closePath();
     }
 
-    isVisible(layer) {
+    isVisible(layer: SceneLayer) {
         var topX = layer.translation.x + this.pos.x;
         var topY = layer.translation.y + this.pos.y;
 
-        return ( this.isPointVisible(layer, topX, topY)
-        || this.isPointVisible(layer, topX + this.width, topY)
-        || this.isPointVisible(layer, topX, topY + this.height)
-        || this.isPointVisible(layer, topX + this.width, topY + this.height) );
+        return ( layer.isPointVisible(topX, topY)
+            || layer.isPointVisible(topX + this.width, topY)
+            || layer.isPointVisible(topX, topY + this.height)
+            || layer.isPointVisible(topX + this.width, topY + this.height) );
     }
 
-    isActual(layer) {
+    isActual(layer: SceneLayer) {
         return layer.translation.y + this.pos.y + this.height > 0;
     }
 
-    getIntersectionPoints(layer) {
-        var absolutePoint = SceneIntersectionsPoint.toAbsoluteCoords(layer, this.point, this.pos, this.scaleNum);
-        absolutePoint.type = "circle";
-        absolutePoint._class = "tree";
+    getIntersectionPoints(layer: SceneLayer) {
+        var absolutePoint = Circle.toAbsoluteCoords(layer, this.point, this.pos, this.scaleNum);
+        absolutePoint.className = "tree";
 
         return [absolutePoint];
     }

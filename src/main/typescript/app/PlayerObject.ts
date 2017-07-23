@@ -1,5 +1,6 @@
-import {SceneObject} from "../framework/SceneObject";
-import SceneIntersectionsPoint from "../framework/SceneIntersectionsPoint";
+import {SceneObject} from "../scene/SceneObject";
+import Circle from "../scene/intersections/points/Circle";
+import SceneLayer from "../scene/SceneLayer";
 
 export default class PlayerObject implements SceneObject {
 
@@ -44,17 +45,8 @@ export default class PlayerObject implements SceneObject {
         this.point = playerResource.point;
     }
 
-    // reset layer transformations
-    private clearTransform(layer) {
-        layer.ctx.setTransform(1, 0, 0, 1, 0, 0);
-        layer.ctx.translate(
-            layer.canvas.width / 2,
-            layer.canvas.height / 2
-        );
-    }
-
-    render(layer) {
-        let ctx = layer.ctx;
+    render(layer: SceneLayer) {
+        let ctx = layer.context;
         let ra = (<any>window).playerRotateAngle;
 
         layer.clear();
@@ -67,7 +59,7 @@ export default class PlayerObject implements SceneObject {
 
         // draw circle
         ctx.beginPath();
-        let iPoint = SceneIntersectionsPoint.toLayerCoords(this.point, this.pos, this.scaleNum);
+        let iPoint = Circle.toLayerCoords(this.point, this.pos, this.scaleNum);
         ctx.arc(
             iPoint.x,
             iPoint.y,
@@ -82,23 +74,23 @@ export default class PlayerObject implements SceneObject {
         // set new position
         if(ra > 30 && ra < 75 && this.position != this.positions.frontRight) {
             this.position = this.positions.frontRight;
-            this.clearTransform(layer);
+            layer.clearTransform();
 
         } else if(ra >= 75 && this.position != this.positions.right) {
             this.position = this.positions.right;
-            this.clearTransform(layer);
+            layer.clearTransform();
 
         } else if(ra < -30 && ra > -75 && this.position != this.positions.frontLeft) {
             this.position = this.positions.frontLeft;
-            this.clearTransform(layer);
+            layer.clearTransform();
 
         } else if(ra <= -75 && this.position != this.positions.left) {
             this.position = this.positions.left;
-            this.clearTransform(layer);
+            layer.clearTransform();
 
         } else if(ra <= 30 && ra >= -30 && this.position != this.positions.front) {
             this.position = this.positions.front;
-            this.clearTransform(layer);
+            layer.clearTransform();
             ctx.rotate(ra * 3.14/180 / 2);
         }
 
@@ -121,10 +113,9 @@ export default class PlayerObject implements SceneObject {
         ctx.closePath();
     }
 
-    getIntersectionPoints(layer) {
-        let absolutePoint = SceneIntersectionsPoint.toAbsoluteCoords(layer, this.point, this.pos, this.scaleNum);
-        absolutePoint.type = "circle";
-        absolutePoint._class = "player";
+    getIntersectionPoints(layer: SceneLayer) {
+        let absolutePoint = Circle.toAbsoluteCoords(layer, this.point, this.pos, this.scaleNum);
+        absolutePoint.className = "player";
 
         return [absolutePoint];
     }

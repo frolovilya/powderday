@@ -3,6 +3,7 @@
  */
 
 import SceneLayer from "./SceneLayer";
+import Circle from "./intersections/points/Circle";
 
 export interface SceneObject {
 
@@ -12,6 +13,6 @@ export interface SceneObject {
 
 	isActual(layer: SceneLayer): boolean;
 
-	getIntersectionPoints(layer: SceneLayer);
+	getIntersectionPoints(layer: SceneLayer): Circle[];
 
 }

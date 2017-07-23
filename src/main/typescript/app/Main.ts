@@ -4,7 +4,7 @@
 import TreeObject from "./TreeObject";
 import Resources from "./Resources";
 import Model from "./Model";
-import Scene from "../framework/Scene";
+import Scene from "../scene/Scene";
 import PlayerObject from "./PlayerObject";
 //import * as $ from "jquery";
 
@@ -75,7 +75,7 @@ export default class Main {
         // default state
         let playerObject = new PlayerObject(Resources.player);
         this.playerLayer = (<any>window).scene.createLayer("player", 10, true);
-        this.playerLayer.ctx.lineWidth = 10;
+        this.playerLayer.context.lineWidth = 10;
         this.playerLayer.translate(
             this.playerLayer.canvas.width / 2,
             this.playerLayer.canvas.height / 2
@@ -91,7 +91,7 @@ export default class Main {
         this.plantTrees(this.treeLayer, ww, wh, ww, wh);
 
         this.debugLayer = (<any>window).scene.createLayer("debug", 200);
-        this.debugLayer.ctx.font = "bold 12px Arial";
+        this.debugLayer.context.font = "bold 12px Arial";
 
         // pre-render scene
         (<any>window).scene.render();
@@ -138,7 +138,7 @@ export default class Main {
 
                 // clear tree layer
                 this.treeLayer.clear();
-                this.treeLayer.clearObjects();
+                this.treeLayer.removeAllObjects();
                 // retranslate to 0,0
                 this.treeLayer.translate(-this.treeLayer.translation.x, -this.treeLayer.translation.y);
 
@@ -232,7 +232,7 @@ export default class Main {
         // canvas translate coords
         let Sx = this.state.Vx * Model.parameters.time * 10;
         let Sy = -this.state.Vy * Model.parameters.time * 10 * 1.5;
-        this.treeLayer.addToRender(() => {
+        this.treeLayer.registerOnBeforeRenderCallback(() => {
             this.treeLayer.clear();
             this.treeLayer.translate(Math.round(Sx), Math.round(Sy));
         });
@@ -271,25 +271,25 @@ export default class Main {
          * Debug
          */
         // add debug text
-        if((<any>window).scene.debug) {
-            this.debugLayer.addToRender(() => {
+        //if((<any>window).scene.debug) {
+            this.debugLayer.registerOnBeforeRenderCallback(() => {
                 this.debugLayer.clear();
-                this.debugLayer.ctx.fillStyle = "#000000";
-                this.debugLayer.ctx.fillText("acc.x: " + (this.acc.x).toFixed(5), 10, 80);
-                //this.debugLayer.ctx.fillText("y: " + (acceleration.y).toFixed(5), 10, 40);
-                //this.debugLayer.ctx.fillText("angle: " + (angle).toFixed(5), 10, 20);
-                //this.debugLayer.ctx.fillText("delta: " + (angle - prevAngle).toFixed(5), 10, 80);
-                //this.debugLayer.ctx.fillText("speed X: " + (Vx).toFixed(5), 10, 60);
-                //this.debugLayer.ctx.fillText("layer X: " + this.treeLayer.position.x, 10, 80);
-                //this.debugLayer.ctx.fillText("layer Y: " + this.treeLayer.position.y, 10, 100);
-                //this.debugLayer.ctx.fillText("Sx: " + (Sx).toFixed(5), 10, 140);
-                //this.debugLayer.ctx.fillText("Sy: " + (Sy).toFixed(5), 10, 160);
-                this.debugLayer.ctx.fillText("Score: " + this.state.score, 10, 20);
-                this.debugLayer.ctx.fillText("Objects: " + this.treeLayer.objectsList.length, 10, 40);
-                this.debugLayer.ctx.fillText("Speed: " + (this.state.Vy).toFixed(5), 10, 60);
+                this.debugLayer.context.fillStyle = "#000000";
+                this.debugLayer.context.fillText("acc.x: " + (this.acc.x).toFixed(5), 10, 80);
+                //this.debugLayer.context.fillText("y: " + (acceleration.y).toFixed(5), 10, 40);
+                //this.debugLayer.context.fillText("angle: " + (angle).toFixed(5), 10, 20);
+                //this.debugLayer.context.fillText("delta: " + (angle - prevAngle).toFixed(5), 10, 80);
+                //this.debugLayer.context.fillText("speed X: " + (Vx).toFixed(5), 10, 60);
+                //this.debugLayer.context.fillText("layer X: " + this.treeLayer.position.x, 10, 80);
+                //this.debugLayer.context.fillText("layer Y: " + this.treeLayer.position.y, 10, 100);
+                //this.debugLayer.context.fillText("Sx: " + (Sx).toFixed(5), 10, 140);
+                //this.debugLayer.context.fillText("Sy: " + (Sy).toFixed(5), 10, 160);
+                this.debugLayer.context.fillText("Score: " + this.state.score, 10, 20);
+                this.debugLayer.context.fillText("Objects: " + this.treeLayer.objectsList.length, 10, 40);
+                this.debugLayer.context.fillText("Speed: " + (this.state.Vy).toFixed(5), 10, 60);
 
             });
-        }
+        //}
 
         // render layers
         (<any>window).scene.render();

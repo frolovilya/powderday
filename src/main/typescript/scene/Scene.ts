@@ -2,56 +2,48 @@
  * Scene and layers manipulation
  */
 import SceneLayer from "./SceneLayer";
-import SceneIntersections from "./SceneIntersections";
+import SceneIntersections from "./intersections/SceneIntersections";
 
 export default class Scene {
 
-    private debug;
-
-    private element;
+    private domNode: HTMLElement;
 
     private layers = {};
 
     public intersections = new SceneIntersections();
 
-    constructor(elementId) {
-        this.debug = true;
-
-        // initialize scene element
-        this.element = document.getElementById(elementId);
-        this.element.className = "scene";
+    constructor(elementId: string) {
+        // TODO handle element not found
+        this.domNode = document.getElementById(elementId);
+        this.domNode.className = "scene";
     }
 
     getWidth() {
-        return parseInt(this.element.style.width);
+        return parseInt(this.domNode.style.width);
     }
 
     getHeight() {
-        return parseInt(this.element.style.height);
+        return parseInt(this.domNode.style.height);
     }
 
     // set scene size
-    resize(width, height) {
-        this.element.style.width = width + "px";
-        this.element.style.height = height + "px";
+    resize(width: number, height: number) {
+        this.domNode.style.width = width + "px";
+        this.domNode.style.height = height + "px";
+
+        // TODO fit layer's sizes?
     }
 
-    createLayer(layerId, zIndex, enable3d) {
-        var canvas = document.createElement("canvas");
-        canvas.id = layerId;
-        //canvas.style = "z-index: " + zIndex;
-        canvas.style.zIndex = zIndex;
-        this.element.appendChild(canvas);
-        if(enable3d)
-            canvas.className = "translate3d";
+    createLayer(layerId: string, zIndex: string): SceneLayer {
+        let layer = new SceneLayer(this, layerId, zIndex);
+        layer.placeAt(this.domNode);
 
-        this.layers[layerId] = new SceneLayer(this, canvas);
-        this.layers[layerId].fitToSceneSize();
+        this.layers[layerId] = layer;
 
         return this.layers[layerId];
     }
 
-    getLayer(layerId) {
+    getLayer(layerId: string): SceneLayer {
         return this.layers[layerId];
     }
 
@@ -60,7 +52,7 @@ export default class Scene {
         this.intersections.clearPoints();
 
         // render layers
-        for(var i in this.layers) {
+        for(let i in this.layers) {
             this.layers[i].render();
         }
 
