@@ -11,13 +11,15 @@ import TreeSprite from "./TreeSprite";
 
 export default class TreeObject implements SceneObject {
 
+    private layer: SceneLayer;
+
     private sprite: TreeSprite;
 
     private shape: Circle;
     
     private position: Coords;
     
-    private scaleNum;
+    private scaleNum: number;
 
     constructor(treeResource: SceneObjectConfig, position: Coords) {
 
@@ -30,38 +32,55 @@ export default class TreeObject implements SceneObject {
         this.scaleNum = 1;
     }
 
-    scale(scaleNum) {
-        this.scaleNum = scaleNum;
+    getClassName() {
+        return "tree";
+    }
+
+    setLayer(layer: SceneLayer) {
+        this.layer = layer;
+    }
+
+    getLayer() {
+        return this.layer;
+    }
+
+    scale(scaleNum: number) {
+        this.scaleNum = Math.round(scaleNum * 100) / 100;
     };
 
-    render(layer: SceneLayer) {
-        this.shape.draw(layer, this.position, this.scaleNum)
-        this.sprite.draw(layer, this.position, this.scaleNum);
+    getScale() {
+        return this.scaleNum;
+    }
+
+    render() {
+        this.shape.draw(this.layer, this.position, this.scaleNum);
+        this.sprite.draw(this.layer, this.position, this.scaleNum);
     }
 
     getSize() {
         return this.sprite.getSize();
     }
 
-    isVisible(layer: SceneLayer) {
-        let topX = layer.translation.x + this.position.x;
-        let topY = layer.translation.y + this.position.y;
-
-        return ( layer.isPointVisible(topX, topY)
-            || layer.isPointVisible(topX + this.sprite.getSize().width, topY)
-            || layer.isPointVisible(topX, topY + this.sprite.getSize().height)
-            || layer.isPointVisible(topX + this.sprite.getSize().width, topY + this.sprite.getSize().height) );
+    getCoords() {
+        return this.position;
     }
 
-    isActual(layer: SceneLayer) {
-        return layer.translation.y + this.position.y + this.sprite.getSize().height > 0;
+    isVisible() {
+        let topX = this.layer.translation.x + this.position.x;
+        let topY = this.layer.translation.y + this.position.y;
+
+        return ( this.layer.isPointVisible(topX, topY)
+            || this.layer.isPointVisible(topX + this.getSize().width, topY)
+            || this.layer.isPointVisible(topX, topY + this.getSize().height)
+            || this.layer.isPointVisible(topX + this.getSize().width, topY + this.getSize().height) );
     }
 
-    getIntersectionPoints(layer: SceneLayer) {
-        let absolutePoint = Circle.toAbsoluteCoords(layer, this.shape, this.position, this.scaleNum);
-        absolutePoint.className = "tree";
+    isActual() {
+        return this.layer.translation.y + this.position.y + this.getSize().height > 0;
+    }
 
-        return [absolutePoint];
+    getShapes() {
+        return [this.shape];
     }
 
 }

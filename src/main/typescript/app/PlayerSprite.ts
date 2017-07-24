@@ -7,7 +7,7 @@ export default class PlayerSprite extends Sprite {
     private positions: any;
     private position: number;
     
-    private rotateAngle: number;
+    private rotateAngle: number = 0;
 
     getPositions(): object {
         return this.positions;

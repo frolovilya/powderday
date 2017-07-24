@@ -236,7 +236,10 @@ export default class Main {
         let Sy = -this.state.Vy * Model.parameters.time * 10 * 1.5;
         this.treeLayer.registerOnBeforeRenderCallback(() => {
             this.treeLayer.clear();
-            this.treeLayer.translate(Math.round(Sx), Math.round(Sy));
+            this.treeLayer.translate(
+                Math.round(Sx),
+                Math.round(Sy)
+            );
         });
 
         // calculate score
@@ -287,8 +290,9 @@ export default class Main {
                 //this.debugLayer.context.fillText("Sx: " + (Sx).toFixed(5), 10, 140);
                 //this.debugLayer.context.fillText("Sy: " + (Sy).toFixed(5), 10, 160);
                 this.debugLayer.context.fillText("Score: " + this.state.score, 10, 20);
-                this.debugLayer.context.fillText("Objects: " + this.treeLayer.objectsList.length, 10, 40);
-                this.debugLayer.context.fillText("Speed: " + (this.state.Vy).toFixed(5), 10, 60);
+                this.debugLayer.context.fillText("Objects (tree): " + this.treeLayer.objectsList.length, 10, 40);
+                //this.debugLayer.context.fillText("Objects (player): " + this.playerLayer.objectsList.length, 10, 60);
+                this.debugLayer.context.fillText("Speed: " + (this.state.Vy).toFixed(5), 10, 100);
 
             });
         //}

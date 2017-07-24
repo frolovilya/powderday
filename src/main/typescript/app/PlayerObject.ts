@@ -6,13 +6,15 @@ import Circle from "../scene/shapes/Circle";
 
 export default class PlayerObject implements SceneObject {
 
+    private layer: SceneLayer;
+
     private sprite: PlayerSprite;
 
     private shape: Circle;
 
     private scaleNum;
 
-    private pos;
+    private position;
 
     constructor(playerResource) {
         this.sprite = new PlayerSprite(playerResource.sprite.src, playerResource.sprite.size);
@@ -24,9 +26,9 @@ export default class PlayerObject implements SceneObject {
             width: 80,
             height: 80
         };
-        this.scaleNum = this.sprite.getSize().width / fixedSize.width;
+        this.scaleNum = Math.round(this.sprite.getSize().width / fixedSize.width * 100) / 100;
 
-        this.pos = {
+        this.position = {
             x: -fixedSize.width / 2,
             y: -fixedSize.height / 2
         };
@@ -37,32 +39,49 @@ export default class PlayerObject implements SceneObject {
         this.shape = new Circle(playerResource.shape.coords, playerResource.shape.radius)
     }
 
-    render(layer: SceneLayer) {
+    getClassName() {
+        return "player";
+    }
+
+    setLayer(layer: SceneLayer) {
+        this.layer = layer;
+    }
+
+    getLayer() {
+        return this.layer;
+    }
+
+    getScale() {
+        return this.scaleNum;
+    }
+
+    render() {
 
         this.sprite.rotate((<any>window).playerRotateAngle);
 
-        layer.clear();
+        this.layer.clear();
 
-        this.shape.draw(layer, this.pos, this.scaleNum);
-        this.sprite.draw(layer, this.pos, this.scaleNum);
+        this.shape.draw(this.layer, this.position, this.scaleNum);
+        this.sprite.draw(this.layer, this.position, this.scaleNum);
     }
 
     getSize() {
         return this.sprite.getSize();
     }
 
-    getIntersectionPoints(layer: SceneLayer) {
-        let absolutePoint = Circle.toAbsoluteCoords(layer, this.shape, this.pos, this.scaleNum);
-        absolutePoint.className = "player";
-
-        return [absolutePoint];
+    getCoords() {
+        return this.position;
     }
 
-    isVisible(layer) {
+    getShapes() {
+        return [this.shape];
+    }
+
+    isVisible() {
         return true;
     }
 
-    isActual(layer) {
+    isActual() {
         return true;
     }
 

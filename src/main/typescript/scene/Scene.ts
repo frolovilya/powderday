@@ -47,17 +47,18 @@ export default class Scene {
         return this.layers[layerId];
     }
 
-    render() {
-        // clear intersection points list
-        this.intersections.clearPoints();
+    getLayers() {
+        return this.layers;
+    }
 
+    render() {
         // render layers
         for(let i in this.layers) {
             this.layers[i].render();
         }
 
         // check for new intersections & fire callbacks
-        this.intersections.check();
+        this.intersections.check(this);
     }
 }
 
@@ -68,16 +69,16 @@ export default class Scene {
 (<any>window).requestAnimFrame = (function() {
     return  window.requestAnimationFrame        ||
         window.webkitRequestAnimationFrame  ||
-        (<any>window).mozRequestAnimationFrame     ||
+        (<any>window).mozRequestAnimationFrame     /*||
         function(callback) {
             return window.setTimeout(callback, 1000 / 30);
-        };
+        };*/
 })();
 (<any>window).cancelAnimFrame = (function() {
     return  window.cancelAnimationFrame       ||
         window.webkitCancelAnimationFrame ||
-        (<any>window).mozCancelAnimationFrame    ||
+        (<any>window).mozCancelAnimationFrame    /*||
         function(id) {
             window.clearTimeout(id);
-        }
+        }*/
 })();

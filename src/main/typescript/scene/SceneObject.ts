@@ -5,17 +5,27 @@
 import SceneLayer from "./SceneLayer";
 import Circle from "./shapes/Circle";
 import {Size} from "./types/Size";
+import {Coords} from "./types/Coords";
 
 export interface SceneObject {
 
-	render(layer: SceneLayer): void;
+	setLayer(layer: SceneLayer);
+	getLayer(): SceneLayer;
+
+	getClassName(): string;
+
+	getCoords(): Coords;
 
 	getSize(): Size;
 
-	isVisible(layer: SceneLayer): boolean;
+	getScale(): number;
 
-	isActual(layer: SceneLayer): boolean;
+	render(): void;
 
-	getIntersectionPoints(layer: SceneLayer): Circle[];
+	isVisible(): boolean;
+
+	isActual(): boolean;
+
+	getShapes(): Circle[];
 
 }

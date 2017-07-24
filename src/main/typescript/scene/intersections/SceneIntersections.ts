@@ -1,50 +1,106 @@
 import Circle from "../shapes/Circle";
+import Scene from "../Scene";
+import {SceneObject} from "../SceneObject";
+import {Coords} from "../types/Coords";
+import SceneLayer from "../SceneLayer";
 
-export default class SceneIntersections {
-
-    private intersectPoints = {};
+export default class SceneObjectsIntersection {
 
     private intersectCallbacks = {};
 
-    check() {
+    check(scene: Scene) {
+
+        // TODO functional
+        let sceneObjects = [];
+        let sceneLayers = scene.getLayers();
+        for(let i in sceneLayers) {
+            // let layerObjects = sceneLayers[i].getObjects();
+            // sceneObjects = sceneObjects.concat(layerObjects);
+            sceneObjects = sceneObjects.concat(sceneLayers[i].getObjects());
+        }
+
         // get callback classes
         for(let k in this.intersectCallbacks) {
-            let classes = k.split(",");
+            let classNames = k.split(",");
             let fire = false;
 
-            let a = this.intersectPoints[classes[0]];
-            let b = this.intersectPoints[classes[1]];
-            if(a == undefined || b == undefined)
-                continue;
+            let aObjects = [];
+            let bObjects = [];
+            for(let sceneObject of sceneObjects) {
+                if(sceneObject.getClassName() == classNames[0]) {
+                    aObjects.push(sceneObject)
+                } else if(sceneObject.getClassName() == classNames[1]) {
+                    bObjects.push(sceneObject);
+                }
+            }
+            // sceneObjects.forEach((sceneObject) => {
+            //
+            // });
 
-            for(let i = 0; i < a.length; i++) {
-                fire = false;
+            if(aObjects.length > 0 && bObjects.length > 0) {
 
-                for(let j = 0; j < b.length; j++) {
-                    // TODO: add point type check
-                    if(Circle.checkCircles(a[i], b[j])) {
-                        fire = true;
+                for (let i = 0; i < aObjects.length; i++) {
+                    fire = false;
+
+                    for (let j = 0; j < bObjects.length; j++) {
+                        if (this.checkObjectsIntersection(aObjects[i], bObjects[j])) {
+                            fire = true;
+                            break;
+                        }
+                    }
+
+                    if (fire) {
+                        this.fireCallbacks(classNames[0], classNames[1]);
                         break;
                     }
                 }
 
-                if(fire) {
-                    this.fireCallbacks(classes[0], classes[1]);
-                    break;
-                }
             }
         }
     }
 
-    addPoint(point: Circle) {
-        if(this.intersectPoints[point.className] == undefined)
-            this.intersectPoints[point.className] = [];
+    checkObjectsIntersection(objectA: SceneObject, objectB: SceneObject) {
+        let aShape = objectA.getShapes()[0];
+        let bShape = objectB.getShapes()[0];
 
-        this.intersectPoints[point.className].push(point);
+        let aAbsoluteCoords = this.toAbsoluteCoords(
+            this.toLayerCoords(aShape.getCoords(), objectA), objectA.getLayer());
+
+        let bAbsoluteCoords = this.toAbsoluteCoords(
+            this.toLayerCoords(bShape.getCoords(), objectB), objectB.getLayer());
+
+        let isIntersect = this.checkCircles(aAbsoluteCoords, aShape.getRadius(),
+                                 bAbsoluteCoords, bShape.getRadius());
+        if(isIntersect) {
+            console.log(aAbsoluteCoords, aShape.getRadius(), bAbsoluteCoords, bShape.getRadius());
+        }
+
+        return isIntersect;
+
     }
 
-    clearPoints() {
-        this.intersectPoints = {};
+    toLayerCoords(coords: Coords, sceneObject: SceneObject): Coords {
+        return {
+            x: sceneObject.getCoords().x + Math.round(coords.x / sceneObject.getScale() * 100) / 100,
+            y: sceneObject.getCoords().y + Math.round(coords.y / sceneObject.getScale() * 100) / 100
+        };
+    }
+
+    toAbsoluteCoords(coords: Coords, layer: SceneLayer) {
+        return {
+            x: coords.x + layer.translation.x,
+            y: coords.y + layer.translation.y
+        };
+    }
+
+    checkCircles(coords1: Coords, radius1: number,
+                 coords2: Coords, radius2: number): boolean {
+        let distance = Math.sqrt(
+            Math.pow(coords2.x - coords1.x, 2)
+            + Math.pow(coords2.y - coords1.y, 2)
+        );
+
+        return distance <= (radius1 + radius2);
     }
 
     onIntersect(a: string, b: string, callback) {

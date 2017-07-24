@@ -57,10 +57,14 @@ export default class SceneLayer {
 
     clearTransform() {
         this.context.setTransform(1, 0, 0, 1, 0, 0);
-        this.translate(
+        /*this.translate(
             this.canvas.width / 2,
             this.canvas.height / 2
-        );
+        );*/
+        this.translation.x = this.canvas.width / 2;
+        this.translation.y = this.canvas.height / 2;
+
+        this.context.translate(this.translation.x, this.translation.y);
         /*layer.context.translate(
             layer.canvas.width / 2,
             layer.canvas.height / 2
@@ -90,11 +94,16 @@ export default class SceneLayer {
     }
 
     addObject(sceneObject: SceneObject) {
+        sceneObject.setLayer(this);
         this.objectsList.push(sceneObject);
     }
 
     removeAllObjects() {
         this.objectsList.length = 0;
+    }
+
+    getObjects() {
+        return this.objectsList;
     }
 
     registerOnBeforeRenderCallback(callback: () => void) {
@@ -108,16 +117,16 @@ export default class SceneLayer {
         for(let i = 0; i < this.objectsList.length; i++) {
             let obj = this.objectsList[i];
 
-            if(obj.isActual(this)) {
+            if(obj.isActual()) {
                 // render if visible
-                if(obj.isVisible(this)) {
-                    obj.render(this);
+                if(obj.isVisible()) {
+                    obj.render();
 
-                    // get object intersection points
+                    /* get object intersection points
                     let intersectPoints = obj.getIntersectionPoints(this);
                     for(let j = 0; j < intersectPoints.length; j++) {
                         this.scene.intersections.addPoint(intersectPoints[j]);
-                    }
+                    }*/
                 }
 
             } else {
