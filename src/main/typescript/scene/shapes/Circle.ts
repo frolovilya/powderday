@@ -1,4 +1,5 @@
 import {Coords} from "../types/Coords";
+import SceneLayer from "../SceneLayer";
 
 export default class Circle {
 
@@ -20,7 +21,9 @@ export default class Circle {
         return this.radius;
     }
 
-    draw(context: CanvasRenderingContext2D, parentCoords: Coords, scale: number = 1) {
+    draw(layer: SceneLayer, parentCoords: Coords, scale: number = 1) {
+        let context = layer.getContext();
+
         context.beginPath();
 
         context.arc(

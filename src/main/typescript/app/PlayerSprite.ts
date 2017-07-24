@@ -1,10 +1,13 @@
 import Sprite from "../scene/Sprite";
 import {Coords} from "../scene/types/Coords";
+import SceneLayer from "../scene/SceneLayer";
 
 export default class PlayerSprite extends Sprite {
 
-    private positions: object;
+    private positions: any;
     private position: number;
+    
+    private rotateAngle: number;
 
     getPositions(): object {
         return this.positions;
@@ -19,15 +22,52 @@ export default class PlayerSprite extends Sprite {
     setPosition(value: number) {
         this.position = value;
     }
+    
+    rotate(angle: number) {
+        this.rotateAngle = angle;
+    }
 
-    draw(context: CanvasRenderingContext2D, parentCoords: Coords, scale: number = 1) {
+    draw(layer: SceneLayer, parentCoords: Coords, scale: number = 1) {
+        let context = layer.getContext();
+
+        // set new position
+        if(this.rotateAngle > 30 && this.rotateAngle < 75 && this.position != this.positions.frontRight) {
+            this.position = this.positions.frontRight;
+            layer.clearTransform();
+
+        } else if(this.rotateAngle >= 75 && this.position != this.positions.right) {
+            this.position = this.positions.right;
+            layer.clearTransform();
+
+        } else if(this.rotateAngle < -30 && this.rotateAngle > -75 && this.position != this.positions.frontLeft) {
+            this.position = this.positions.frontLeft;
+            layer.clearTransform();
+
+        } else if(this.rotateAngle <= -75 && this.position != this.positions.left) {
+            this.position = this.positions.left;
+            layer.clearTransform();
+
+        } else if(this.rotateAngle <= 30 && this.rotateAngle >= -30 && this.position != this.positions.front) {
+            this.position = this.positions.front;
+            layer.clearTransform();
+            context.rotate(this.rotateAngle * 3.14/180 / 2);
+        }
+
+        if(this.rotateAngle < 90 && this.rotateAngle > -90)
+            context.rotate((<any>window).playerRotateAngleDelta * 3.14/180 / 2);
+
+        // draw player
         context.beginPath();
         context.drawImage(
-            this.image,
-            parentCoords.x + this.coords.x,
-            parentCoords.y + this.coords.x,
-            this.size.width / scale,
-            this.size.height / scale
+            this.image, // image
+            this.position, // crop x
+            0, // crop y
+            this.getSize().width, // crop width
+            this.image.height, // crop height
+            parentCoords.x, // canvas x
+            parentCoords.y, // canvas y
+            this.getSize().width / scale, // image width
+            this.getSize().height / scale // image height
         );
         context.closePath();
     }

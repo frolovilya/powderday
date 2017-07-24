@@ -6,7 +6,7 @@ export default class SceneLayer {
     public scene: Scene;
 
     public canvas: HTMLCanvasElement;
-    public context: CanvasRenderingContext2D;
+    private context: CanvasRenderingContext2D;
 
     public translation;
 
@@ -42,6 +42,10 @@ export default class SceneLayer {
     placeAt(domNode: HTMLElement) {
         domNode.appendChild(this.canvas);
         this.fitToSceneSize();
+    }
+
+    getContext(): CanvasRenderingContext2D {
+        return this.context;
     }
 
     translate(x, y) {

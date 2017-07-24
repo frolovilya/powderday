@@ -75,7 +75,8 @@ export default {
         "sprite": {
             "src": "img/player.png", // 960 x 120
             "size": {
-                width: 120
+                width: 120,
+                height: 120
             },
             "positions": {
                 "front": 0,

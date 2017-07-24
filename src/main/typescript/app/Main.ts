@@ -31,7 +31,7 @@ export default class Main {
             let minSize = maxSize * 0.7;
 
             let newWidth = Math.floor( Math.random() * (maxSize - minSize) + minSize );
-            let scale = treeObject.width / newWidth;
+            let scale = treeObject.getSize().width / newWidth;
             treeObject.scale(scale);
 
             // add tree to layer

@@ -15,23 +15,11 @@ export default class TreeObject implements SceneObject {
 
     private shape: Circle;
     
-    //private image;
-    
     private position: Coords;
-    
-    //public width;
-    
-    //private height;
-    
-    //private ratio;
     
     private scaleNum;
 
-    //private point;
-
     constructor(treeResource: SceneObjectConfig, position: Coords) {
-        //this.image = new Image();
-        //this.image.src = treeResource.src;
 
         this.sprite = new TreeSprite(treeResource.sprite.src, treeResource.sprite.size);
 
@@ -40,52 +28,19 @@ export default class TreeObject implements SceneObject {
         this.position = position;
 
         this.scaleNum = 1;
-
-        // sprite size
-        //this.width = treeResource.size.width;
-        //this.height = treeResource.size.height;
-        //this.ratio = this.width / this.height;
-
-        // resize sprite
-        //this.scaleNum = 1;
-
-        // intersection point
-        //this.point = treeResource.point;
     }
 
     scale(scaleNum) {
         this.scaleNum = scaleNum;
-        /*this.width = this.width / scaleNum;
-        this.height = this.height / scaleNum;*/
-
-        //this.sprite.scale(scaleNum);
-        //this.shape.scale(scaleNum);
     };
 
     render(layer: SceneLayer) {
-        this.drawCircle(layer.context);
-        this.drawTreeImage(layer.context);
+        this.shape.draw(layer, this.position, this.scaleNum)
+        this.sprite.draw(layer, this.position, this.scaleNum);
     }
 
-    private drawCircle(context: CanvasRenderingContext2D) {
-        /*context.beginPath();
-        let iPoint = Circle.toLayerCoords(this.point, this.position, this.scaleNum);
-        context.arc(
-            iPoint.x,
-            iPoint.y,
-            iPoint.radius,
-            0, 2 * Math.PI, false
-        );
-        context.lineWidth = 2;
-        context.strokeStyle = '#FFDBC9';
-        context.stroke();
-        context.closePath();*/
-
-        this.shape.draw(context, this.position, this.scaleNum)
-    }
-
-    private drawTreeImage(context: CanvasRenderingContext2D) {
-        this.sprite.draw(context, this.position, this.scaleNum);
+    getSize() {
+        return this.sprite.getSize();
     }
 
     isVisible(layer: SceneLayer) {

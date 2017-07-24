@@ -8,127 +8,51 @@ export default class PlayerObject implements SceneObject {
 
     private sprite: PlayerSprite;
 
-    //private image;
+    private shape: Circle;
 
-    //private spriteWidth: number;
-
-    //private positions;
-    //private position: number;
-
-    private width;
-    private height;
     private scaleNum;
 
     private pos;
 
-    //private point;
-
-    private shape: Circle;
-
     constructor(playerResource) {
-        //this.image = new Image();
-        //this.image.src = playerResource.src;
-
         this.sprite = new PlayerSprite(playerResource.sprite.src, playerResource.sprite.size);
-
-        this.sprite.setPositions(playerResource.positions);
+        this.sprite.setPositions(playerResource.sprite.positions);
         this.sprite.setPosition(0);
 
-        //this.spriteWidth = playerResource.spriteWidth;
-        // sprite positions
-        //this.positions = playerResource.positions;
-        //this.position = 0;
-
         // single sprite size
-        this.width = 80;
-        this.height = 80;
-        this.scaleNum = this.sprite.getSize().width / this.width;
+        let fixedSize = {
+            width: 80,
+            height: 80
+        };
+        this.scaleNum = this.sprite.getSize().width / fixedSize.width;
 
         this.pos = {
-            x: -this.width / 2,
-            y: -this.height / 2
+            x: -fixedSize.width / 2,
+            y: -fixedSize.height / 2
         };
 
         // player rotation
         (<any>window).playerRotateAngle = 0;
-
-        // intersection point
-        //this.point = playerResource.point;
-
+        
         this.shape = new Circle(playerResource.shape.coords, playerResource.shape.radius)
     }
 
     render(layer: SceneLayer) {
-        let ctx = layer.context;
-        let ra = (<any>window).playerRotateAngle;
+
+        this.sprite.rotate((<any>window).playerRotateAngle);
 
         layer.clear();
 
-        /*ctx.beginPath();
-         ctx.moveTo(0, -50);
-         ctx.lineTo(0, 50);
-         ctx.stroke();
-         ctx.closePath();*/
+        this.shape.draw(layer, this.pos, this.scaleNum);
+        this.sprite.draw(layer, this.pos, this.scaleNum);
+    }
 
-        // draw circle
-        this.shape.draw(ctx, this.pos, this.scaleNum);
-        /*ctx.beginPath();
-        let iPoint = Circle.toLayerCoords(this.point, this.pos, this.scaleNum);
-        ctx.arc(
-            iPoint.x,
-            iPoint.y,
-            iPoint.radius,
-            0, 2 * Math.PI, false
-        );
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#FFDBC9';
-        ctx.stroke();
-        ctx.closePath();*/
-
-        // set new position
-        if(ra > 30 && ra < 75 && this.position != this.positions.frontRight) {
-            this.position = this.positions.frontRight;
-            layer.clearTransform();
-
-        } else if(ra >= 75 && this.position != this.positions.right) {
-            this.position = this.positions.right;
-            layer.clearTransform();
-
-        } else if(ra < -30 && ra > -75 && this.position != this.positions.frontLeft) {
-            this.position = this.positions.frontLeft;
-            layer.clearTransform();
-
-        } else if(ra <= -75 && this.position != this.positions.left) {
-            this.position = this.positions.left;
-            layer.clearTransform();
-
-        } else if(ra <= 30 && ra >= -30 && this.position != this.positions.front) {
-            this.position = this.positions.front;
-            layer.clearTransform();
-            ctx.rotate(ra * 3.14/180 / 2);
-        }
-
-        if(ra < 90 && ra > -90)
-            ctx.rotate((<any>window).playerRotateAngleDelta * 3.14/180 / 2);
-
-        // draw player
-        ctx.beginPath();
-        ctx.drawImage(
-            this.image, // image
-            this.position, // crop x
-            0, // crop y
-            this.spriteWidth, // crop width
-            this.image.height, // crop height
-            this.pos.x, // canvas x
-            this.pos.y, // canvas y
-            this.width, // image width
-            this.height // image height
-        );
-        ctx.closePath();
+    getSize() {
+        return this.sprite.getSize();
     }
 
     getIntersectionPoints(layer: SceneLayer) {
-        let absolutePoint = Circle.toAbsoluteCoords(layer, this.point, this.pos, this.scaleNum);
+        let absolutePoint = Circle.toAbsoluteCoords(layer, this.shape, this.pos, this.scaleNum);
         absolutePoint.className = "player";
 
         return [absolutePoint];
