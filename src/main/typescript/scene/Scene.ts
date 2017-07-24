@@ -62,23 +62,23 @@ export default class Scene {
     }
 }
 
-/*
- * Animation
- */
-(<any>window).animId = null;
-(<any>window).requestAnimFrame = (function() {
-    return  window.requestAnimationFrame        ||
-        window.webkitRequestAnimationFrame  ||
-        (<any>window).mozRequestAnimationFrame     /*||
-        function(callback) {
-            return window.setTimeout(callback, 1000 / 30);
-        };*/
-})();
-(<any>window).cancelAnimFrame = (function() {
-    return  window.cancelAnimationFrame       ||
-        window.webkitCancelAnimationFrame ||
-        (<any>window).mozCancelAnimationFrame    /*||
-        function(id) {
-            window.clearTimeout(id);
-        }*/
-})();
+// /*
+//  * Animation
+//  */
+// (<any>window).animId = null;
+// (<any>window).requestAnimFrame = (function() {
+//     return  window.requestAnimationFrame        ||
+//         window.webkitRequestAnimationFrame  ||
+//         (<any>window).mozRequestAnimationFrame     /*||
+//         function(callback) {
+//             return window.setTimeout(callback, 1000 / 30);
+//         };*/
+// })();
+// (<any>window).cancelAnimFrame = (function() {
+//     return  window.cancelAnimationFrame       ||
+//         window.webkitCancelAnimationFrame ||
+//         (<any>window).mozCancelAnimationFrame    /*||
+//         function(id) {
+//             window.clearTimeout(id);
+//         }*/
+// })();

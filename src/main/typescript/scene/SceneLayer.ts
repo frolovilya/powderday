@@ -107,7 +107,7 @@ export default class SceneLayer {
     }
 
     registerOnBeforeRenderCallback(callback: () => void) {
-        this.onRenderCallbacks.BEFORE.push(callback);
+         this.onRenderCallbacks.BEFORE.push(callback);
     }
 
     render() {
