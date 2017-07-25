@@ -88,8 +88,8 @@ export default class SceneObjectsIntersection {
 
     toAbsoluteCoords(coords: Coords, layer: SceneLayer) {
         return {
-            x: coords.x + layer.translation.x,
-            y: coords.y + layer.translation.y
+            x: coords.x + layer.getTranslation().x,
+            y: coords.y + layer.getTranslation().y
         };
     }
 

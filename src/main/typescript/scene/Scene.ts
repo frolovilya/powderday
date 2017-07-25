@@ -3,6 +3,7 @@
  */
 import SceneLayer from "./SceneLayer";
 import SceneIntersections from "./intersections/SceneIntersections";
+import {Size} from "./types/Size";
 
 export default class Scene {
 
@@ -18,18 +19,17 @@ export default class Scene {
         this.domNode.className = "scene";
     }
 
-    getWidth() {
-        return parseInt(this.domNode.style.width);
-    }
-
-    getHeight() {
-        return parseInt(this.domNode.style.height);
+    getSize(): Size {
+        return {
+            width: parseInt(this.domNode.style.width),
+            height: parseInt(this.domNode.style.height)
+        }
     }
 
     // set scene size
-    resize(width: number, height: number) {
-        this.domNode.style.width = width + "px";
-        this.domNode.style.height = height + "px";
+    resize(newSize: Size) {
+        this.domNode.style.width = newSize.width + "px";
+        this.domNode.style.height = newSize.height + "px";
 
         // TODO fit layer's sizes?
     }
@@ -61,24 +61,3 @@ export default class Scene {
         this.intersections.check(this);
     }
 }
-
-// /*
-//  * Animation
-//  */
-// (<any>window).animId = null;
-// (<any>window).requestAnimFrame = (function() {
-//     return  window.requestAnimationFrame        ||
-//         window.webkitRequestAnimationFrame  ||
-//         (<any>window).mozRequestAnimationFrame     /*||
-//         function(callback) {
-//             return window.setTimeout(callback, 1000 / 30);
-//         };*/
-// })();
-// (<any>window).cancelAnimFrame = (function() {
-//     return  window.cancelAnimationFrame       ||
-//         window.webkitCancelAnimationFrame ||
-//         (<any>window).mozCancelAnimationFrame    /*||
-//         function(id) {
-//             window.clearTimeout(id);
-//         }*/
-// })();

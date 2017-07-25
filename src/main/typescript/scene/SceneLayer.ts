@@ -1,16 +1,18 @@
 import {SceneObject} from "./SceneObject";
 import Scene from "./Scene";
+import {Size} from "./types/Size";
+import {Coords} from "./types/Coords";
 
 export default class SceneLayer {
 
-    public scene: Scene;
+    private scene: Scene;
 
-    public canvas: HTMLCanvasElement;
+    private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
 
-    public translation;
+    private translation;
 
-    public objectsList: SceneObject[] = [];
+    private objectsList: SceneObject[] = [];
 
     private onRenderCallbacks = {
         "BEFORE": []
@@ -39,6 +41,14 @@ export default class SceneLayer {
         return canvas;
     }
 
+    public getScene() {
+        return this.scene;
+    }
+
+    public getCanvas() {
+        return this.canvas;
+    }
+
     placeAt(domNode: HTMLElement) {
         domNode.appendChild(this.canvas);
         this.fitToSceneSize();
@@ -48,11 +58,15 @@ export default class SceneLayer {
         return this.context;
     }
 
-    translate(x, y) {
-        this.translation.x += x;
-        this.translation.y += y;
+    translate(coords: Coords) {
+        this.translation.x += coords.x;
+        this.translation.y += coords.y;
 
-        this.context.translate(x, y);
+        this.context.translate(coords.x, coords.y);
+    }
+
+    getTranslation() {
+        return this.translation;
     }
 
     clearTransform() {
@@ -71,18 +85,19 @@ export default class SceneLayer {
         );*/
     }
 
-    resize(width, height) {
-        this.canvas.width = width;
-        this.canvas.height = height;
+    resize(newSize: Size) {
+        this.canvas.width = newSize.width;
+        this.canvas.height = newSize.height;
     }
 
     fitToSceneSize() {
-        this.resize( this.scene.getWidth(), this.scene.getHeight() );
+        this.resize( this.scene.getSize() );
     }
 
-    isPointVisible(x, y) {
-        return ( x > 0 && x < this.scene.getWidth()
-            && y > 0 && y < this.scene.getHeight() );
+    isPointVisible(point: Coords) {
+        let sceneSize = this.scene.getSize();
+        return ( point.x > 0 && point.x < sceneSize.width
+            && point.y > 0 && point.y < sceneSize.height );
     }
 
     clear() {

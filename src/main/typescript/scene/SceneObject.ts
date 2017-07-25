@@ -9,23 +9,23 @@ import {Coords} from "./types/Coords";
 
 export interface SceneObject {
 
+	getClassName(): string;
+
 	setLayer(layer: SceneLayer);
 	getLayer(): SceneLayer;
 
-	getClassName(): string;
+	getShapes(): Circle[];
 
 	getCoords(): Coords;
 
 	getSize(): Size;
 
+	setScale(scale: number);
 	getScale(): number;
 
-	render(): void;
-
 	isVisible(): boolean;
-
 	isActual(): boolean;
 
-	getShapes(): Circle[];
+	render(): void;
 
 }

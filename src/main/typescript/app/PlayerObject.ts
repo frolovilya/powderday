@@ -3,20 +3,22 @@ import SceneLayer from "../scene/SceneLayer";
 import Sprite from "../scene/Sprite";
 import PlayerSprite from "./PlayerSprite";
 import Circle from "../scene/shapes/Circle";
+import {AbstractSceneObject} from "../scene/AbstractSceneObject";
+import Model from "./Model";
+import Accelerometer from "../device/Accelerometer";
 
-export default class PlayerObject implements SceneObject {
-
-    private layer: SceneLayer;
+export default class PlayerObject extends AbstractSceneObject implements SceneObject {
 
     private sprite: PlayerSprite;
-
     private shape: Circle;
 
-    private scaleNum;
-
-    private position;
+    private state = {
+        angle: 0
+    };
 
     constructor(playerResource) {
+        super();
+
         this.sprite = new PlayerSprite(playerResource.sprite.src, playerResource.sprite.size);
         this.sprite.setPositions(playerResource.sprite.positions);
         this.sprite.setPosition(0);
@@ -26,16 +28,13 @@ export default class PlayerObject implements SceneObject {
             width: 80,
             height: 80
         };
-        this.scaleNum = Math.round(this.sprite.getSize().width / fixedSize.width * 100) / 100;
+        this.scale = Math.round(this.sprite.getSize().width / fixedSize.width * 100) / 100;
 
-        this.position = {
+        this.coords = {
             x: -fixedSize.width / 2,
             y: -fixedSize.height / 2
         };
 
-        // player rotation
-        (<any>window).playerRotateAngle = 0;
-        
         this.shape = new Circle(playerResource.shape.coords, playerResource.shape.radius)
     }
 
@@ -43,46 +42,26 @@ export default class PlayerObject implements SceneObject {
         return "player";
     }
 
-    setLayer(layer: SceneLayer) {
-        this.layer = layer;
-    }
-
-    getLayer() {
-        return this.layer;
-    }
-
-    getScale() {
-        return this.scaleNum;
+    private calculateAngle() {
+        this.state.angle = Model.calcAngle(this.state.angle, Accelerometer.getAcceleration().x);
     }
 
     render() {
-
-        this.sprite.rotate((<any>window).playerRotateAngle);
+        this.calculateAngle();
+        this.sprite.rotate(this.state.angle);
 
         this.layer.clear();
 
-        this.shape.draw(this.layer, this.position, this.scaleNum);
-        this.sprite.draw(this.layer, this.position, this.scaleNum);
+        this.shape.draw(this.layer, this.coords, this.scale);
+        this.sprite.draw(this.layer, this.coords, this.scale);
     }
 
     getSize() {
         return this.sprite.getSize();
     }
 
-    getCoords() {
-        return this.position;
-    }
-
     getShapes() {
         return [this.shape];
-    }
-
-    isVisible() {
-        return true;
-    }
-
-    isActual() {
-        return true;
     }
 
 }

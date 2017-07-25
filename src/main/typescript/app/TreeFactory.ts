@@ -28,7 +28,7 @@ export default class TreeFactory {
             // scale
             let newWidth = Math.floor( Math.random() * (maxWidth - minWidth) + minWidth );
             let scale = treeObject.getSize().width / newWidth;
-            treeObject.scale(scale);
+            treeObject.setScale(scale);
 
             // add tree to layer
             layer.addObject( treeObject );
