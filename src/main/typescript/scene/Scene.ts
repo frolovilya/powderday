@@ -34,13 +34,18 @@ export default class Scene {
         // TODO fit layer's sizes?
     }
 
-    createLayer(layerId: string, zIndex: string): SceneLayer {
-        let layer = new SceneLayer(this, layerId, zIndex);
-        layer.placeAt(this.domNode);
+    // createLayer(layerId: string, zIndex: string): SceneLayer {
+    //     let layer = new SceneLayer(this, layerId, zIndex);
+    //     layer.placeAt(this.domNode);
+    //
+    //     this.layers[layerId] = layer;
+    //
+    //     return this.layers[layerId];
+    // }
 
-        this.layers[layerId] = layer;
-
-        return this.layers[layerId];
+    addLayer(layer: SceneLayer) {
+        this.domNode.appendChild(layer.getCanvas());
+        this.layers[layer.getId()] = layer;
     }
 
     getLayer(layerId: string): SceneLayer {

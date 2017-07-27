@@ -12,6 +12,8 @@ import Accelerometer from "../device/Accelerometer";
 import Screen from "../device/Screen"
 import {Size} from "../scene/types/Size";
 import SceneLayer from "../scene/SceneLayer";
+import CommonState from "./CommonState";
+import TreesLayer from "./TreesLayer";
 //import * as $ from "jquery";
 
 export default class Main {
@@ -22,24 +24,25 @@ export default class Main {
     private debugLayer: SceneLayer = null;
 
     // game state
-    private state: any;
+    // private state: any;
 
     private animation = new Animation();
 
     private scene: Scene;
 
-    private resetState() {
-        this.state = {
-            angle: 0,
-            prevAngle: 0,
-            Vy: 0,
-            Vx: 0,
-            score: 0
-        };
-    }
+    // private resetState() {
+    //     this.state = {
+    //         angle: 0,
+    //         prevAngle: 0,
+    //         Vy: 0,
+    //         Vx: 0,
+    //         score: 0
+    //     };
+    // }
 
     private initPlayerLayer() {
-        this.playerLayer = this.scene.createLayer("player", "10");
+        // this.playerLayer = this.scene.createLayer("player", "10");
+        this.playerLayer = new SceneLayer("player").placeAt(this.scene, "10");
         this.playerLayer.getContext().lineWidth = 10;
         this.playerLayer.translate({
             x: this.playerLayer.getCanvas().width / 2,
@@ -51,7 +54,8 @@ export default class Main {
     }
 
     private initTreesLayer() {
-        this.treeLayer = this.scene.createLayer("tree", "100");
+        //this.treeLayer = this.scene.createLayer("tree", "100");
+        this.treeLayer = new TreesLayer("tree").placeAt(this.scene, "100");
 
         this.plantInitialTrees();
     }
@@ -76,8 +80,8 @@ export default class Main {
     }
 
     private initDebugLayer() {
-        this.debugLayer = this.scene.createLayer("debug", "200");
-        this.debugLayer.getContext().font = "bold 12px Arial";
+        // this.debugLayer = this.scene.createLayer("debug", "200");
+        this.debugLayer = new SceneLayer("debug").placeAt(this.scene, "200");
     }
 
     private startGame() {
@@ -107,7 +111,7 @@ export default class Main {
 
             $("#endGameScene").hide();
 
-            this.resetState();
+            CommonState.reset();
 
             this.resetTreesLayer();
 
@@ -129,13 +133,13 @@ export default class Main {
             this.debugLayer.clear();
 
             $("#endGameScene").show();
-            $("#score").text(this.state.score);
+            $("#score").text(CommonState.getState().score);
         });
     }
 
     // init game state
     init() {
-        this.resetState();
+        CommonState.reset();
 
         // initialize scene
         this.scene = new Scene("scene");
@@ -156,14 +160,14 @@ export default class Main {
     }
 
     // update state
-    private planted = false;
+    // private planted = false;
     update() {
         /*
          * Player
          */
         // calculate angle
         //this.state.prevAngle = this.state.angle;
-        this.state.angle = Model.calcAngle(this.state.angle, Accelerometer.getAcceleration().x);
+        // this.state.angle = Model.calcAngle(this.state.angle, Accelerometer.getAcceleration().x);
         // (<any>window).playerRotateAngle = this.state.angle;
         // (<any>window).playerRotateAngleDelta = (this.state.angle - this.state.prevAngle);
 
@@ -171,85 +175,86 @@ export default class Main {
          * Trees
          */
         // calculate speed
-        let kp = Model.calcKantPressure(Accelerometer.getAcceleration().y);
-        this.state.Vy = Model.Va(this.state.Vy, this.state.angle, kp, Model.parameters.time);
-        this.state.Vx = Model.Vax(this.state.Vy, this.state.angle);
-
-        // canvas translate coords
-        let Sx = this.state.Vx * Model.parameters.time * 10;
-        let Sy = -this.state.Vy * Model.parameters.time * 10 * 1.5;
-        this.treeLayer.registerOnBeforeRenderCallback(() => {
-            this.treeLayer.clear();
-            this.treeLayer.translate({
-                x: Math.round(Sx),
-                y: Math.round(Sy)
-            });
-        });
+        // let kp = Model.calcKantPressure(Accelerometer.getAcceleration().y);
+        // this.state.Vy = Model.Va(this.state.Vy, this.state.angle, kp, Model.parameters.time);
+        // this.state.Vx = Model.Vax(this.state.Vy, this.state.angle);
+        //
+        // // canvas translate coords
+        // let Sx = this.state.Vx * Model.parameters.time * 10;
+        // let Sy = -this.state.Vy * Model.parameters.time * 10 * 1.5;
+        // this.treeLayer.registerOnBeforeRenderCallback(() => {
+        //     this.treeLayer.clear();
+        //     this.treeLayer.translate({
+        //         x: Math.round(Sx),
+        //         y: Math.round(Sy)
+        //     });
+        // });
 
         // calculate score
-        this.state.score += Math.round( Math.abs(Sy) / 5 );
+        // this.state.score += Math.round( Math.abs(Sy) / 5 );
 
-        // generate new areas
-        let sceneSize = this.scene.getSize();
-        let offsetY = Math.abs(this.treeLayer.getTranslation().y) % sceneSize.height;
-        //let offsetX = Math.abs(this.treeLayer.translation.x) % sw;
-
-        if( offsetY <= sceneSize.height / 2 )
-            this.planted = false;
-        if( offsetY > sceneSize.height / 2 && !this.planted ) {
-            TreeFactory.plantRect(
-                this.treeLayer,
-                {
-                    x: -sceneSize.width,
-                    y: -this.treeLayer.getTranslation().y - offsetY + 2 * sceneSize.height
-                },
-                {width: sceneSize.width, height: sceneSize.height}
-            );
-            TreeFactory.plantRect(
-                this.treeLayer,
-                {
-                    x: 0,
-                    y: -this.treeLayer.getTranslation().y - offsetY + 2 * sceneSize.height
-                },
-                {width: sceneSize.width, height: sceneSize.height}
-            );
-            TreeFactory.plantRect(
-                this.treeLayer,
-                {
-                    x: sceneSize.width,
-                    y: -this.treeLayer.getTranslation().y - offsetY + 2 * sceneSize.height
-                },
-                {width: sceneSize.width, height: sceneSize.height}
-            );
-            this.planted = true;
-        }
+        // // generate new areas
+        // let sceneSize = this.scene.getSize();
+        // let offsetY = Math.abs(this.treeLayer.getTranslation().y) % sceneSize.height;
+        // //let offsetX = Math.abs(this.treeLayer.translation.x) % sw;
+        //
+        // if( offsetY <= sceneSize.height / 2 )
+        //     this.planted = false;
+        // if( offsetY > sceneSize.height / 2 && !this.planted ) {
+        //     TreeFactory.plantRect(
+        //         this.treeLayer,
+        //         {
+        //             x: -sceneSize.width,
+        //             y: -this.treeLayer.getTranslation().y - offsetY + 2 * sceneSize.height
+        //         },
+        //         {width: sceneSize.width, height: sceneSize.height}
+        //     );
+        //     TreeFactory.plantRect(
+        //         this.treeLayer,
+        //         {
+        //             x: 0,
+        //             y: -this.treeLayer.getTranslation().y - offsetY + 2 * sceneSize.height
+        //         },
+        //         {width: sceneSize.width, height: sceneSize.height}
+        //     );
+        //     TreeFactory.plantRect(
+        //         this.treeLayer,
+        //         {
+        //             x: sceneSize.width,
+        //             y: -this.treeLayer.getTranslation().y - offsetY + 2 * sceneSize.height
+        //         },
+        //         {width: sceneSize.width, height: sceneSize.height}
+        //     );
+        //     this.planted = true;
+        // }
 
         /*
          * Debug
          */
         // add debug text
-        //if(this.scene.debug) {
-            this.debugLayer.registerOnBeforeRenderCallback(() => {
-                this.debugLayer.clear();
-                this.debugLayer.getContext().fillStyle = "#000000";
-                //this.debugLayer.context.fillText("y: " + (acceleration.y).toFixed(5), 10, 40);
-                //this.debugLayer.context.fillText("angle: " + (angle).toFixed(5), 10, 20);
-                //this.debugLayer.context.fillText("delta: " + (angle - prevAngle).toFixed(5), 10, 80);
-                //this.debugLayer.context.fillText("speed X: " + (Vx).toFixed(5), 10, 60);
-                //this.debugLayer.context.fillText("layer X: " + this.treeLayer.position.x, 10, 80);
-                //this.debugLayer.context.fillText("layer Y: " + this.treeLayer.position.y, 10, 100);
-                //this.debugLayer.context.fillText("Sx: " + (Sx).toFixed(5), 10, 140);
-                //this.debugLayer.context.fillText("Sy: " + (Sy).toFixed(5), 10, 160);
-                this.debugLayer.getContext().fillText("Score: " + this.state.score, 10, 20);
-                this.debugLayer.getContext().fillText("Objects (trees): " + this.treeLayer.getObjects().length, 10, 40);
-                this.debugLayer.getContext().fillText("treeLayer.tr.x: " + this.treeLayer.getTranslation().x, 10, 60);
-                this.debugLayer.getContext().fillText("acc.x: " + (Accelerometer.getAcceleration().x).toFixed(5), 10, 80);
-                this.debugLayer.getContext().fillText("Speed: " + (this.state.Vy).toFixed(5), 10, 100);
+        // //if(this.scene.debug) {
+        //     this.debugLayer.registerOnBeforeRenderCallback(() => {
+        //         this.debugLayer.clear();
+        //         this.debugLayer.getContext().fillStyle = "#000000";
+        //         //this.debugLayer.context.fillText("y: " + (acceleration.y).toFixed(5), 10, 40);
+        //         //this.debugLayer.context.fillText("angle: " + (angle).toFixed(5), 10, 20);
+        //         //this.debugLayer.context.fillText("delta: " + (angle - prevAngle).toFixed(5), 10, 80);
+        //         //this.debugLayer.context.fillText("speed X: " + (Vx).toFixed(5), 10, 60);
+        //         //this.debugLayer.context.fillText("layer X: " + this.treeLayer.position.x, 10, 80);
+        //         //this.debugLayer.context.fillText("layer Y: " + this.treeLayer.position.y, 10, 100);
+        //         //this.debugLayer.context.fillText("Sx: " + (Sx).toFixed(5), 10, 140);
+        //         //this.debugLayer.context.fillText("Sy: " + (Sy).toFixed(5), 10, 160);
+        //         this.debugLayer.getContext().fillText("Score: " + this.state.score, 10, 20);
+        //         this.debugLayer.getContext().fillText("Objects (trees): " + this.treeLayer.getObjects().length, 10, 40);
+        //         this.debugLayer.getContext().fillText("treeLayer.tr.x: " + this.treeLayer.getTranslation().x, 10, 60);
+        //         this.debugLayer.getContext().fillText("acc.x: " + (Accelerometer.getAcceleration().x).toFixed(5), 10, 80);
+        //         this.debugLayer.getContext().fillText("Speed: " + (this.state.Vy).toFixed(5), 10, 100);
+        //
+        //     });
+        // //}
 
-            });
-        //}
+        CommonState.calculate();
 
-        // render layers
         this.scene.render();
     }
     

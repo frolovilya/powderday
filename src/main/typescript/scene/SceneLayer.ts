@@ -5,6 +5,8 @@ import {Coords} from "./types/Coords";
 
 export default class SceneLayer {
 
+    // private id;
+
     private scene: Scene;
 
     private canvas: HTMLCanvasElement;
@@ -14,14 +16,16 @@ export default class SceneLayer {
 
     private objectsList: SceneObject[] = [];
 
-    private onRenderCallbacks = {
-        "BEFORE": []
-    };
+    // private onRenderCallbacks = {
+    //     "BEFORE": []
+    // };
 
-    constructor(scene: Scene, layerId: string, zIndex: string) {
-        this.scene = scene;
+    constructor(private layerId: string) {
+        // this.id = layerId;
 
-        this.canvas = this.createCanvas(layerId, zIndex, true);
+        // this.scene = scene;
+
+        this.canvas = this.createCanvas(true);
         this.context = this.canvas.getContext("2d");
 
         // keep the track of layer translation to get absolute coords
@@ -31,27 +35,37 @@ export default class SceneLayer {
         };
     }
 
-    private createCanvas(layerId: string, zIndex: string, enableTranslate3d: boolean) {
+    placeAt(scene: Scene, zIndex: string) {
+        this.canvas.style.zIndex = zIndex;
+
+        this.scene = scene;
+        scene.addLayer(this);
+
+        this.fitToSceneSize();
+
+        return this;
+    }
+
+    getId() {
+        return this.layerId;
+    }
+
+    private createCanvas(enableTranslate3d: boolean) {
         let canvas = document.createElement("canvas");
-        canvas.id = layerId;
-        canvas.style.zIndex = zIndex;
+        canvas.id = this.layerId;
+        // canvas.style.zIndex = zIndex;
         if(enableTranslate3d)
             canvas.className = "translate3d";
 
         return canvas;
     }
 
-    public getScene() {
-        return this.scene;
-    }
-
-    public getCanvas() {
+    getCanvas() {
         return this.canvas;
     }
 
-    placeAt(domNode: HTMLElement) {
-        domNode.appendChild(this.canvas);
-        this.fitToSceneSize();
+    getScene() {
+        return this.scene;
     }
 
     getContext(): CanvasRenderingContext2D {
@@ -121,13 +135,13 @@ export default class SceneLayer {
         return this.objectsList;
     }
 
-    registerOnBeforeRenderCallback(callback: () => void) {
-         this.onRenderCallbacks.BEFORE.push(callback);
-    }
+    // registerOnBeforeRenderCallback(callback: () => void) {
+    //      this.onRenderCallbacks.BEFORE.push(callback);
+    // }
 
     render() {
-        this.onRenderCallbacks.BEFORE.map((callback) => callback(this.context));
-        this.onRenderCallbacks.BEFORE.length = 0;
+        // this.onRenderCallbacks.BEFORE.map((callback) => callback(this.context));
+        // this.onRenderCallbacks.BEFORE.length = 0;
 
         for(let i = 0; i < this.objectsList.length; i++) {
             let obj = this.objectsList[i];
