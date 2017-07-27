@@ -34,15 +34,6 @@ export default class Scene {
         // TODO fit layer's sizes?
     }
 
-    // createLayer(layerId: string, zIndex: string): SceneLayer {
-    //     let layer = new SceneLayer(this, layerId, zIndex);
-    //     layer.placeAt(this.domNode);
-    //
-    //     this.layers[layerId] = layer;
-    //
-    //     return this.layers[layerId];
-    // }
-
     addLayer(layer: SceneLayer) {
         this.domNode.appendChild(layer.getCanvas());
         this.layers[layer.getId()] = layer;
@@ -64,5 +55,11 @@ export default class Scene {
 
         // check for new intersections & fire callbacks
         this.intersections.check(this);
+    }
+
+    reset() {
+        for(let i in this.layers) {
+            this.layers[i].reset();
+        }
     }
 }

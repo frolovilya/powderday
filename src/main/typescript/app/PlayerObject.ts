@@ -13,10 +13,6 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
     private sprite: PlayerSprite;
     private shape: Circle;
 
-    // private state = {
-    //     angle: 0
-    // };
-
     constructor(playerResource) {
         super();
 
@@ -44,12 +40,7 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
         return "player";
     }
 
-    // private calculateAngle() {
-    //     this.state.angle = Model.calcAngle(this.state.angle, Accelerometer.getAcceleration().x);
-    // }
-
     render() {
-        // this.calculateAngle();
         this.sprite.rotate(CommonState.getState().angle);
 
         this.layer.clear();

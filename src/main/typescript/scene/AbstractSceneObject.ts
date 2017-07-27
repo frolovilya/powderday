@@ -36,6 +36,9 @@ export abstract class AbstractSceneObject implements SceneObject {
         return true;
     }
 
+    reset() {
+    }
+
     abstract getClassName();
 
     abstract getSize();

@@ -26,6 +26,7 @@ export interface SceneObject {
 	isVisible(): boolean;
 	isActual(): boolean;
 
+	reset(): void;
 	render(): void;
 
 }

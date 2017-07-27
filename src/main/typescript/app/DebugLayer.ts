@@ -12,6 +12,12 @@ export default class DebugLayer extends SceneLayer {
         this.getContext().font = "bold 12px Arial";
     }
 
+    onReady() {
+        this.getScene().intersections.onIntersect("tree", "player", () => {
+            this.clear();
+        });
+    }
+
     private preRender() {
         this.clear();
         this.getContext().fillStyle = "#000000";

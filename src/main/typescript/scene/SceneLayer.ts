@@ -16,15 +16,7 @@ export default class SceneLayer {
 
     private objectsList: SceneObject[] = [];
 
-    // private onRenderCallbacks = {
-    //     "BEFORE": []
-    // };
-
     constructor(private layerId: string) {
-        // this.id = layerId;
-
-        // this.scene = scene;
-
         this.canvas = this.createCanvas(true);
         this.context = this.canvas.getContext("2d");
 
@@ -36,18 +28,27 @@ export default class SceneLayer {
     }
 
     placeAt(scene: Scene, zIndex: string) {
+        this.scene = scene;
         this.canvas.style.zIndex = zIndex;
 
-        this.scene = scene;
         scene.addLayer(this);
 
         this.fitToSceneSize();
 
+        this.onReady();
+
         return this;
+    }
+
+    protected onReady() {
     }
 
     getId() {
         return this.layerId;
+    }
+
+    getScene() {
+        return this.scene;
     }
 
     private createCanvas(enableTranslate3d: boolean) {
@@ -62,10 +63,6 @@ export default class SceneLayer {
 
     getCanvas() {
         return this.canvas;
-    }
-
-    getScene() {
-        return this.scene;
     }
 
     getContext(): CanvasRenderingContext2D {
@@ -135,14 +132,7 @@ export default class SceneLayer {
         return this.objectsList;
     }
 
-    // registerOnBeforeRenderCallback(callback: () => void) {
-    //      this.onRenderCallbacks.BEFORE.push(callback);
-    // }
-
     render() {
-        // this.onRenderCallbacks.BEFORE.map((callback) => callback(this.context));
-        // this.onRenderCallbacks.BEFORE.length = 0;
-
         for(let i = 0; i < this.objectsList.length; i++) {
             let obj = this.objectsList[i];
 
@@ -150,12 +140,6 @@ export default class SceneLayer {
                 // render if visible
                 if(obj.isVisible()) {
                     obj.render();
-
-                    /* get object intersection points
-                    let intersectPoints = obj.getIntersectionPoints(this);
-                    for(let j = 0; j < intersectPoints.length; j++) {
-                        this.scene.intersections.addPoint(intersectPoints[j]);
-                    }*/
                 }
 
             } else {
@@ -165,6 +149,12 @@ export default class SceneLayer {
 
             }
         }
+    }
+
+    reset() {
+        this.objectsList
+            .filter((sceneObject) => sceneObject.isActual())
+            .map((sceneObject) => sceneObject.reset());
     }
 
 }

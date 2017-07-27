@@ -3,29 +3,32 @@ import Accelerometer from "../device/Accelerometer";
 import Model from "./Model";
 import TreeFactory from "./TreeFactory";
 import CommonState from "./CommonState";
+import Screen from "../device/Screen"
 
 export default class TreesLayer extends SceneLayer {
 
-    // private state: any = {}
-
     private isPlanted = false;
 
+    private plantInitialTrees() {
+        let screenSize = Screen.getSize();
+
+        TreeFactory.plantRect(this, {x: -screenSize.width, y: 0}, screenSize);
+        TreeFactory.plantRect(this, {x: 0, y: screenSize.height * 2 / 3}, screenSize);
+        TreeFactory.plantRect(this, {x: screenSize.width, y: 0}, screenSize);
+        TreeFactory.plantRect(this, {x: -screenSize.width, y: screenSize.height}, screenSize);
+        TreeFactory.plantRect(this, {x: 0, y: screenSize.height}, screenSize);
+        TreeFactory.plantRect(this, {x: screenSize.width, y: screenSize.height}, screenSize);
+    }
+
+    private resetTreesLayer() {
+        // clear tree layer
+        this.clear();
+        this.removeAllObjects();
+        // retranslate to 0,0
+        this.translate({x: -this.getTranslation().x, y: -this.getTranslation().y});
+    }
+
     private moveLayer() {
-        // // calculate angle
-        // this.state.angle = Model.calcAngle(this.state.angle, Accelerometer.getAcceleration().x);
-        //
-        // /*
-        //  * Trees
-        //  */
-        // // calculate speed
-        // let kp = Model.calcKantPressure(Accelerometer.getAcceleration().y);
-        // this.state.Vy = Model.Va(this.state.Vy, this.state.angle, kp, Model.parameters.time);
-        // this.state.Vx = Model.Vax(this.state.Vy, this.state.angle);
-
-        // canvas translate coords
-        // let Sx = CommonState.getState().Vx * Model.parameters.time * 10;
-        // let Sy = -CommonState.getState().Vy * Model.parameters.time * 10 * 1.5;
-
         this.clear();
         this.translate({
             x: Math.round(CommonState.getState().Sx),
@@ -68,6 +71,17 @@ export default class TreesLayer extends SceneLayer {
             );
             this.isPlanted = true;
         }
+    }
+
+    onReady() {
+        this.plantInitialTrees();
+    }
+
+    reset() {
+        this.resetTreesLayer();
+        this.plantInitialTrees();
+
+        super.reset();
     }
 
     render() {
