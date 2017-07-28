@@ -12,7 +12,12 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json"]
+        extensions: [".ts", ".tsx", ".js", ".json"],
+        alias: {
+            "app": __dirname + "/src/main/typescript/app",
+            "scene": __dirname + "/src/main/typescript/scene",
+            "device": __dirname + "/src/main/typescript/device"
+        }
     },
 
     module: {

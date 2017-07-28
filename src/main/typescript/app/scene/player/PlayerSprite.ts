@@ -1,6 +1,6 @@
-import Sprite from "../scene/Sprite";
-import {Coords} from "../scene/types/Coords";
-import SceneLayer from "../scene/SceneLayer";
+import Sprite from "scene/Sprite";
+import {Coords} from "scene/types/Coords";
+import SceneLayer from "scene/SceneLayer";
 
 export default class PlayerSprite extends Sprite {
 

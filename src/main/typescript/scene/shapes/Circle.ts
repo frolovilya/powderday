@@ -1,9 +1,9 @@
-import {Coords} from "../types/Coords";
-import SceneLayer from "../SceneLayer";
+import {Coords} from "scene/types/Coords";
+import SceneLayer from "scene/SceneLayer";
 
 export default class Circle {
 
-    public className;
+    // public className;
 
     private coords: Coords;
     private radius: number;

@@ -1,7 +1,7 @@
-import {SceneObject} from "./SceneObject";
-import Scene from "./Scene";
-import {Size} from "./types/Size";
-import {Coords} from "./types/Coords";
+import {SceneObject} from "scene/SceneObject";
+import Scene from "scene/Scene";
+import {Size} from "scene/types/Size";
+import {Coords} from "scene/types/Coords";
 
 export default class SceneLayer {
 

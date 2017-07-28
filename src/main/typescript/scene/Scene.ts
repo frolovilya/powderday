@@ -1,9 +1,9 @@
 /*
  * Scene and layers manipulation
  */
-import SceneLayer from "./SceneLayer";
-import SceneIntersections from "./intersections/SceneIntersections";
-import {Size} from "./types/Size";
+import SceneLayer from "scene/SceneLayer";
+import SceneIntersections from "scene/interactions/ObjectsIntersections";
+import {Size} from "scene/types/Size";
 
 export default class Scene {
 
@@ -47,19 +47,21 @@ export default class Scene {
         return this.layers;
     }
 
+    reset() {
+        for(let i in this.layers) {
+            this.layers[i].reset();
+        }
+    }
+
     render() {
         // render layers
         for(let i in this.layers) {
             this.layers[i].render();
         }
-
-        // check for new intersections & fire callbacks
-        this.intersections.check(this);
     }
 
-    reset() {
-        for(let i in this.layers) {
-            this.layers[i].reset();
-        }
+    interact() {
+        // check for new intersections & fire callbacks
+        this.intersections.check(this);
     }
 }

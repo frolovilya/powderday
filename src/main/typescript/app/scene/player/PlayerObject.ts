@@ -1,23 +1,24 @@
-import {SceneObject} from "../scene/SceneObject";
-import SceneLayer from "../scene/SceneLayer";
-import Sprite from "../scene/Sprite";
-import PlayerSprite from "./PlayerSprite";
-import Circle from "../scene/shapes/Circle";
-import {AbstractSceneObject} from "../scene/AbstractSceneObject";
-import Model from "./Model";
-import Accelerometer from "../device/Accelerometer";
-import CommonState from "./CommonState";
+import {SceneObject} from "scene/SceneObject";
+import SceneLayer from "scene/SceneLayer";
+import Sprite from "scene/Sprite";
+import PlayerSprite from "app/scene/player/PlayerSprite";
+import Circle from "scene/shapes/Circle";
+import {AbstractSceneObject} from "scene/AbstractSceneObject";
+import Model from "app/Model";
+import Accelerometer from "device/Accelerometer";
+import SharedState from "app/SharedState";
+import PlayerResource from "app/resources/PlayerObjectConfig"
 
 export default class PlayerObject extends AbstractSceneObject implements SceneObject {
 
     private sprite: PlayerSprite;
     private shape: Circle;
 
-    constructor(playerResource) {
+    constructor() {
         super();
 
-        this.sprite = new PlayerSprite(playerResource.sprite.src, playerResource.sprite.size);
-        this.sprite.setPositions(playerResource.sprite.positions);
+        this.sprite = new PlayerSprite(PlayerResource.sprite.src, PlayerResource.sprite.size);
+        this.sprite.setPositions(PlayerResource.sprite.positions);
         this.sprite.setPosition(0);
 
         // TODO: refactor
@@ -33,7 +34,7 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
             y: -fixedSize.height / 2
         };
 
-        this.shape = new Circle(playerResource.shape.coords, playerResource.shape.radius)
+        this.shape = new Circle(PlayerResource.shape.coords, PlayerResource.shape.radius)
     }
 
     getClassName() {
@@ -41,7 +42,7 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
     }
 
     render() {
-        this.sprite.rotate(CommonState.getState().angle);
+        this.sprite.rotate(SharedState.getState().angle);
 
         this.layer.clear();
 

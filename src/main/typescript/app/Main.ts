@@ -1,20 +1,17 @@
 /*
  * Application logic
  */
-import TreeObject from "./TreeObject";
-import Resources from "./Resources";
-import Model from "./Model";
-import Scene from "../scene/Scene";
-import PlayerObject from "./PlayerObject";
-import TreeFactory from "./TreeFactory";
-import Animation from "../scene/Animation";
-import Accelerometer from "../device/Accelerometer";
-import Screen from "../device/Screen"
-import {Size} from "../scene/types/Size";
-import SceneLayer from "../scene/SceneLayer";
-import CommonState from "./CommonState";
-import TreesLayer from "./TreesLayer";
-import DebugLayer from "./DebugLayer";
+import Model from "app/Model";
+import Scene from "scene/Scene";
+import PlayerObject from "app/scene/player/PlayerObject";
+import Animation from "scene/Animation";
+import Accelerometer from "device/Accelerometer";
+import Screen from "device/Screen"
+import {Size} from "scene/types/Size";
+import SceneLayer from "scene/SceneLayer";
+import CommonState from "app/SharedState";
+import TreesLayer from "app/scene/trees/TreesLayer";
+import DebugLayer from "app/scene/debug/DebugLayer";
 //import * as $ from "jquery";
 
 export default class Main {
@@ -30,7 +27,7 @@ export default class Main {
             x: playerLayer.getCanvas().width / 2,
             y: playerLayer.getCanvas().height / 2
         });
-        playerLayer.addObject(new PlayerObject(Resources.player));
+        playerLayer.addObject(new PlayerObject());
     }
 
     private initTreesLayer() {
@@ -110,7 +107,9 @@ export default class Main {
 
     update() {
         CommonState.calculate();
+
         this.scene.render();
+        this.scene.interact();
     }
     
 }

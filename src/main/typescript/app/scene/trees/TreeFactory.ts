@@ -1,8 +1,8 @@
-import SceneLayer from "../scene/SceneLayer";
-import {Coords} from "../scene/types/Coords";
-import {Size} from "../scene/types/Size";
-import TreeObject from "./TreeObject";
-import Resources from "./Resources";
+import SceneLayer from "scene/SceneLayer";
+import {Coords} from "scene/types/Coords";
+import {Size} from "scene/types/Size";
+import TreeObject from "app/scene/trees/TreeObject";
+import Resources from "app/resources/TreeObjectsConfig";
 
 export default class TreeFactory {
 
@@ -17,8 +17,8 @@ export default class TreeFactory {
             };
 
             // get random tree
-            let treeNum = Math.round( Math.random() * (Resources.trees.length - 1) );
-            let tree = Resources.trees[treeNum];
+            let treeNum = Math.round( Math.random() * (Resources.length - 1) );
+            let tree = Resources[treeNum];
             let treeObject = new TreeObject(tree, randomPosition);
 
             // sizes

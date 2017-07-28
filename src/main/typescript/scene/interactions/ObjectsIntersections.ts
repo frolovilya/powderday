@@ -1,10 +1,10 @@
-import Circle from "../shapes/Circle";
-import Scene from "../Scene";
-import {SceneObject} from "../SceneObject";
-import {Coords} from "../types/Coords";
-import SceneLayer from "../SceneLayer";
+import Circle from "scene/shapes/Circle";
+import Scene from "scene/Scene";
+import {SceneObject} from "scene/SceneObject";
+import {Coords} from "scene/types/Coords";
+import SceneLayer from "scene/SceneLayer";
 
-export default class SceneObjectsIntersection {
+export default class ObjectsIntersections {
 
     private intersectCallbacks = {};
 

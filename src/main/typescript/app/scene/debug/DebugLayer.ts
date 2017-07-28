@@ -1,8 +1,7 @@
-import SceneLayer from "../scene/SceneLayer";
-import Accelerometer from "../device/Accelerometer";
-import Model from "./Model";
-import TreeFactory from "./TreeFactory";
-import CommonState from "./CommonState";
+import SceneLayer from "scene/SceneLayer";
+import Accelerometer from "device/Accelerometer";
+import Model from "app/Model";
+import CommonState from "app/SharedState";
 
 export default class DebugLayer extends SceneLayer {
 

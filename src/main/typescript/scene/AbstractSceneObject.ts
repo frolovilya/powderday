@@ -1,6 +1,6 @@
-import {SceneObject} from "./SceneObject";
-import SceneLayer from "./SceneLayer";
-import {Coords} from "./types/Coords";
+import {SceneObject} from "scene/SceneObject";
+import SceneLayer from "scene/SceneLayer";
+import {Coords} from "scene/types/Coords";
 
 export abstract class AbstractSceneObject implements SceneObject {
 

@@ -1,14 +1,13 @@
 /*
  * Trees
  */
-import {SceneObject} from "../scene/SceneObject";
-import SceneLayer from "../scene/SceneLayer";
-import Sprite from "../scene/Sprite";
-import {Coords} from "../scene/types/Coords";
-import Circle from "../scene/shapes/Circle";
-import {SceneObjectConfig} from "../scene/types/SceneObjectConfig";
-import TreeSprite from "./TreeSprite";
-import {AbstractSceneObject} from "../scene/AbstractSceneObject";
+import {SceneObject} from "scene/SceneObject";
+import SceneLayer from "scene/SceneLayer";
+import Sprite from "scene/Sprite";
+import {Coords} from "scene/types/Coords";
+import Circle from "scene/shapes/Circle";
+import TreeSprite from "app/scene/trees/TreeSprite";
+import {AbstractSceneObject} from "scene/AbstractSceneObject";
 
 export default class TreeObject extends AbstractSceneObject implements SceneObject {
 
@@ -16,7 +15,7 @@ export default class TreeObject extends AbstractSceneObject implements SceneObje
 
     private shape: Circle;
 
-    constructor(treeResource: SceneObjectConfig, coords: Coords) {
+    constructor(treeResource, coords: Coords) {
         super();
 
         this.sprite = new TreeSprite(treeResource.sprite.src, treeResource.sprite.size);

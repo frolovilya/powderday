@@ -2,7 +2,7 @@
  * Application
  */
 
-import Main from "./Main"
+import Main from "app/Main"
 
 class App {
 

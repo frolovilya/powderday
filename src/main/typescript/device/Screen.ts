@@ -1,4 +1,4 @@
-import {Size} from "../scene/types/Size";
+import {Size} from "scene/types/Size";
 export default class Screen {
 
     static getSize(): Size {

@@ -2,10 +2,10 @@
  * Object
  */
 
-import SceneLayer from "./SceneLayer";
-import Circle from "./shapes/Circle";
-import {Size} from "./types/Size";
-import {Coords} from "./types/Coords";
+import SceneLayer from "scene/SceneLayer";
+import Circle from "scene/shapes/Circle";
+import {Size} from "scene/types/Size";
+import {Coords} from "scene/types/Coords";
 
 export interface SceneObject {
 

@@ -1,9 +1,9 @@
-import SceneLayer from "../scene/SceneLayer";
-import Accelerometer from "../device/Accelerometer";
-import Model from "./Model";
-import TreeFactory from "./TreeFactory";
-import CommonState from "./CommonState";
-import Screen from "../device/Screen"
+import SceneLayer from "scene/SceneLayer";
+import Accelerometer from "device/Accelerometer";
+import Model from "app/Model";
+import TreeFactory from "app/scene/trees/TreeFactory";
+import SharedState from "app/SharedState";
+import Screen from "device/Screen"
 
 export default class TreesLayer extends SceneLayer {
 
@@ -31,8 +31,8 @@ export default class TreesLayer extends SceneLayer {
     private moveLayer() {
         this.clear();
         this.translate({
-            x: Math.round(CommonState.getState().Sx),
-            y: Math.round(CommonState.getState().Sy)
+            x: Math.round(SharedState.getState().Sx),
+            y: Math.round(SharedState.getState().Sy)
         });
     }
 

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src/main/typescript",
     "outDir": "./www/js",
     "allowJs": false,
     "target": "es5",

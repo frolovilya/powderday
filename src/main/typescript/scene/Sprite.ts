@@ -1,5 +1,5 @@
-import {Coords} from "./types/Coords";
-import {Size} from "./types/Size";
+import {Coords} from "scene/types/Coords";
+import {Size} from "scene/types/Size";
 
 export default class Sprite {
 
