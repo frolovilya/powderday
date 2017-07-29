@@ -4,9 +4,6 @@ import Sprite from "scene/Sprite";
 import PlayerSprite from "app/scene/player/PlayerSprite";
 import Circle from "scene/shapes/Circle";
 import {AbstractSceneObject} from "scene/AbstractSceneObject";
-import Model from "app/Model";
-import Accelerometer from "device/Accelerometer";
-import SharedState from "app/SharedState";
 import PlayerResource from "app/resources/PlayerObjectConfig"
 
 export default class PlayerObject extends AbstractSceneObject implements SceneObject {
@@ -14,40 +11,46 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
     private sprite: PlayerSprite;
     private shape: Circle;
 
-    constructor() {
-        super();
+    state: {
+        angle: number;
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            angle: 0
+        };
 
         this.sprite = new PlayerSprite(PlayerResource.sprite.src, PlayerResource.sprite.size);
         this.sprite.setPositions(PlayerResource.sprite.positions);
-        this.sprite.setPosition(0);
 
-        // TODO: refactor
-        // single sprite size
-        let fixedSize = {
-            width: 80,
-            height: 80
-        };
-        this.scale = Math.round(this.sprite.getSize().width / fixedSize.width * 100) / 100;
+        this.setScale(Math.round(this.sprite.getSize().width / PlayerResource.sprite.scaleToSize.width * 100) / 100);
 
+        // center
         this.coords = {
-            x: -fixedSize.width / 2,
-            y: -fixedSize.height / 2
+            x: -PlayerResource.sprite.scaleToSize.width / 2,
+            y: -PlayerResource.sprite.scaleToSize.height / 2
         };
 
-        this.shape = new Circle(PlayerResource.shape.coords, PlayerResource.shape.radius)
+        this.shape = new Circle(PlayerResource.shape.coords, PlayerResource.shape.radius);
+
+        (window as any).playerObject = this;
     }
 
     getClassName() {
         return "player";
     }
 
-    render() {
-        this.sprite.rotate(SharedState.getState().angle);
+    transform() {
+        let layer = this.getLayer();
 
-        this.layer.clear();
+        //SharedState.getState().angle
+        this.sprite.rotate(this.state.angle);
+        layer.getCanvas().clear();
 
-        this.shape.draw(this.layer, this.coords, this.scale);
-        this.sprite.draw(this.layer, this.coords, this.scale);
+        this.shape.draw(layer, this.coords, this.scale);
+        this.sprite.draw(layer, this.coords, this.scale);
     }
 
     getSize() {

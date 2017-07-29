@@ -10,48 +10,62 @@ export default class ObjectsIntersections {
 
     check(scene: Scene) {
 
-        // TODO functional
         let sceneObjects = [];
         let sceneLayers = scene.getLayers();
-        for(let i in sceneLayers) {
-            // let layerObjects = sceneLayers[i].getObjects();
-            // sceneObjects = sceneObjects.concat(layerObjects);
-            sceneObjects = sceneObjects.concat(sceneLayers[i].getObjects());
+        for(let sceneLayer of sceneLayers) {
+            sceneObjects = sceneObjects.concat(sceneLayer.getObjects());
         }
 
+        // let sceneObjects = scene.getLayers()
+        //     .map((layer: SceneLayer) => layer.getObjects())
+        //     .reduce((a, b) => a.concat(b), []);
+        //
+        // Object.keys(this.intersectCallbacks).map((callbackName) => {
+        //
+        //     // let objectsByClasses = callbackName.split(",").map((className) => {
+        //     //     return sceneObjects.filter(sceneObject => sceneObject.getClassName() == className)
+        //     // })
+        //
+        //     let [classA, classB] = callbackName.split(",");
+        //     sceneObjects.reduce(([objectsA, objectsB], sceneObject) => {
+        //
+        //         if(sceneObject.getClassName() == classA) {
+        //             objectsA.push(sceneObject)
+        //         } else if(sceneObject.getClassName() == classB) {
+        //             objectsB.push(sceneObject)
+        //         }
+        //
+        //         return [objectsA, objectsB]
+        //
+        //     }, [[], []]);
+        //
+        //
+        //
+        // });
+
+
         // get callback classes
-        for(let k in this.intersectCallbacks) {
-            let classNames = k.split(",");
-            let fire = false;
+        for(let callbackName in this.intersectCallbacks) {
+            let [classA, classB] = callbackName.split(",");
 
             let aObjects = [];
             let bObjects = [];
             for(let sceneObject of sceneObjects) {
-                if(sceneObject.getClassName() == classNames[0]) {
+                if(sceneObject.getClassName() == classA) {
                     aObjects.push(sceneObject)
-                } else if(sceneObject.getClassName() == classNames[1]) {
+                } else if(sceneObject.getClassName() == classB) {
                     bObjects.push(sceneObject);
                 }
             }
-            // sceneObjects.forEach((sceneObject) => {
-            //
-            // });
 
             if(aObjects.length > 0 && bObjects.length > 0) {
 
                 for (let i = 0; i < aObjects.length; i++) {
-                    fire = false;
-
                     for (let j = 0; j < bObjects.length; j++) {
                         if (this.checkObjectsIntersection(aObjects[i], bObjects[j])) {
-                            fire = true;
+                            this.fireCallbacks(classA, classB);
                             break;
                         }
-                    }
-
-                    if (fire) {
-                        this.fireCallbacks(classNames[0], classNames[1]);
-                        break;
                     }
                 }
 
@@ -88,8 +102,8 @@ export default class ObjectsIntersections {
 
     toAbsoluteCoords(coords: Coords, layer: SceneLayer) {
         return {
-            x: coords.x + layer.getTranslation().x,
-            y: coords.y + layer.getTranslation().y
+            x: coords.x + layer.getCanvas().getTranslation().x,
+            y: coords.y + layer.getCanvas().getTranslation().y
         };
     }
 

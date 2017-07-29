@@ -5,7 +5,7 @@ import SceneLayer from "scene/SceneLayer";
 export default class PlayerSprite extends Sprite {
 
     private positions: any;
-    private position: number;
+    private position: number = 0;
     
     private rotateAngle: number = 0;
 
@@ -27,29 +27,29 @@ export default class PlayerSprite extends Sprite {
         this.rotateAngle = angle;
     }
 
-    draw(layer: SceneLayer, parentCoords: Coords, scale: number = 1) {
-        let context = layer.getContext();
+    protectedDraw(layer: SceneLayer, parentCoords: Coords, scale: number = 1) {
+        let context = layer.getCanvas().getContext();
 
         // set new position
         if(this.rotateAngle > 30 && this.rotateAngle < 75 && this.position != this.positions.frontRight) {
             this.position = this.positions.frontRight;
-            layer.clearTransform();
+            layer.getCanvas().clearTransform();
 
         } else if(this.rotateAngle >= 75 && this.position != this.positions.right) {
             this.position = this.positions.right;
-            layer.clearTransform();
+            layer.getCanvas().clearTransform();
 
         } else if(this.rotateAngle < -30 && this.rotateAngle > -75 && this.position != this.positions.frontLeft) {
             this.position = this.positions.frontLeft;
-            layer.clearTransform();
+            layer.getCanvas().clearTransform();
 
         } else if(this.rotateAngle <= -75 && this.position != this.positions.left) {
             this.position = this.positions.left;
-            layer.clearTransform();
+            layer.getCanvas().clearTransform();
 
         } else if(this.rotateAngle <= 30 && this.rotateAngle >= -30 && this.position != this.positions.front) {
             this.position = this.positions.front;
-            layer.clearTransform();
+            layer.getCanvas().clearTransform();
             context.rotate(this.rotateAngle * 3.14/180 / 2);
         }
 
@@ -71,5 +71,6 @@ export default class PlayerSprite extends Sprite {
         );
         context.closePath();
     }
+
 
 }

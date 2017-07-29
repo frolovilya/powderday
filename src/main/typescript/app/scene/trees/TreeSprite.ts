@@ -4,8 +4,8 @@ import SceneLayer from "scene/SceneLayer";
 
 export default class TreeSprite extends Sprite {
 
-    draw(layer: SceneLayer, parentCoords: Coords, scale: number = 1) {
-        let context = layer.getContext();
+    protectedDraw(layer: SceneLayer, parentCoords: Coords, scale: number = 1) {
+        let context = layer.getCanvas().getContext();
 
         context.beginPath();
         context.drawImage(

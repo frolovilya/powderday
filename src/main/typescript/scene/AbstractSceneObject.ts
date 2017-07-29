@@ -1,8 +1,9 @@
 import {SceneObject} from "scene/SceneObject";
 import SceneLayer from "scene/SceneLayer";
 import {Coords} from "scene/types/Coords";
+import * as React from "react";
 
-export abstract class AbstractSceneObject implements SceneObject {
+export abstract class AbstractSceneObject extends React.Component implements SceneObject {
 
     protected layer: SceneLayer;
 
@@ -10,10 +11,15 @@ export abstract class AbstractSceneObject implements SceneObject {
 
     protected scale: number = 1;
 
-    public setLayer(layer: SceneLayer) {
+    // props: {
+    //     layer: SceneLayer;
+    // };
+
+    setLayer(layer: SceneLayer) {
+        console.log("set layer!", layer);
         this.layer = layer;
     }
-    public getLayer() {
+    getLayer() {
         return this.layer;
     }
 
@@ -39,11 +45,25 @@ export abstract class AbstractSceneObject implements SceneObject {
     reset() {
     }
 
+    // shouldComponentUpdate() {
+    //     console.log("should scene object update?");
+    //
+    //     return true;
+    // }
+
+    render() {
+        if(this.getLayer() /*&& this.getLayer().isReady()*/) {
+            this.transform();
+        }
+
+        return null;
+    }
+
+    abstract transform();
+
     abstract getClassName();
 
     abstract getSize();
-
-    abstract render();
 
     abstract getShapes();
 

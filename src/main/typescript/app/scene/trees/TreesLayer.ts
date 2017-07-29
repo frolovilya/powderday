@@ -9,6 +9,14 @@ export default class TreesLayer extends SceneLayer {
 
     private isPlanted = false;
 
+    constructor(props) {
+        super(props);
+
+        console.log("init TreesLayer")
+
+        //this.props.layerId = "tree";
+    }
+
     private plantInitialTrees() {
         let screenSize = Screen.getSize();
 
@@ -22,14 +30,14 @@ export default class TreesLayer extends SceneLayer {
 
     private resetTreesLayer() {
         // clear tree layer
-        this.clear();
+        // this.getLayer().clear();
         this.removeAllObjects();
         // retranslate to 0,0
         this.translate({x: -this.getTranslation().x, y: -this.getTranslation().y});
     }
 
     private moveLayer() {
-        this.clear();
+        // this.clear();
         this.translate({
             x: Math.round(SharedState.getState().Sx),
             y: Math.round(SharedState.getState().Sy)
@@ -38,7 +46,7 @@ export default class TreesLayer extends SceneLayer {
 
     private generateNewAreas() {
         // generate new areas
-        let sceneSize = this.getScene().getSize();
+        let sceneSize = Screen.getSize();
         let offsetY = Math.abs(this.getTranslation().y) % sceneSize.height;
         //let offsetX = Math.abs(this.treeLayer.translation.x) % sw;
 
@@ -73,8 +81,12 @@ export default class TreesLayer extends SceneLayer {
         }
     }
 
-    onReady() {
+    componentDidMount() {
+        super.componentDidMount();
+
         this.plantInitialTrees();
+
+        // this.renderObjects();
     }
 
     reset() {
@@ -84,7 +96,8 @@ export default class TreesLayer extends SceneLayer {
         super.reset();
     }
 
-    render() {
+    componentWillUpdate() {
+
         this.generateNewAreas();
         this.moveLayer();
 

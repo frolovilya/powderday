@@ -31,7 +31,7 @@ export default class TreeFactory {
             treeObject.setScale(scale);
 
             // add tree to layer
-            layer.addObject( treeObject );
+            // layer.addObject( treeObject );
         }
     }
 

@@ -1,13 +1,10 @@
-/*
- * Object
- */
-
 import SceneLayer from "scene/SceneLayer";
 import Circle from "scene/shapes/Circle";
 import {Size} from "scene/types/Size";
 import {Coords} from "scene/types/Coords";
+import * as React from "react";
 
-export interface SceneObject {
+export interface SceneObject extends React.Component {
 
 	getClassName(): string;
 
@@ -27,6 +24,6 @@ export interface SceneObject {
 	isActual(): boolean;
 
 	reset(): void;
-	render(): void;
+	//render(): void;
 
 }

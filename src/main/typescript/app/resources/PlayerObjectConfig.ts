@@ -5,6 +5,10 @@ export default {
             width: 120,
             height: 120
         },
+        "scaleToSize": {
+            width: 80,
+            height: 80
+        },
         "positions": {
             "front": 0,
             "frontLeft": 120,

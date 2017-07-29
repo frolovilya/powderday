@@ -22,7 +22,7 @@ export default class Circle {
     }
 
     draw(layer: SceneLayer, parentCoords: Coords, scale: number = 1) {
-        let context = layer.getContext();
+        let context = layer.getCanvas().getContext();
 
         context.beginPath();
 
