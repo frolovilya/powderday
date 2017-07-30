@@ -9,21 +9,32 @@ import Circle from "scene/shapes/Circle";
 import TreeSprite from "app/scene/trees/TreeSprite";
 import {AbstractSceneObject} from "scene/AbstractSceneObject";
 
-export default class TreeObject extends AbstractSceneObject implements SceneObject {
+export default class TreeObject extends AbstractSceneObject {
 
     private sprite: TreeSprite;
-
     private shape: Circle;
+    
+    props: {
+        treeResource: any;
+        coords: Coords;
+        scale: number;
+        layer?: SceneLayer;
+    };
 
-    constructor(treeResource, coords: Coords) {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.sprite = new TreeSprite(treeResource.sprite.src, treeResource.sprite.size);
+        this.coords =  this.props.coords;
 
-        this.shape = new Circle(treeResource.shape.coords, treeResource.shape.radius);
+        this.sprite = new TreeSprite(
+            this.props.treeResource.sprite.src,
+            this.props.treeResource.sprite.size
+        );
 
-        this.coords = coords;
-
+        this.shape = new Circle(
+            this.props.treeResource.shape.coords,
+            this.props.treeResource.shape.radius
+        );
     }
 
     getClassName() {
@@ -41,8 +52,8 @@ export default class TreeObject extends AbstractSceneObject implements SceneObje
 
     isVisible() {
         let topPoint = {
-            x: this.getLayer().getTranslation().x + this.coords.x,
-            y: this.getLayer().getTranslation().y + this.coords.y
+            x: this.getLayer().getCanvas().getTranslation().x + this.coords.x,
+            y: this.getLayer().getCanvas().getTranslation().y + this.coords.y
         };
 
         return ( this.getLayer().isPointVisible(topPoint)
@@ -55,7 +66,7 @@ export default class TreeObject extends AbstractSceneObject implements SceneObje
     }
 
     isActual() {
-        return this.getLayer().getTranslation().y + this.coords.y + this.getSize().height > 0;
+        return this.getLayer().getCanvas().getTranslation().y + this.coords.y + this.getSize().height > 0;
     }
 
     getShapes() {

@@ -46,12 +46,13 @@ export default class Main {
 
         /*
          <DebugLayer layerId="debug" zIndex={200} />
-         <TreesLayer layerId="tree" zIndex={100} />
+
          */
 
         ReactDOM.render(
             <Scene ref={(scene) => { this.scene = scene; }}>
                 <PlayerLayer layerId="player" zIndex={10} />
+                <TreesLayer layerId="tree" zIndex={100} />
             </Scene>,
             document.getElementById("scene")
         );

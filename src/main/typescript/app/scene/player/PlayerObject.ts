@@ -13,13 +13,15 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
 
     state: {
         angle: number;
+        movedToCenter: boolean;
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            angle: 0
+            angle: 0,
+            movedToCenter: false
         };
 
         this.sprite = new PlayerSprite(PlayerResource.sprite.src, PlayerResource.sprite.size);
@@ -45,10 +47,18 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
     transform() {
         let layer = this.getLayer();
 
-        //SharedState.getState().angle
+        if(!this.state.movedToCenter) {
+            layer.getCanvas().getContext().lineWidth = 10;
+            layer.getCanvas().translate({
+                x: layer.getCanvas().getElement().width / 2,
+                y: layer.getCanvas().getElement().height / 2
+            });
+
+            this.state.movedToCenter = true;
+        }
+
         this.sprite.rotate(this.state.angle);
         layer.getCanvas().clear();
-
         this.shape.draw(layer, this.coords, this.scale);
         this.sprite.draw(layer, this.coords, this.scale);
     }

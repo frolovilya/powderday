@@ -8,12 +8,17 @@ export abstract class AbstractSceneObject extends React.Component implements Sce
     protected layer: SceneLayer;
 
     protected coords: Coords;
-
     protected scale: number = 1;
 
-    // props: {
-    //     layer: SceneLayer;
-    // };
+    props: {
+        layer?: SceneLayer;
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.layer = this.props.layer;
+    }
 
     setLayer(layer: SceneLayer) {
         console.log("set layer!", layer);
@@ -23,7 +28,7 @@ export abstract class AbstractSceneObject extends React.Component implements Sce
         return this.layer;
     }
 
-    public getCoords() {
+    getCoords() {
         return this.coords;
     }
 
@@ -45,11 +50,20 @@ export abstract class AbstractSceneObject extends React.Component implements Sce
     reset() {
     }
 
-    // shouldComponentUpdate() {
-    //     console.log("should scene object update?");
-    //
-    //     return true;
-    // }
+    getClassName() {
+        return "generic";
+    }
+
+    getSize() {
+        return {
+            width: 0,
+            height: 0
+        };
+    }
+
+    getShapes() {
+        return [];
+    }
 
     render() {
         if(this.getLayer() /*&& this.getLayer().isReady()*/) {
@@ -60,11 +74,5 @@ export abstract class AbstractSceneObject extends React.Component implements Sce
     }
 
     abstract transform();
-
-    abstract getClassName();
-
-    abstract getSize();
-
-    abstract getShapes();
 
 }

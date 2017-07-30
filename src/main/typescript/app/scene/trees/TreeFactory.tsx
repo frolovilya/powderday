@@ -1,14 +1,15 @@
-import SceneLayer from "scene/SceneLayer";
 import {Coords} from "scene/types/Coords";
 import {Size} from "scene/types/Size";
 import TreeObject from "app/scene/trees/TreeObject";
 import Resources from "app/resources/TreeObjectsConfig";
+import * as React from "react";
 
 export default class TreeFactory {
 
-    static plantRect(layer: SceneLayer, coords: Coords, size: Size) {
-        let treeCount = Math.floor(Math.random() * (10 - 3) + 3);
+    static plantRect(coords: Coords, size: Size) {
+        let trees = [];
 
+        let treeCount = Math.floor(Math.random() * (10 - 3) + 3);
         for(let i = 0; i < treeCount; i++) {
             // position on area
             let randomPosition = {
@@ -19,7 +20,6 @@ export default class TreeFactory {
             // get random tree
             let treeNum = Math.round( Math.random() * (Resources.length - 1) );
             let tree = Resources[treeNum];
-            let treeObject = new TreeObject(tree, randomPosition);
 
             // sizes
             let maxWidth = 160;
@@ -27,12 +27,17 @@ export default class TreeFactory {
 
             // scale
             let newWidth = Math.floor( Math.random() * (maxWidth - minWidth) + minWidth );
-            let scale = treeObject.getSize().width / newWidth;
-            treeObject.setScale(scale);
+            let scale = tree.sprite.size.width / newWidth;
 
-            // add tree to layer
-            // layer.addObject( treeObject );
+            let key = "tree_" + Math.floor(Math.random() * 100000);
+
+            trees.push(<TreeObject treeResource={tree}
+                                   coords={randomPosition}
+                                   scale={scale}
+                                   key={key} />);
         }
+
+        return trees;
     }
 
 }

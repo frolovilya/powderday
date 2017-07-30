@@ -53,8 +53,10 @@ export default class PlayerSprite extends Sprite {
             context.rotate(this.rotateAngle * 3.14/180 / 2);
         }
 
-        if(this.rotateAngle < 90 && this.rotateAngle > -90)
-            context.rotate((<any>window).playerRotateAngleDelta * 3.14/180 / 2);
+        if(this.rotateAngle < 90 && this.rotateAngle > -90) {
+            // context.rotate((<any>window).playerRotateAngleDelta * 3.14 / 180 / 2);
+            //context.rotate(this.rotateAngle * 3.14 / 180 / 2);
+        }
 
         // draw player
         context.beginPath();

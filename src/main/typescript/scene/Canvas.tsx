@@ -7,7 +7,6 @@ import {Coords} from "scene/types/Coords";
 export default class Canvas extends React.Component {
 
     props: {
-        // layer: SceneLayer;
         layerId: string,
         zIndex: number;
         size: Size;
@@ -19,10 +18,6 @@ export default class Canvas extends React.Component {
     private canvas: HTMLCanvasElement;
     private renderingContext: CanvasRenderingContext2D;
 
-    // private childrenObjects;
-
-    private mounted: boolean = false;
-
     constructor(props) {
         super(props);
 
@@ -32,14 +27,8 @@ export default class Canvas extends React.Component {
         }
     }
 
-    isCanvasReady() {
-        return this.mounted;
-    }
-
     componentDidMount() {
         this.renderingContext = this.canvas.getContext("2d");
-        this.mounted = true;
-        // this.forceUpdate();
     }
 
     clear() {
@@ -92,9 +81,5 @@ export default class Canvas extends React.Component {
     getContext() {
         return this.renderingContext;
     }
-
-    // getLayer() {
-    //     return this.props.layer;
-    // }
 
 }

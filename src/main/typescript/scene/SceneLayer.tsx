@@ -33,14 +33,8 @@ export default class SceneLayer extends React.Component {
 
     }
 
-    // shouldComponentUpdate() {
-    //     console.log("should " + this.getId() + " layer update?");
-    //
-    //     return false;
-    // }
-
     componentDidMount() {
-        this.forceUpdateChildrenObjects();
+        this.forceUpdateReferencedObjects();
     }
 
     getId() {
@@ -57,22 +51,18 @@ export default class SceneLayer extends React.Component {
             && point.y > 0 && point.y < sceneSize.height );
     }
 
-    addObject(sceneObject: SceneObject) {
+    addObjectReference(sceneObject: SceneObject) {
         sceneObject.setLayer(this);
         this.objectsList.push(sceneObject);
     }
 
-    getObjects() {
+    getObjectsReferences() {
         return this.objectsList;
     }
 
-    forceUpdateChildrenObjects() {
+    forceUpdateReferencedObjects() {
         this.objectsList.forEach((obj: SceneObject) => obj.forceUpdate())
     }
-
-    // isReady() {
-    //     return !!this.canvas;
-    // }
 
     render() {
         console.log("render layer " + this.getId());
@@ -83,7 +73,7 @@ export default class SceneLayer extends React.Component {
                        ref={(canvas: Canvas) => this.canvas = canvas }>
             {React.Children.map(this.state.childrenObjects, (child: any) => {
                     return React.cloneElement(child, {
-                        ref: (obj: SceneObject) => { this.addObject(obj) }
+                        ref: (obj: SceneObject) => { this.addObjectReference(obj) }
                     })
                 }
             )}

@@ -12,16 +12,4 @@ export default class PlayerLayer extends SceneLayer {
         ];
     }
 
-    componentDidMount() {
-        (window as any).playerLayer = this;
-
-        this.getCanvas().getContext().lineWidth = 10;
-        this.getCanvas().translate({
-            x: this.getCanvas().getElement().width / 2,
-            y: this.getCanvas().getElement().height / 2
-        });
-
-        this.forceUpdateChildrenObjects();
-    }
-
 }
