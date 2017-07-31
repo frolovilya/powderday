@@ -22,26 +22,6 @@ export default class Main {
 
     private scene;
 
-    private playerLayer;
-
-    // private initPlayerLayer() {
-    //     let playerLayer = new SceneLayer("player").placeAt(this.scene, "10");
-    //     playerLayer.getContext().lineWidth = 10;
-    //     playerLayer.translate({
-    //         x: playerLayer.getCanvas().width / 2,
-    //         y: playerLayer.getCanvas().height / 2
-    //     });
-    //     playerLayer.addObject(new PlayerObject());
-    // }
-    //
-    // private initTreesLayer() {
-    //     new TreesLayer("tree").placeAt(this.scene, "100");
-    // }
-    //
-    // private initDebugLayer() {
-    //     new DebugLayer("debug").placeAt(this.scene, "200");
-    // }
-
     private initScene() {
 
         /*

@@ -10,12 +10,20 @@ export abstract class AbstractSceneObject extends React.Component implements Sce
     protected coords: Coords;
     protected scale: number = 1;
 
+    state: {
+        childrenObjects;
+    };
+
     props: {
         layer?: SceneLayer;
     };
 
     constructor(props) {
         super(props);
+        
+        this.state = {
+            childrenObjects: []
+        };
 
         this.layer = this.props.layer;
     }
@@ -65,9 +73,23 @@ export abstract class AbstractSceneObject extends React.Component implements Sce
         return [];
     }
 
+    getChildrenObjects() {
+        return this.state.childrenObjects;
+    }
+
     render() {
-        if(this.getLayer() /*&& this.getLayer().isReady()*/) {
+        if(this.getLayer()) {
+
             this.transform();
+
+            return <span>
+                {React.Children.map(this.getChildrenObjects(), (child: any) => {
+                        return React.cloneElement(child, {
+                            layer: this.getLayer()
+                        })
+                    }
+                )}
+            </span>
         }
 
         return null;

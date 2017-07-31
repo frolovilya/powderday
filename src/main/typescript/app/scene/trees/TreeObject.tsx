@@ -3,15 +3,15 @@
  */
 import {SceneObject} from "scene/SceneObject";
 import SceneLayer from "scene/SceneLayer";
-import Sprite from "scene/Sprite";
 import {Coords} from "scene/types/Coords";
 import Circle from "scene/shapes/Circle";
-import TreeSprite from "app/scene/trees/TreeSprite";
 import {AbstractSceneObject} from "scene/AbstractSceneObject";
+import TreeSprite from "./TreeSprite";
+import * as React from "react";
 
 export default class TreeObject extends AbstractSceneObject {
 
-    private sprite: TreeSprite;
+    // private sprite: TreeSprite;
     private shape: Circle;
     
     props: {
@@ -24,17 +24,20 @@ export default class TreeObject extends AbstractSceneObject {
     constructor(props) {
         super(props);
 
-        this.coords =  this.props.coords;
+        this.coords = this.props.coords;
 
-        this.sprite = new TreeSprite(
-            this.props.treeResource.sprite.src,
-            this.props.treeResource.sprite.size
-        );
+        this.state.childrenObjects = [
+            <Circle coords={this.props.treeResource.shape.coords}
+                    radius={this.props.treeResource.shape.radius}
+                    layer={this.getLayer()}
+                    parentCoords={this.coords}
+                    scale={this.scale} />,
+            <TreeSprite treeResource={this.props.treeResource}
+                        layer={this.getLayer()}
+                        coords={this.coords}
+                        scale={this.scale} />
+        ];
 
-        this.shape = new Circle(
-            this.props.treeResource.shape.coords,
-            this.props.treeResource.shape.radius
-        );
     }
 
     getClassName() {
@@ -42,8 +45,7 @@ export default class TreeObject extends AbstractSceneObject {
     }
 
     transform() {
-        this.shape.draw(this.getLayer(), this.coords, this.scale);
-        this.sprite.draw(this.getLayer(), this.coords, this.scale);
+        // this.shape.draw(this.getLayer(), this.coords, this.scale);
     }
 
     // getSize() {

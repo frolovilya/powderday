@@ -1,33 +1,26 @@
 import {SceneObject} from "scene/SceneObject";
 import SceneLayer from "scene/SceneLayer";
-import Sprite from "scene/Sprite";
 import PlayerSprite from "app/scene/player/PlayerSprite";
 import Circle from "scene/shapes/Circle";
 import {AbstractSceneObject} from "scene/AbstractSceneObject";
 import PlayerResource from "app/resources/PlayerObjectConfig"
+import * as React from "react";
 
 export default class PlayerObject extends AbstractSceneObject implements SceneObject {
 
-    private sprite: PlayerSprite;
+    // private sprite: PlayerSprite;
     private shape: Circle;
 
     state: {
         angle: number;
         movedToCenter: boolean;
+        childrenObjects;
     };
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            angle: 0,
-            movedToCenter: false
-        };
-
-        this.sprite = new PlayerSprite(PlayerResource.sprite.src, PlayerResource.sprite.size);
-        this.sprite.setPositions(PlayerResource.sprite.positions);
-
-        this.setScale(Math.round(this.sprite.getSize().width / PlayerResource.sprite.scaleToSize.width * 100) / 100);
+        this.setScale(Math.round(PlayerResource.sprite.size.width / PlayerResource.sprite.scaleToSize.width * 100) / 100);
 
         // center
         this.coords = {
@@ -35,9 +28,28 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
             y: -PlayerResource.sprite.scaleToSize.height / 2
         };
 
-        this.shape = new Circle(PlayerResource.shape.coords, PlayerResource.shape.radius);
+        this.state = {
+            angle: 0,
+            movedToCenter: false,
+            childrenObjects: []
+        };
 
         (window as any).playerObject = this;
+    }
+
+    getChildrenObjects() {
+        return [
+            <Circle coords={PlayerResource.shape.coords}
+                    radius={PlayerResource.shape.radius}
+                    layer={this.getLayer()}
+                    parentCoords={this.coords}
+                    scale={this.scale}
+                    ref={(shape) => this.shape = shape} />,
+            <PlayerSprite coords={this.coords}
+                          scale={this.scale}
+                          layer={this.getLayer()}
+                          rotateAngle={this.state.angle} />
+        ];
     }
 
     getClassName() {
@@ -57,15 +69,8 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
             this.state.movedToCenter = true;
         }
 
-        this.sprite.rotate(this.state.angle);
         layer.getCanvas().clear();
-        this.shape.draw(layer, this.coords, this.scale);
-        this.sprite.draw(layer, this.coords, this.scale);
     }
-
-    // getSize() {
-    //     return this.sprite.getSize();
-    // }
 
     getShapes() {
         return [this.shape];

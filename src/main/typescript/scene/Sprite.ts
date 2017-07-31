@@ -1,23 +1,55 @@
 import {Coords} from "scene/types/Coords";
 import {Size} from "scene/types/Size";
 import SceneLayer from "./SceneLayer";
+import * as React from "react";
 
-export default class Sprite {
+export abstract class Sprite extends React.Component {
 
     protected image: HTMLImageElement;
     protected size: Size;
+    //
+    // protected coords: Coords;
 
-    protected coords: Coords;
+    // protected isImageLoaded: boolean = false;
 
-    protected isImageLoaded: boolean = false;
+    props: {
+        coords: Coords;
+        layer: SceneLayer;
+    };
 
-    constructor(imageSrc: string, size: Size, coords: Coords = {x: 0, y: 0}) {
+    state: {
+        imageLoaded: boolean;
+    };
+
+    // constructor(imageSrc: string, size: Size, coords: Coords = {x: 0, y: 0}) {
+    //     this.image = new Image();
+    //     this.image.src = imageSrc;
+    //
+    //     this.size = size;
+    //
+    //     this.coords = coords;
+    // }
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            imageLoaded: false
+        };
+    }
+
+    protected initImage(imageSrc: string, size: Size) {
         this.image = new Image();
         this.image.src = imageSrc;
 
-        this.size = size;
+        this.image.onload = () => {
+            console.log("image loaded!");
+            this.setState({
+                imageLoaded: true
+            });
+        };
 
-        this.coords = coords;
+        this.size = size;
     }
 
     getSize() {
@@ -33,20 +65,17 @@ export default class Sprite {
     }
 
     getCoords() {
-        return this.coords;
+        return this.props.coords;
     }
 
-    protectedDraw(layer: SceneLayer, parentCoords: Coords, scale: number = 1) {}
-
-    draw(layer: SceneLayer, parentCoords: Coords, scale: number = 1) {
-        if(this.isImageLoaded) {
-            this.protectedDraw(layer, parentCoords, scale)
-        } else {
-            this.image.onload = () => {
-                this.isImageLoaded = true;
-                this.protectedDraw(layer, parentCoords, scale)
-            }
+    render() {
+        if(this.state.imageLoaded) {
+            this.draw()
         }
+
+        return null;
     }
+
+    abstract draw();
 
 }

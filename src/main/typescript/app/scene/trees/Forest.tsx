@@ -2,11 +2,10 @@ import {AbstractSceneObject} from "scene/AbstractSceneObject";
 import Screen from "device/Screen"
 import TreeFactory from "app/scene/trees/TreeFactory";
 import * as React from "react";
-import {AbstractSceneObjectsGroup} from "scene/AbstractSceneObjectsGroup";
 import {Coords} from "scene/types/Coords";
 import {Size} from "scene/types/Size";
 
-export default class Forest extends AbstractSceneObjectsGroup {
+export default class Forest extends AbstractSceneObject {
 
     state: {
         Sx: number;
@@ -30,8 +29,11 @@ export default class Forest extends AbstractSceneObjectsGroup {
 
     transform() {
         this.moveForest();
-        this.state.childrenObjects = this.getTreesAroundCurrentPosition();
         // console.log("trees around", this.state.childrenObjects.length)
+    }
+
+    getChildrenObjects() {
+        return this.getTreesAroundCurrentPosition();
     }
 
     private getCurrentScreenPosition(): Coords {
