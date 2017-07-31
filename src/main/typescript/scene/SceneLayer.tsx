@@ -45,11 +45,11 @@ export default class SceneLayer extends React.Component {
         return this.canvas;
     }
 
-    isPointVisible(point: Coords) {
-        let sceneSize = Screen.getSize();
-        return ( point.x > 0 && point.x < sceneSize.width
-            && point.y > 0 && point.y < sceneSize.height );
-    }
+    // isPointVisible(point: Coords) {
+    //     let sceneSize = Screen.getSize();
+    //     return ( point.x > 0 && point.x < sceneSize.width
+    //         && point.y > 0 && point.y < sceneSize.height );
+    // }
 
     addObjectReference(sceneObject: SceneObject) {
         sceneObject.setLayer(this);

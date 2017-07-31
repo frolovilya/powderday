@@ -46,28 +46,28 @@ export default class TreeObject extends AbstractSceneObject {
         this.sprite.draw(this.getLayer(), this.coords, this.scale);
     }
 
-    getSize() {
-        return this.sprite.getSize();
-    }
+    // getSize() {
+    //     return this.sprite.getSize();
+    // }
 
-    isVisible() {
-        let topPoint = {
-            x: this.getLayer().getCanvas().getTranslation().x + this.coords.x,
-            y: this.getLayer().getCanvas().getTranslation().y + this.coords.y
-        };
-
-        return ( this.getLayer().isPointVisible(topPoint)
-            || this.getLayer().isPointVisible({x: topPoint.x + this.getSize().width, y: topPoint.y})
-            || this.getLayer().isPointVisible({x: topPoint.x, y: topPoint.y + this.getSize().height})
-            || this.getLayer().isPointVisible({
-                x: topPoint.x + this.getSize().width,
-                y: topPoint.y + this.getSize().height
-            }));
-    }
-
-    isActual() {
-        return this.getLayer().getCanvas().getTranslation().y + this.coords.y + this.getSize().height > 0;
-    }
+    // isVisible() {
+    //     let topPoint = {
+    //         x: this.getLayer().getCanvas().getTranslation().x + this.coords.x,
+    //         y: this.getLayer().getCanvas().getTranslation().y + this.coords.y
+    //     };
+    //
+    //     return ( this.getLayer().isPointVisible(topPoint)
+    //         || this.getLayer().isPointVisible({x: topPoint.x + this.getSize().width, y: topPoint.y})
+    //         || this.getLayer().isPointVisible({x: topPoint.x, y: topPoint.y + this.getSize().height})
+    //         || this.getLayer().isPointVisible({
+    //             x: topPoint.x + this.getSize().width,
+    //             y: topPoint.y + this.getSize().height
+    //         }));
+    // }
+    //
+    // isActual() {
+    //     return this.getLayer().getCanvas().getTranslation().y + this.coords.y + this.getSize().height > 0;
+    // }
 
     getShapes() {
         return [this.shape];

@@ -63,9 +63,9 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
         this.sprite.draw(layer, this.coords, this.scale);
     }
 
-    getSize() {
-        return this.sprite.getSize();
-    }
+    // getSize() {
+    //     return this.sprite.getSize();
+    // }
 
     getShapes() {
         return [this.shape];
