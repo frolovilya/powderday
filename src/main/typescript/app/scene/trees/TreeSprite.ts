@@ -1,13 +1,14 @@
 import {Coords} from "scene/types/Coords";
 import SceneLayer from "scene/SceneLayer";
 import {Sprite} from "../../../scene/Sprite";
+import Canvas from "../../../scene/Canvas";
 
 export default class TreeSprite extends Sprite {
 
     props: {
         treeResource: any;
         coords: Coords;
-        layer: SceneLayer;
+        canvas: Canvas;
         scale: number;
     };
 
@@ -18,7 +19,7 @@ export default class TreeSprite extends Sprite {
     }
 
     draw() {
-        let context = this.props.layer.getCanvas().getContext();
+        let context = this.props.canvas.getContext();
 
         context.beginPath();
         context.drawImage(

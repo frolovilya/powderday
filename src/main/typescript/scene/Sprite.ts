@@ -2,6 +2,7 @@ import {Coords} from "scene/types/Coords";
 import {Size} from "scene/types/Size";
 import SceneLayer from "./SceneLayer";
 import * as React from "react";
+import Canvas from "scene/Canvas";
 
 export abstract class Sprite extends React.Component {
 
@@ -14,7 +15,7 @@ export abstract class Sprite extends React.Component {
 
     props: {
         coords: Coords;
-        layer: SceneLayer;
+        canvas: Canvas;
     };
 
     state: {
@@ -43,7 +44,7 @@ export abstract class Sprite extends React.Component {
         this.image.src = imageSrc;
 
         this.image.onload = () => {
-            console.log("image loaded!");
+            // console.log("image loaded!");
             this.setState({
                 imageLoaded: true
             });

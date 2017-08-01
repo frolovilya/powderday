@@ -8,6 +8,7 @@ import Circle from "scene/shapes/Circle";
 import {AbstractSceneObject} from "scene/AbstractSceneObject";
 import TreeSprite from "./TreeSprite";
 import * as React from "react";
+import Canvas from "../../../scene/Canvas";
 
 export default class TreeObject extends AbstractSceneObject {
 
@@ -18,7 +19,7 @@ export default class TreeObject extends AbstractSceneObject {
         treeResource: any;
         coords: Coords;
         scale: number;
-        layer?: SceneLayer;
+        canvas: Canvas;
     };
 
     constructor(props) {
@@ -29,11 +30,11 @@ export default class TreeObject extends AbstractSceneObject {
         this.state.childrenObjects = [
             <Circle coords={this.props.treeResource.shape.coords}
                     radius={this.props.treeResource.shape.radius}
-                    layer={this.getLayer()}
+                    canvas={this.getCanvas()}
                     parentCoords={this.coords}
                     scale={this.scale} />,
             <TreeSprite treeResource={this.props.treeResource}
-                        layer={this.getLayer()}
+                        canvas={this.getCanvas()}
                         coords={this.coords}
                         scale={this.scale} />
         ];

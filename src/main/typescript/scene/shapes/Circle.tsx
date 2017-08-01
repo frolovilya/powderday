@@ -1,13 +1,14 @@
 import {Coords} from "scene/types/Coords";
 import SceneLayer from "scene/SceneLayer";
 import * as React from "react";
+import Canvas from "../Canvas";
 
 export default class Circle extends React.Component {
 
     props: {
         coords: Coords;
         radius: number;
-        layer: SceneLayer;
+        canvas: Canvas;
         parentCoords: Coords;
         scale: number;
     };
@@ -21,7 +22,7 @@ export default class Circle extends React.Component {
     }
 
     render() {
-        let context = this.props.layer.getCanvas().getContext();
+        let context = this.props.canvas.getContext();
 
         context.beginPath();
 

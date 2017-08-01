@@ -3,13 +3,16 @@ import Circle from "scene/shapes/Circle";
 import {Size} from "scene/types/Size";
 import {Coords} from "scene/types/Coords";
 import * as React from "react";
+import Canvas from "./Canvas";
 
 export interface SceneObject extends React.Component {
 
 	getClassName(): string;
 
-	setLayer(layer: SceneLayer);
-	getLayer(): SceneLayer;
+	// setLayer(layer: SceneLayer);
+	// getLayer(): SceneLayer;
+	
+	getCanvas(): Canvas;
 
 	getShapes(): Circle[];
 

@@ -3,12 +3,13 @@ import SceneLayer from "scene/SceneLayer";
 import {Size} from "scene/types/Size";
 import {Sprite} from "../../../scene/Sprite";
 import PlayerResource from "app/resources/PlayerObjectConfig"
+import Canvas from "../../../scene/Canvas";
 
 export default class PlayerSprite extends Sprite {
 
     props: {
         coords: Coords;
-        layer: SceneLayer;
+        canvas: Canvas;
         rotateAngle: number;
         scale: number;
     };
@@ -47,16 +48,16 @@ export default class PlayerSprite extends Sprite {
             // context.rotate(this.props.rotateAngle * 3.14/180 / 2);
         }
 
-        console.log("getPosition", this.props.rotateAngle, position);
+        // console.log("getPosition", this.props.rotateAngle, position);
 
         return position;
     };
 
     draw() {
-        let layer = this.props.layer;
-        let context = layer.getCanvas().getContext();
+        let canvas = this.props.canvas;
+        let context = canvas.getContext();
 
-        layer.getCanvas().clearTransform();
+        canvas.clearTransform();
 
         let position = this.getPosition();
 

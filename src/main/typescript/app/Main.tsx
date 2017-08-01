@@ -15,6 +15,9 @@ import DebugLayer from "app/scene/debug/DebugLayer";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import PlayerLayer from "app/scene/player/PlayerLayer";
+import { Provider } from 'react-redux';
+import store from "app/Store";
+import {moveAction} from "app/Store";
 
 export default class Main {
 
@@ -30,10 +33,12 @@ export default class Main {
          */
 
         ReactDOM.render(
-            <Scene ref={(scene) => { this.scene = scene; }}>
-                <PlayerLayer layerId="player" zIndex={10} />
-                <TreesLayer layerId="tree" zIndex={100} />
-            </Scene>,
+            <Provider store={store}>
+                <Scene ref={(scene) => { this.scene = scene; }}>
+                    <PlayerLayer layerId="player" zIndex={10} />
+                    <TreesLayer layerId="tree" zIndex={100} />
+                </Scene>
+            </Provider>,
             document.getElementById("scene")
         );
 
@@ -115,14 +120,21 @@ export default class Main {
         // this.handleObjectsIntersections();
 
         (window as any).game = this;
+
+        window.setTimeout(() => {
+            this.startGame();
+        }, 2000);
     }
 
     update() {
-        CommonState.calculate();
+        // CommonState.calculate();
 
         // this.scene.render();
-        this.scene.forceUpdate();
+        // this.scene.forceUpdate();
         // this.scene.interact();
+
+        store.dispatch(moveAction(Accelerometer.getAcceleration()));
+
     }
     
 }

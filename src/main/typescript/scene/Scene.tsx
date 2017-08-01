@@ -33,7 +33,7 @@ export default class Scene extends React.Component {
     }
 
     render() {
-        console.log("Render Main");
+        // console.log("Render Main");
 
         return <div className="scene"
                     style={{width: this.state.size.width, height: this.state.size.height}}

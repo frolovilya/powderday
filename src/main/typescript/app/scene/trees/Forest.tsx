@@ -4,25 +4,28 @@ import TreeFactory from "app/scene/trees/TreeFactory";
 import * as React from "react";
 import {Coords} from "scene/types/Coords";
 import {Size} from "scene/types/Size";
+import Canvas from "../../../scene/Canvas";
 
 export default class Forest extends AbstractSceneObject {
 
-    state: {
+    props: {
         Sx: number;
         Sy: number;
-        childrenObjects;
+        canvas: Canvas;
     };
 
-    private trees = [];
+    private treesMap = [];
+    private cachedTrees = [];
+    private prevPosition = {x: -1, y: -1};
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            Sx: 0,
-            Sy: 0,
-            childrenObjects: []
-        };
+        // this.state = {
+        //     Sx: 0,
+        //     Sy: 0,
+        //     childrenObjects: []
+        // };
 
         (window as any).forest = this;
     }
@@ -40,8 +43,8 @@ export default class Forest extends AbstractSceneObject {
         let sceneSize = Screen.getSize();
 
         return {
-            x: Math.floor(-this.getLayer().getCanvas().getTranslation().x / sceneSize.width),
-            y: Math.floor(Math.abs(this.getLayer().getCanvas().getTranslation().y) / sceneSize.height)
+            x: Math.floor(-this.getCanvas().getTranslation().x / sceneSize.width),
+            y: Math.floor(Math.abs(this.getCanvas().getTranslation().y) / sceneSize.height)
         }
     }
 
@@ -61,43 +64,49 @@ export default class Forest extends AbstractSceneObject {
     }
 
     private plantRect(position: Coords) {
-        if(!this.trees[position.y])
-            this.trees[position.y] = [];
+        if(!this.treesMap[position.y])
+            this.treesMap[position.y] = [];
 
-        if(!this.trees[position.y][position.x]) {
+        if(!this.treesMap[position.y][position.x]) {
             let [coords, size] = this.getScreenRectByPosition(position);
-            this.trees[position.y][position.x] = TreeFactory.plantRect(coords, size);
+            this.treesMap[position.y][position.x] = TreeFactory.plantRect(this.getCanvas(), coords, size);
         }
 
-        return this.trees[position.y][position.x];
+        return this.treesMap[position.y][position.x];
     }
 
     private cleanupTrees() {
         let currentPosition = this.getCurrentScreenPosition();
         for(let i = 0; i < currentPosition.y; i++) {
-            this.trees[i] = [];
+            this.treesMap[i] = [];
         }
     }
 
     private getTreesAroundCurrentPosition() {
-        this.cleanupTrees();
-
         let curPos = this.getCurrentScreenPosition();
         // console.log("current position", curPos);
 
-        return [].concat(this.plantRect({x: curPos.x - 1, y: curPos.y}))
-            .concat(this.plantRect(curPos))
-            .concat(this.plantRect({x: curPos.x + 1, y: curPos.y}))
-            .concat(this.plantRect({x: curPos.x - 1, y: curPos.y + 1}))
-            .concat(this.plantRect({x: curPos.x, y: curPos.y + 1}))
-            .concat(this.plantRect({x: curPos.x + 1, y: curPos.y + 1}));
+        if(this.prevPosition.x != curPos.x || this.prevPosition.y != curPos.y) {
+            this.cleanupTrees();
+
+            this.cachedTrees = [].concat(this.plantRect({x: curPos.x - 1, y: curPos.y}))
+                .concat(this.plantRect(curPos))
+                .concat(this.plantRect({x: curPos.x + 1, y: curPos.y}))
+                .concat(this.plantRect({x: curPos.x - 1, y: curPos.y + 1}))
+                .concat(this.plantRect({x: curPos.x, y: curPos.y + 1}))
+                .concat(this.plantRect({x: curPos.x + 1, y: curPos.y + 1}));
+        }
+
+        this.prevPosition = curPos;
+
+        return this.cachedTrees;
     }
 
     private moveForest() {
-        this.getLayer().getCanvas().clear();
-        this.getLayer().getCanvas().translate({
-            x: Math.round(this.state.Sx),
-            y: Math.round(this.state.Sy)
+        this.getCanvas().clear();
+        this.getCanvas().translate({
+            x: Math.round(this.props.Sx),
+            y: Math.round(this.props.Sy)
         });
     }
 

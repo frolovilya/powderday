@@ -5,16 +5,21 @@ import Circle from "scene/shapes/Circle";
 import {AbstractSceneObject} from "scene/AbstractSceneObject";
 import PlayerResource from "app/resources/PlayerObjectConfig"
 import * as React from "react";
+import Canvas from "../../../scene/Canvas";
 
-export default class PlayerObject extends AbstractSceneObject implements SceneObject {
+export default class PlayerObject extends AbstractSceneObject {
 
     // private sprite: PlayerSprite;
     private shape: Circle;
 
     state: {
-        angle: number;
         movedToCenter: boolean;
         childrenObjects;
+    };
+
+    props: {
+        angle: number;
+        canvas: Canvas;
     };
 
     constructor(props) {
@@ -29,7 +34,6 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
         };
 
         this.state = {
-            angle: 0,
             movedToCenter: false,
             childrenObjects: []
         };
@@ -41,14 +45,14 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
         return [
             <Circle coords={PlayerResource.shape.coords}
                     radius={PlayerResource.shape.radius}
-                    layer={this.getLayer()}
+                    canvas={this.getCanvas()}
                     parentCoords={this.coords}
                     scale={this.scale}
                     ref={(shape) => this.shape = shape} />,
             <PlayerSprite coords={this.coords}
                           scale={this.scale}
-                          layer={this.getLayer()}
-                          rotateAngle={this.state.angle} />
+                          canvas={this.getCanvas()}
+                          rotateAngle={this.props.angle} />
         ];
     }
 
@@ -57,19 +61,19 @@ export default class PlayerObject extends AbstractSceneObject implements SceneOb
     }
 
     transform() {
-        let layer = this.getLayer();
+        let canvas = this.getCanvas();
 
         if(!this.state.movedToCenter) {
-            layer.getCanvas().getContext().lineWidth = 10;
-            layer.getCanvas().translate({
-                x: layer.getCanvas().getElement().width / 2,
-                y: layer.getCanvas().getElement().height / 2
+            canvas.getContext().lineWidth = 10;
+            canvas.translate({
+                x: canvas.getElement().width / 2,
+                y: canvas.getElement().height / 2
             });
 
             this.state.movedToCenter = true;
         }
 
-        layer.getCanvas().clear();
+        canvas.clear();
     }
 
     getShapes() {

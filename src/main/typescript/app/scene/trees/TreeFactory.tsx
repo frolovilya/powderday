@@ -3,10 +3,11 @@ import {Size} from "scene/types/Size";
 import TreeObject from "app/scene/trees/TreeObject";
 import Resources from "app/resources/TreeObjectsConfig";
 import * as React from "react";
+import Canvas from "../../../scene/Canvas";
 
 export default class TreeFactory {
 
-    static plantRect(coords: Coords, size: Size) {
+    static plantRect(canvas: Canvas, coords: Coords, size: Size) {
         let trees = [];
 
         let treeCount = Math.floor(Math.random() * (10 - 3) + 3);
@@ -34,6 +35,7 @@ export default class TreeFactory {
             trees.push(<TreeObject treeResource={tree}
                                    coords={randomPosition}
                                    scale={scale}
+                                   canvas={canvas}
                                    key={key} />);
         }
 

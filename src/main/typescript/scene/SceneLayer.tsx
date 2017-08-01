@@ -19,27 +19,38 @@ export default class SceneLayer extends React.Component {
     state: {
         size: Size;
         childrenObjects;
+        canvas: Canvas;
     };
 
     constructor(props) {
         super(props);
 
-        console.log("init SceneLayer");
+        // console.log("init SceneLayer");
 
         this.state = {
             size: Screen.getSize(),
-            childrenObjects: []
+            childrenObjects: [],
+            canvas: null
         };
 
     }
 
     componentDidMount() {
-        this.forceUpdateReferencedObjects();
+        // this.forceUpdateReferencedObjects();
+        this.setState({
+            canvas: this.canvas
+        });
     }
 
     getId() {
         return this.props.layerId;
     }
+    
+    // setCanvas(canvas: Canvas) {
+    //     this.setState({
+    //         canvas: canvas
+    //     })
+    // }
 
     getCanvas() {
         return this.canvas;
@@ -51,33 +62,39 @@ export default class SceneLayer extends React.Component {
     //         && point.y > 0 && point.y < sceneSize.height );
     // }
 
-    addObjectReference(sceneObject: SceneObject) {
-        sceneObject.setLayer(this);
-        this.objectsList.push(sceneObject);
-    }
+    // addObjectReference(sceneObject: SceneObject) {
+    //     sceneObject.setLayer(this);
+    //     this.objectsList.push(sceneObject);
+    // }
+    //
+    // getObjectsReferences() {
+    //     return this.objectsList;
+    // }
+    //
+    // forceUpdateReferencedObjects() {
+    //     this.objectsList.forEach((obj: SceneObject) => obj.forceUpdate())
+    // }
 
-    getObjectsReferences() {
-        return this.objectsList;
-    }
-
-    forceUpdateReferencedObjects() {
-        this.objectsList.forEach((obj: SceneObject) => obj.forceUpdate())
+    getChildrenObjects() {
+        return this.state.childrenObjects;
     }
 
     render() {
-        console.log("render layer " + this.getId());
+        // console.log("render layer " + this.getId());
 
-        return <Canvas layerId={this.props.layerId}
-                       zIndex={this.props.zIndex}
-                       size={Screen.getSize()}
-                       ref={(canvas: Canvas) => this.canvas = canvas }>
-            {React.Children.map(this.state.childrenObjects, (child: any) => {
-                    return React.cloneElement(child, {
-                        ref: (obj: SceneObject) => { this.addObjectReference(obj) }
-                    })
-                }
-            )}
-        </Canvas>
+        return <span>
+            <Canvas layerId={this.props.layerId}
+                   zIndex={this.props.zIndex}
+                   size={Screen.getSize()}
+                   ref={(canvas: Canvas) => this.canvas = canvas } />{this.getChildrenObjects()}
+            {/*{React.Children.map(this.getChildrenObjects(), (child: any) => {*/}
+                    {/*return React.cloneElement(child, {*/}
+                        {/*// ref: (obj: SceneObject) => { this.addObjectReference(obj) }*/}
+                        {/*canvas: this.state.canvas*/}
+                    {/*})*/}
+                {/*}*/}
+            {/*)}*/}
+        </span>
     }
 
     reset() {

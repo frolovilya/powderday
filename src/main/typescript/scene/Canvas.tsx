@@ -10,7 +10,7 @@ export default class Canvas extends React.Component {
         layerId: string,
         zIndex: number;
         size: Size;
-        children: any;
+        // children: any;
     };
 
     private translation: Coords;
@@ -29,6 +29,10 @@ export default class Canvas extends React.Component {
 
     componentDidMount() {
         this.renderingContext = this.canvas.getContext("2d");
+    }
+    
+    shouldComponentUpdate() {
+        return false;
     }
 
     clear() {
@@ -66,12 +70,15 @@ export default class Canvas extends React.Component {
     }
 
     render() {
+        //{this.props.children}</canvas>
+        // console.log("render canvas");
+        
         return <canvas id={this.props.layerId}
                                            className="translate3d"
                                            style={{zIndex: this.props.zIndex}}
                                            width={this.props.size.width}
                                            height={this.props.size.height}
-                       ref={(node) => { this.canvas = this.canvas || node; }}>{this.props.children}</canvas>
+                       ref={(node) => { this.canvas = this.canvas || node; }} />
     }
 
     getElement() {
