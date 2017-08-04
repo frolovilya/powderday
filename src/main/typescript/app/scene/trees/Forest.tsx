@@ -14,7 +14,7 @@ export default class Forest extends AbstractSceneObject {
         canvas: Canvas;
     };
 
-    private treesMap = [];
+    private treesMap = {};
     private cachedTrees = [];
     private prevPosition = {x: -1, y: -1};
 
@@ -65,7 +65,7 @@ export default class Forest extends AbstractSceneObject {
 
     private plantRect(position: Coords) {
         if(!this.treesMap[position.y])
-            this.treesMap[position.y] = [];
+            this.treesMap[position.y] = {};
 
         if(!this.treesMap[position.y][position.x]) {
             let [coords, size] = this.getScreenRectByPosition(position);
@@ -78,7 +78,7 @@ export default class Forest extends AbstractSceneObject {
     private cleanupTrees() {
         let currentPosition = this.getCurrentScreenPosition();
         for(let i = 0; i < currentPosition.y; i++) {
-            this.treesMap[i] = [];
+            this.treesMap[i] = {};
         }
     }
 

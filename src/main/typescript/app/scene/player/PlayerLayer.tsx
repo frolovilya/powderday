@@ -10,7 +10,7 @@ export default class PlayerLayer extends SceneLayer {
     constructor(props) {
         super(props);
 
-        // console.log("init PlayerLayer");
+        // console.log("PlayerLayer.constructor()");
 
         // const mapStateToProps = (state) => {
         //     return {
@@ -40,6 +40,8 @@ export default class PlayerLayer extends SceneLayer {
     // };
 
     getChildrenObjects() {
+        // console.log("PlayerLayer.getChildrenObjects()");
+
         // const ConnectedPlayerObject = connect(mapStateToProps)(PlayerObject);
 
         return [

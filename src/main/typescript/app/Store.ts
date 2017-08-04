@@ -23,7 +23,7 @@ export const moveAction = (acceleration) => {
     }
 };
 
-// window.moveAction = moveAction;
+(window as any).moveAction = moveAction;
 
 const systemReducer = (state = defaultState, action) => {
     switch(action.type) {
@@ -56,7 +56,7 @@ const systemReducer = (state = defaultState, action) => {
 };
 
 let store = createStore(systemReducer);
-// window.store = store;
+(window as any).store = store;
 
 export default store;
 

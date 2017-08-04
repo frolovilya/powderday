@@ -91,14 +91,16 @@ export abstract class AbstractSceneObject extends React.Component implements Sce
 
             this.transform();
 
-            return <span>{this.getChildrenObjects()}
-                {/*{React.Children.map(this.getChildrenObjects(), (child: any) => {*/}
-                        {/*return React.cloneElement(child, {*/}
-                            {/*canvas: this.getCanvas()*/}
-                        {/*})*/}
-                    {/*}*/}
-                {/*)}*/}
-            </span>
+            // return <span>{this.getChildrenObjects()}
+            //     {/*{React.Children.map(this.getChildrenObjects(), (child: any) => {*/}
+            //             {/*return React.cloneElement(child, {*/}
+            //                 {/*canvas: this.getCanvas()*/}
+            //             {/*})*/}
+            //         {/*}*/}
+            //     {/*)}*/}
+            // </span>
+
+            return <span>{this.getChildrenObjects()}</span>
         }
 
         return null;

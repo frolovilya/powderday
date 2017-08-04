@@ -25,21 +25,39 @@ export default class TreeObject extends AbstractSceneObject {
     constructor(props) {
         super(props);
 
-        this.coords = this.props.coords;
+        // this.coords = this.props.coords;
 
         this.state.childrenObjects = [
             <Circle coords={this.props.treeResource.shape.coords}
                     radius={this.props.treeResource.shape.radius}
                     canvas={this.getCanvas()}
-                    parentCoords={this.coords}
-                    scale={this.scale} />,
+                    parentCoords={this.props.coords}
+                    scale={this.props.scale}
+                    key="tree_shape_1" />,
             <TreeSprite treeResource={this.props.treeResource}
                         canvas={this.getCanvas()}
-                        coords={this.coords}
-                        scale={this.scale} />
+                        coords={this.props.coords}
+                        scale={this.props.scale}
+                        key="tree_sprite_1" />
         ];
 
     }
+    //
+    // getChildrenObjects() {
+    //     return [
+    //         <Circle coords={this.props.treeResource.shape.coords}
+    //                 radius={this.props.treeResource.shape.radius}
+    //                 canvas={this.getCanvas()}
+    //                 parentCoords={this.props.coords}
+    //                 scale={this.props.scale}
+    //                 key="tree_shape_1" />,
+    //         <TreeSprite treeResource={this.props.treeResource}
+    //                     canvas={this.getCanvas()}
+    //                     coords={this.props.coords}
+    //                     scale={this.props.scale}
+    //                     key="tree_sprite_1" />
+    //     ];
+    // }
 
     getClassName() {
         return "tree";

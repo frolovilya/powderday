@@ -25,6 +25,8 @@ export default class PlayerObject extends AbstractSceneObject {
     constructor(props) {
         super(props);
 
+        // console.log("PlayerObject.constructor()");
+
         this.setScale(Math.round(PlayerResource.sprite.size.width / PlayerResource.sprite.scaleToSize.width * 100) / 100);
 
         // center
@@ -42,17 +44,21 @@ export default class PlayerObject extends AbstractSceneObject {
     }
 
     getChildrenObjects() {
+        // console.log("PlayerObject.getChildrenObjects()");
+
         return [
             <Circle coords={PlayerResource.shape.coords}
                     radius={PlayerResource.shape.radius}
                     canvas={this.getCanvas()}
                     parentCoords={this.coords}
                     scale={this.scale}
-                    ref={(shape) => this.shape = shape} />,
+                    ref={(shape) => this.shape = shape}
+                    key="player_shape_1"/>,
             <PlayerSprite coords={this.coords}
-                          scale={this.scale}
-                          canvas={this.getCanvas()}
-                          rotateAngle={this.props.angle} />
+                    scale={this.scale}
+                    canvas={this.getCanvas()}
+                    rotateAngle={this.props.angle}
+                    key="player_sprite_1"/>
         ];
     }
 
@@ -61,6 +67,8 @@ export default class PlayerObject extends AbstractSceneObject {
     }
 
     transform() {
+        // console.log("PlayerObject.transform()");
+
         let canvas = this.getCanvas();
 
         if(!this.state.movedToCenter) {

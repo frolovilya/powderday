@@ -30,7 +30,7 @@ export default class TreeFactory {
             let newWidth = Math.floor( Math.random() * (maxWidth - minWidth) + minWidth );
             let scale = tree.sprite.size.width / newWidth;
 
-            let key = "tree_" + Math.floor(Math.random() * 100000);
+            let key = "tree_" + randomPosition.x + "_" + randomPosition.y;
 
             trees.push(<TreeObject treeResource={tree}
                                    coords={randomPosition}

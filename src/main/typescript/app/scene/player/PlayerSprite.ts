@@ -23,6 +23,8 @@ export default class PlayerSprite extends Sprite {
     constructor(props) {
         super(props);
 
+        // console.log("PlayerSprite.constructor()");
+
         this.positions = PlayerResource.sprite.positions;
 
         this.initImage(PlayerResource.sprite.src, PlayerResource.sprite.size);
@@ -54,6 +56,8 @@ export default class PlayerSprite extends Sprite {
     };
 
     draw() {
+        // console.log("PlayerSprite.draw()")
+
         let canvas = this.props.canvas;
         let context = canvas.getContext();
 
