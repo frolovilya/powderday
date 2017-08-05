@@ -4,31 +4,40 @@ import {Coords} from "scene/types/Coords";
 import * as React from "react";
 import Canvas from "./Canvas";
 
-export abstract class AbstractSceneObject extends React.Component implements SceneObject {
+export abstract class AbstractSceneObject implements SceneObject {
 
-    protected layer: SceneLayer;
-
-    protected coords: Coords;
-    protected scale: number = 1;
-
-    state: {
-        childrenObjects;
-    };
+    // protected layer: SceneLayer;
+    // protected coords: Coords;
+    // protected scale: number = 1;
 
     props: {
         canvas: Canvas;
+        coords?: Coords;
+        scale?: number;
     };
 
-    constructor(props) {
-        super(props);
+    state: {
+        childrenObjects: SceneObject[];
+    };
+    //
+    // props: {
+    //     canvas: Canvas;
+    // };
 
-        // console.log("init scene object " + this.getClassName())
-        
+    constructor(props) {
+        this.props = {
+            canvas: null,
+            coords: {
+                x: 0,
+                y: 0
+            },
+            scale: 1,
+            ...props
+        };
+
         this.state = {
             childrenObjects: []
         };
-
-        // this.layer = this.props.layer;
     }
 
     // setLayer(layer: SceneLayer) {
@@ -38,72 +47,71 @@ export abstract class AbstractSceneObject extends React.Component implements Sce
     // getLayer() {
     //     return this.props.layer;
     // }
+
+    setState(stateUpdates) {
+        const state = this.state;
+        this.state = {
+            state,
+            ...stateUpdates
+        };
+
+        this.update();
+    }
     
     getCanvas() {
         return this.props.canvas;
     }
-
-    getCoords() {
-        return this.coords;
-    }
-
-    setScale(scale: number) {
-        this.scale = scale;
-    }
-    getScale() {
-        return this.scale;
-    }
-
-    isVisible() {
-        return true;
-    }
-
-    isActual() {
-        return true;
-    }
-
-    reset() {
-    }
+    //
+    // getCoords() {
+    //     return this.props.coords;
+    // }
+    // //
+    // setScale(scale: number) {
+    //     this.setState({
+    //         scale: scale
+    //     });
+    // }
+    // getScale() {
+    //     return this.state.scale;
+    // }
 
     getClassName() {
         return "generic";
     }
 
-    getSize() {
-        return {
-            width: 0,
-            height: 0
-        };
-    }
-
-    getShapes() {
-        return [];
-    }
+    // getSize() {
+    //     return {
+    //         width: 0,
+    //         height: 0
+    //     };
+    // }
+    //
+    // getShapes() {
+    //     return [];
+    // }
 
     getChildrenObjects() {
-        return this.state.childrenObjects;
+        return this.state.childrenObjects || [];
     }
 
-    render() {
-        // console.log("render scene object " + this.getClassName());
+    update(props?) {
+
+        this.props = {
+            ...(this.props),
+            ...props
+        };
         
         if(this.getCanvas()) {
 
             this.transform();
 
-            // return <span>{this.getChildrenObjects()}
-            //     {/*{React.Children.map(this.getChildrenObjects(), (child: any) => {*/}
-            //             {/*return React.cloneElement(child, {*/}
-            //                 {/*canvas: this.getCanvas()*/}
-            //             {/*})*/}
-            //         {/*}*/}
-            //     {/*)}*/}
-            // </span>
-
-            return <span>{this.getChildrenObjects()}</span>
+            this.getChildrenObjects().map((sceneObject) => {
+                sceneObject.update({
+                    canvas: this.props.canvas
+                });
+            });
         }
 
-        return null;
     }
 
     abstract transform();

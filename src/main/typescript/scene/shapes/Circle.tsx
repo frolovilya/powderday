@@ -2,8 +2,9 @@ import {Coords} from "scene/types/Coords";
 import SceneLayer from "scene/SceneLayer";
 import * as React from "react";
 import Canvas from "../Canvas";
+import {AbstractSceneObject} from "../AbstractSceneObject";
 
-export default class Circle extends React.Component {
+export default class Circle extends AbstractSceneObject {
 
     props: {
         coords: Coords;
@@ -21,7 +22,7 @@ export default class Circle extends React.Component {
         return this.props.radius;
     }
 
-    render() {
+    transform() {
         let context = this.props.canvas.getContext();
 
         context.beginPath();

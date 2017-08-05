@@ -18,7 +18,7 @@ export default class SceneLayer extends React.Component {
 
     state: {
         size: Size;
-        childrenObjects;
+        childrenObjects: SceneObject[];
         canvas: Canvas;
     };
 
@@ -86,14 +86,12 @@ export default class SceneLayer extends React.Component {
             <Canvas layerId={this.props.layerId}
                    zIndex={this.props.zIndex}
                    size={Screen.getSize()}
-                   ref={(canvas: Canvas) => this.canvas = canvas } />{this.getChildrenObjects()}
-            {/*{React.Children.map(this.getChildrenObjects(), (child: any) => {*/}
-                    {/*return React.cloneElement(child, {*/}
-                        {/*// ref: (obj: SceneObject) => { this.addObjectReference(obj) }*/}
-                        {/*canvas: this.state.canvas*/}
-                    {/*})*/}
-                {/*}*/}
-            {/*)}*/}
+                   ref={(canvas: Canvas) => this.canvas = canvas } />
+             {this.getChildrenObjects().map((sceneObject) => {
+                sceneObject.update({
+                    canvas: this.state.canvas
+                });
+            })}
         </span>
     }
 

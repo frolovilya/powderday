@@ -3,8 +3,10 @@ import {Size} from "scene/types/Size";
 import SceneLayer from "./SceneLayer";
 import * as React from "react";
 import Canvas from "scene/Canvas";
+import {AbstractSceneObject} from "./AbstractSceneObject";
+import {SceneObject} from "scene/SceneObject";
 
-export abstract class Sprite extends React.Component {
+export abstract class Sprite extends AbstractSceneObject {
 
     protected image: HTMLImageElement;
     protected size: Size;
@@ -19,8 +21,11 @@ export abstract class Sprite extends React.Component {
     };
 
     state: {
-        imageLoaded: boolean;
+        childrenObjects: SceneObject[];
+        imageLoaded: boolean
     };
+
+    // private imageLoaded: boolean = false;
 
     // constructor(imageSrc: string, size: Size, coords: Coords = {x: 0, y: 0}) {
     //     this.image = new Image();
@@ -34,9 +39,7 @@ export abstract class Sprite extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            imageLoaded: false
-        };
+        this.state.imageLoaded = false;
     }
 
     protected initImage(imageSrc: string, size: Size) {
@@ -69,12 +72,10 @@ export abstract class Sprite extends React.Component {
         return this.props.coords;
     }
 
-    render() {
+    transform() {
         if(this.state.imageLoaded) {
             this.draw()
         }
-
-        return null;
     }
 
     abstract draw();

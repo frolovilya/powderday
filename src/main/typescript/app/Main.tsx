@@ -121,9 +121,9 @@ export default class Main {
 
         (window as any).game = this;
 
-        window.setTimeout(() => {
-            this.startGame();
-        }, 2000);
+        // window.setTimeout(() => {
+        //     this.startGame();
+        // }, 2000);
     }
 
     update() {

@@ -2,6 +2,8 @@ import SceneLayer from "scene/SceneLayer";
 import PlayerObject from "app/scene/player/PlayerObject";
 import * as React from "react";
 import { connect } from 'react-redux'
+import {SceneObject} from "../../../scene/SceneObject";
+import store from "app/Store";
 
 export default class PlayerLayer extends SceneLayer {
 
@@ -30,7 +32,24 @@ export default class PlayerLayer extends SceneLayer {
             }
         };
 
-        this.ConnectedPlayerObject = connect(mapStateToProps)(PlayerObject);
+        const wrap = function(mapStateToProps: (state) => object, sceneObject: SceneObject) {
+            store.subscribe(() => {
+                sceneObject.update(mapStateToProps(store.getState()));
+            });
+            
+            return sceneObject;
+        };
+
+        // this.ConnectedPlayerObject = connect(mapStateToProps)(PlayerObject);
+        //
+        //
+
+        this.state.childrenObjects = [
+            wrap(mapStateToProps, new PlayerObject({
+                canvas: this.getCanvas()
+            }))
+        ]
+
     }
 
     // private mapStateToProps = (state) => {
@@ -39,14 +58,14 @@ export default class PlayerLayer extends SceneLayer {
     //     }
     // };
 
-    getChildrenObjects() {
-        // console.log("PlayerLayer.getChildrenObjects()");
-
-        // const ConnectedPlayerObject = connect(mapStateToProps)(PlayerObject);
-
-        return [
-            <this.ConnectedPlayerObject canvas={this.getCanvas()} key="player_1" />
-        ];
-    }
+    // getChildrenObjects() {
+    //     // console.log("PlayerLayer.getChildrenObjects()");
+    //
+    //     // const ConnectedPlayerObject = connect(mapStateToProps)(PlayerObject);
+    //
+    //     return [
+    //         <this.ConnectedPlayerObject canvas={this.getCanvas()} key="player_1" />
+    //     ];
+    // }
 
 }

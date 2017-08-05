@@ -8,6 +8,8 @@ import Forest from "app/scene/trees/Forest";
 import * as React from "react";
 import Canvas from "../../../scene/Canvas";
 import { connect } from 'react-redux'
+import {SceneObject} from "../../../scene/SceneObject";
+import store from "app/Store";
 
 export default class TreesLayer extends SceneLayer {
 
@@ -17,19 +19,20 @@ export default class TreesLayer extends SceneLayer {
     //     childrenObjects: any;
     // };
 
-    private ConnectedForest;
+    // private ConnectedForest;
 
     constructor(props) {
         super(props);
 
         // console.log("init TreesLayer");
 
-        // this.state.childrenObjects = [
-        //     <Forest key="forest_1" />
-        // ];
+        const wrap = function(mapStateToProps: (state) => object, sceneObject: SceneObject) {
+            store.subscribe(() => {
+                sceneObject.update(mapStateToProps(store.getState()));
+            });
 
-        (window as any).treesLayer = this;
-
+            return sceneObject;
+        };
 
         const mapStateToProps = (state) => {
             return {
@@ -38,13 +41,23 @@ export default class TreesLayer extends SceneLayer {
             }
         };
 
-        this.ConnectedForest = connect(mapStateToProps)(Forest);
+        this.state.childrenObjects = [
+            wrap(mapStateToProps, new Forest({
+                canvas: this.getCanvas(),
+                Sx: 0,
+                Sy: 0
+            }))
+        ];
+
+        (window as any).treesLayer = this;
+
+        // this.ConnectedForest = connect(mapStateToProps)(Forest);
     }
 
-    getChildrenObjects() {
-        return [
-            <this.ConnectedForest canvas={this.getCanvas()} key="forest_1" />
-        ];
-    }
+    // getChildrenObjects() {
+    //     return [
+    //         <this.ConnectedForest canvas={this.getCanvas()} key="forest_1" />
+    //     ];
+    // }
 
 }

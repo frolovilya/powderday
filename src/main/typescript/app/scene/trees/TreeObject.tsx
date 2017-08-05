@@ -13,7 +13,7 @@ import Canvas from "../../../scene/Canvas";
 export default class TreeObject extends AbstractSceneObject {
 
     // private sprite: TreeSprite;
-    private shape: Circle;
+    // private shape: Circle;
     
     props: {
         treeResource: any;
@@ -27,19 +27,47 @@ export default class TreeObject extends AbstractSceneObject {
 
         // this.coords = this.props.coords;
 
+        const wrap = function(getUpdateProps: () => object, sceneObject: SceneObject) {
+            return {
+                update: function(props) {
+                    const propsToUpdate = getUpdateProps();
+                    sceneObject.update({
+                        ...propsToUpdate,
+                        ...props
+                    })
+                }
+            }
+        };
+
         this.state.childrenObjects = [
-            <Circle coords={this.props.treeResource.shape.coords}
-                    radius={this.props.treeResource.shape.radius}
-                    canvas={this.getCanvas()}
-                    parentCoords={this.props.coords}
-                    scale={this.props.scale}
-                    key="tree_shape_1" />,
-            <TreeSprite treeResource={this.props.treeResource}
-                        canvas={this.getCanvas()}
-                        coords={this.props.coords}
-                        scale={this.props.scale}
-                        key="tree_sprite_1" />
-        ];
+            new Circle({
+                coords: this.props.treeResource.shape.coords,
+                radius: this.props.treeResource.shape.radius,
+                canvas: this.getCanvas(),
+                parentCoords: this.props.coords,
+                scale: this.props.scale
+            }),
+            new TreeSprite({
+                treeResource: this.props.treeResource,
+                coords: this.props.coords,
+                scale: this.props.scale,
+                canvas: this.getCanvas()
+            })
+        ]
+
+        // this.state.childrenObjects = [
+        //     <Circle coords={this.props.treeResource.shape.coords}
+        //             radius={this.props.treeResource.shape.radius}
+        //             canvas={this.getCanvas()}
+        //             parentCoords={this.props.coords}
+        //             scale={this.props.scale}
+        //             key="tree_shape_1" />,
+        //     <TreeSprite treeResource={this.props.treeResource}
+        //                 canvas={this.getCanvas()}
+        //                 coords={this.props.coords}
+        //                 scale={this.props.scale}
+        //                 key="tree_sprite_1" />
+        // ];
 
     }
     //
@@ -90,8 +118,8 @@ export default class TreeObject extends AbstractSceneObject {
     //     return this.getLayer().getCanvas().getTranslation().y + this.coords.y + this.getSize().height > 0;
     // }
 
-    getShapes() {
-        return [this.shape];
-    }
+    // getShapes() {
+    //     return [this.shape];
+    // }
 
 }

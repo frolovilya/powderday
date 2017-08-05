@@ -14,10 +14,6 @@ export default class PlayerSprite extends Sprite {
         scale: number;
     };
 
-    state: {
-        imageLoaded: boolean;
-    };
-
     private positions: any;
 
     constructor(props) {

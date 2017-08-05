@@ -5,28 +5,34 @@ import {Coords} from "scene/types/Coords";
 import * as React from "react";
 import Canvas from "./Canvas";
 
-export interface SceneObject extends React.Component {
+export interface SceneObject {
 
 	getClassName(): string;
 
 	// setLayer(layer: SceneLayer);
 	// getLayer(): SceneLayer;
 	
-	getCanvas(): Canvas;
+	// getCanvas(): Canvas;
+    //
+	// getShapes(): Circle[];
+    //
+	// getCoords(): Coords;
+    //
+	// getSize(): Size;
 
-	getShapes(): Circle[];
+	// setScale(scale: number);
+	// getScale(): number;
 
-	getCoords(): Coords;
-
-	getSize(): Size;
-
-	setScale(scale: number);
-	getScale(): number;
-
-	isVisible(): boolean;
-	isActual(): boolean;
-
-	reset(): void;
+	// isVisible(): boolean;
+	// isActual(): boolean;
+    //
+	// reset(): void;
 	//render(): void;
+
+	getChildrenObjects(): SceneObject[];
+
+	update(props?);
+
+	// transform(): void;
 
 }
