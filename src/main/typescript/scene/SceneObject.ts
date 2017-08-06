@@ -9,30 +9,14 @@ export interface SceneObject {
 
 	getClassName(): string;
 
-	// setLayer(layer: SceneLayer);
-	// getLayer(): SceneLayer;
-	
-	// getCanvas(): Canvas;
-    //
-	// getShapes(): Circle[];
-    //
-	// getCoords(): Coords;
-    //
-	// getSize(): Size;
-
-	// setScale(scale: number);
-	// getScale(): number;
-
-	// isVisible(): boolean;
-	// isActual(): boolean;
-    //
-	// reset(): void;
-	//render(): void;
+	setState(stateUpdate): void;
 
 	getChildrenObjects(): SceneObject[];
 
-	update(props?);
+	registerObject(): void;
 
-	// transform(): void;
+	update(props?): void;
+
+	transform(): void;
 
 }

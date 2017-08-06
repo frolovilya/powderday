@@ -5,6 +5,7 @@ import * as React from "react";
 import {Coords} from "scene/types/Coords";
 import {Size} from "scene/types/Size";
 import Canvas from "../../../scene/Canvas";
+import objectsRegistry, {registerSceneObjectsAction} from "scene/interactions/ObjectsRegistry";
 
 export default class Forest extends AbstractSceneObject {
 
@@ -77,20 +78,19 @@ export default class Forest extends AbstractSceneObject {
 
     private cleanupTrees() {
         let currentPosition = this.getCurrentScreenPosition();
-        for(let i = 0; i < currentPosition.y; i++) {
+        for (let i = 0; i < currentPosition.y; i++) {
             this.treesMap[i] = {};
         }
     }
 
     private getTreesAroundCurrentPosition() {
         let curPos = this.getCurrentScreenPosition();
-        // console.log("current position", curPos);
 
         if(this.prevPosition.x != curPos.x || this.prevPosition.y != curPos.y) {
             this.cleanupTrees();
 
             this.cachedTrees = [].concat(this.plantRect({x: curPos.x - 1, y: curPos.y}))
-                .concat(this.plantRect(curPos))
+                .concat(this.getTreesOnCurrentPosition(curPos))
                 .concat(this.plantRect({x: curPos.x + 1, y: curPos.y}))
                 .concat(this.plantRect({x: curPos.x - 1, y: curPos.y + 1}))
                 .concat(this.plantRect({x: curPos.x, y: curPos.y + 1}))
@@ -100,6 +100,14 @@ export default class Forest extends AbstractSceneObject {
         this.prevPosition = curPos;
 
         return this.cachedTrees;
+    }
+
+    private getTreesOnCurrentPosition(curPos: Coords) {
+        const trees = this.plantRect(curPos);
+
+        objectsRegistry.dispatch(registerSceneObjectsAction(trees));
+
+        return trees;
     }
 
     private moveForest() {

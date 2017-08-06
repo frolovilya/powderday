@@ -18,6 +18,9 @@ import PlayerLayer from "app/scene/player/PlayerLayer";
 import { Provider } from 'react-redux';
 import store from "app/Store";
 import {moveAction} from "app/Store";
+import Game, {GameState} from "./ui/Game";
+import { connect } from 'react-redux'
+
 
 export default class Main {
 
@@ -32,14 +35,25 @@ export default class Main {
 
          */
 
+        const mapStateToProps = (state) => {
+            return {
+                gameState: state.game.state,
+                score: state.scene.movement.Sy
+            }
+        };
+
+        const GameController = connect(mapStateToProps)(Game);
+
         ReactDOM.render(
             <Provider store={store}>
-                <Scene ref={(scene) => { this.scene = scene; }}>
-                    <PlayerLayer layerId="player" zIndex={10} />
-                    <TreesLayer layerId="tree" zIndex={100} />
-                </Scene>
+                <GameController>
+                    <Scene ref={(scene) => { this.scene = scene; }}>
+                        <PlayerLayer layerId="player" zIndex={10} />
+                        <TreesLayer layerId="tree" zIndex={100} />
+                    </Scene>
+                </GameController>
             </Provider>,
-            document.getElementById("scene")
+            document.getElementById("game")
         );
 
     }
@@ -94,36 +108,9 @@ export default class Main {
 
     // init game state
     init() {
-        CommonState.reset();
-
-        // initialize scene
-        // this.scene = new Scene("scene");
-        // this.scene.resize(Screen.getSize());
-        //
-        // ReactDOM.render(React.createElement(<Scene />, null), document.getElementById("scene"));
-
-        // this.initPlayerLayer();
-        // this.initTreesLayer();
-        // this.initDebugLayer();
-
         this.initScene();
 
-        // this.scene.setState({
-        //     size: Screen.getSize()
-        // });
-
-        // pre-render scene
-        // this.scene.reset();
-        // this.scene.render();
-
-        // this.bindButtonsHandlers();
-        // this.handleObjectsIntersections();
-
         (window as any).game = this;
-
-        // window.setTimeout(() => {
-        //     this.startGame();
-        // }, 2000);
     }
 
     update() {
@@ -136,5 +123,6 @@ export default class Main {
         store.dispatch(moveAction(Accelerometer.getAcceleration()));
 
     }
+
     
 }

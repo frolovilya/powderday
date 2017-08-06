@@ -21,16 +21,16 @@ export default class Scene extends React.Component {
         }
     }
 
-    getSize(): Size {
-        return this.state.size;
-    }
-
-    getLayers() {
-        return React.Children.map(this.props.children, function() {
-            console.log(this, arguments);
-            return this;
-        });
-    }
+    // getSize(): Size {
+    //     return this.state.size;
+    // }
+    //
+    // getLayers() {
+    //     return React.Children.map(this.props.children, function() {
+    //         console.log(this, arguments);
+    //         return this;
+    //     });
+    // }
 
     render() {
         // console.log("Render Main");

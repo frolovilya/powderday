@@ -9,8 +9,6 @@ export default class SceneLayer extends React.Component {
 
     protected canvas: Canvas;
 
-    private objectsList: SceneObject[] = [];
-    
     props: {
         layerId: string;
         zIndex: number;
@@ -25,8 +23,6 @@ export default class SceneLayer extends React.Component {
     constructor(props) {
         super(props);
 
-        // console.log("init SceneLayer");
-
         this.state = {
             size: Screen.getSize(),
             childrenObjects: [],
@@ -36,52 +32,20 @@ export default class SceneLayer extends React.Component {
     }
 
     componentDidMount() {
-        // this.forceUpdateReferencedObjects();
         this.setState({
             canvas: this.canvas
         });
     }
 
-    getId() {
-        return this.props.layerId;
-    }
-    
-    // setCanvas(canvas: Canvas) {
-    //     this.setState({
-    //         canvas: canvas
-    //     })
-    // }
-
     getCanvas() {
         return this.canvas;
     }
-
-    // isPointVisible(point: Coords) {
-    //     let sceneSize = Screen.getSize();
-    //     return ( point.x > 0 && point.x < sceneSize.width
-    //         && point.y > 0 && point.y < sceneSize.height );
-    // }
-
-    // addObjectReference(sceneObject: SceneObject) {
-    //     sceneObject.setLayer(this);
-    //     this.objectsList.push(sceneObject);
-    // }
-    //
-    // getObjectsReferences() {
-    //     return this.objectsList;
-    // }
-    //
-    // forceUpdateReferencedObjects() {
-    //     this.objectsList.forEach((obj: SceneObject) => obj.forceUpdate())
-    // }
 
     getChildrenObjects() {
         return this.state.childrenObjects;
     }
 
     render() {
-        // console.log("render layer " + this.getId());
-
         return <span>
             <Canvas layerId={this.props.layerId}
                    zIndex={this.props.zIndex}
@@ -93,12 +57,6 @@ export default class SceneLayer extends React.Component {
                 });
             })}
         </span>
-    }
-
-    reset() {
-        // this.objectsList
-        //     .filter((sceneObject) => sceneObject.isActual())
-        //     .map((sceneObject) => sceneObject.reset());
     }
 
 }

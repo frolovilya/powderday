@@ -3,63 +3,72 @@ import Scene from "scene/Scene";
 import {SceneObject} from "scene/SceneObject";
 import {Coords} from "scene/types/Coords";
 import SceneLayer from "scene/SceneLayer";
+import objectsRegistry from "./ObjectsRegistry";
 
 export default class ObjectsIntersections {
 
     private intersectCallbacks = {};
+    
+    constructor() {
+        objectsRegistry.subscribe(() => {
+            this.check(objectsRegistry.getState());
+        });
+    }
 
-    check(scene: Scene) {
+    private check(sceneObjectsRegistry) {
 
-        let sceneObjects = [];
-        let sceneLayers = scene.getLayers();
-        for(let sceneLayer of sceneLayers) {
-            sceneObjects = sceneObjects.concat(sceneLayer.getObjects());
-        }
-
-        // let sceneObjects = scene.getLayers()
-        //     .map((layer: SceneLayer) => layer.getObjects())
-        //     .reduce((a, b) => a.concat(b), []);
+        // let sceneObjects = [];
+        // let sceneLayers = scene.getLayers();
+        // for(let sceneLayer of sceneLayers) {
+        //     sceneObjects = sceneObjects.concat(sceneLayer.getObjects());
+        // }
         //
-        // Object.keys(this.intersectCallbacks).map((callbackName) => {
-        //
-        //     // let objectsByClasses = callbackName.split(",").map((className) => {
-        //     //     return sceneObjects.filter(sceneObject => sceneObject.getClassName() == className)
-        //     // })
-        //
-        //     let [classA, classB] = callbackName.split(",");
-        //     sceneObjects.reduce(([objectsA, objectsB], sceneObject) => {
-        //
-        //         if(sceneObject.getClassName() == classA) {
-        //             objectsA.push(sceneObject)
-        //         } else if(sceneObject.getClassName() == classB) {
-        //             objectsB.push(sceneObject)
-        //         }
-        //
-        //         return [objectsA, objectsB]
-        //
-        //     }, [[], []]);
-        //
-        //
-        //
-        // });
+        // // let sceneObjects = scene.getLayers()
+        // //     .map((layer: SceneLayer) => layer.getObjects())
+        // //     .reduce((a, b) => a.concat(b), []);
+        // //
+        // // Object.keys(this.intersectCallbacks).map((callbackName) => {
+        // //
+        // //     // let objectsByClasses = callbackName.split(",").map((className) => {
+        // //     //     return sceneObjects.filter(sceneObject => sceneObject.getClassName() == className)
+        // //     // })
+        // //
+        // //     let [classA, classB] = callbackName.split(",");
+        // //     sceneObjects.reduce(([objectsA, objectsB], sceneObject) => {
+        // //
+        // //         if(sceneObject.getClassName() == classA) {
+        // //             objectsA.push(sceneObject)
+        // //         } else if(sceneObject.getClassName() == classB) {
+        // //             objectsB.push(sceneObject)
+        // //         }
+        // //
+        // //         return [objectsA, objectsB]
+        // //
+        // //     }, [[], []]);
+        // //
+        // //
+        // //
+        // // });
 
 
         // get callback classes
         for(let callbackName in this.intersectCallbacks) {
             let [classA, classB] = callbackName.split(",");
 
-            let aObjects = [];
-            let bObjects = [];
-            for(let sceneObject of sceneObjects) {
-                if(sceneObject.getClassName() == classA) {
-                    aObjects.push(sceneObject)
-                } else if(sceneObject.getClassName() == classB) {
-                    bObjects.push(sceneObject);
-                }
-            }
+            // let aObjects = [];
+            // let bObjects = [];
+            // for(let sceneObject of sceneObjects) {
+            //     if(sceneObject.getClassName() == classA) {
+            //         aObjects.push(sceneObject)
+            //     } else if(sceneObject.getClassName() == classB) {
+            //         bObjects.push(sceneObject);
+            //     }
+            // }
 
-            if(aObjects.length > 0 && bObjects.length > 0) {
+            const aObjects = sceneObjectsRegistry[classA];
+            const bObjects = sceneObjectsRegistry[classB];
 
+            if(aObjects && bObjects) {
                 for (let i = 0; i < aObjects.length; i++) {
                     for (let j = 0; j < bObjects.length; j++) {
                         if (this.checkObjectsIntersection(aObjects[i], bObjects[j])) {
@@ -73,9 +82,15 @@ export default class ObjectsIntersections {
         }
     }
 
+    private getShapes(sceneObject: SceneObject) {
+        return sceneObject.getChildrenObjects().filter((sceneObject) => {
+            return sceneObject instanceof Circle;
+        });
+    }
+
     checkObjectsIntersection(objectA: SceneObject, objectB: SceneObject) {
-        let aShape = objectA.getShapes()[0];
-        let bShape = objectB.getShapes()[0];
+        let aShape = this.getShapes(objectA)[0];
+        let bShape = this.getShapes(objectB)[0];
 
         let aAbsoluteCoords = this.toAbsoluteCoords(
             this.toLayerCoords(aShape.getCoords(), objectA), objectA.getLayer());

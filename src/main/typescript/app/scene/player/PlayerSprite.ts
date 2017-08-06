@@ -8,6 +8,8 @@ import Canvas from "../../../scene/Canvas";
 export default class PlayerSprite extends Sprite {
 
     props: {
+        imageSrc: string;
+        size: Size;
         coords: Coords;
         canvas: Canvas;
         rotateAngle: number;
@@ -17,13 +19,13 @@ export default class PlayerSprite extends Sprite {
     private positions: any;
 
     constructor(props) {
-        super(props);
-
-        // console.log("PlayerSprite.constructor()");
+        super({
+            ...props,
+            imageSrc: PlayerResource.sprite.src,
+            size: PlayerResource.sprite.size
+        });
 
         this.positions = PlayerResource.sprite.positions;
-
-        this.initImage(PlayerResource.sprite.src, PlayerResource.sprite.size);
     }
 
     private getPosition = () => {
@@ -45,8 +47,6 @@ export default class PlayerSprite extends Sprite {
             position = this.positions.front;
             // context.rotate(this.props.rotateAngle * 3.14/180 / 2);
         }
-
-        // console.log("getPosition", this.props.rotateAngle, position);
 
         return position;
     };

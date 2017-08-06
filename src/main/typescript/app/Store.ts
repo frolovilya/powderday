@@ -1,18 +1,29 @@
 import {createStore} from "redux";
+import { combineReducers } from 'redux'
 import Model from "app/Model";
+import {GameState} from "./ui/Game";
+import {SceneObject} from "../scene/SceneObject";
 
 const defaultState = {
-    acceleration: {
-        x: 0,
-        y: 0,
-        z: 0
+    game: {
+        state: GameState.STOPPED
     },
-    movement: {
-        angle: 0,
-        Vy: 0,
-        Vx: 0,
-        Sx: 0,
-        Sy: 0
+    scene: {
+        acceleration: {
+            x: 0,
+            y: 0,
+            z: 0
+        },
+        movement: {
+            angle: 0,
+            Vy: 0,
+            Vx: 0,
+            Sx: 0,
+            Sy: 0
+        }
+    },
+    sceneInteractions: {
+        objects: {}
     }
 };
 
@@ -25,7 +36,7 @@ export const moveAction = (acceleration) => {
 
 (window as any).moveAction = moveAction;
 
-const systemReducer = (state = defaultState, action) => {
+const sceneReducer = (state = defaultState.scene, action) => {
     switch(action.type) {
         case "MOVE": {
             const acc = action.acceleration;
@@ -50,12 +61,81 @@ const systemReducer = (state = defaultState, action) => {
                 }
             }
         }
+        default:
+            return state;
     }
-
-    return state;
 };
 
-let store = createStore(systemReducer);
+
+const gameStateReducer = (state = defaultState.game, action) => {
+    switch(action.type) {
+        case "START":
+            return {
+                ...state,
+                state: GameState.STARTED
+            };
+        case "PAUSE":
+            return {
+                ...state,
+                state: GameState.PAUSED
+            };
+        case "HIT_A_TREE":
+            return {
+                ...state,
+                state: GameState.HIT_A_TREE
+            };
+        default:
+            return state;
+    }
+};
+
+export const startGameAction = () => {
+    return {
+        type: "START"
+    }
+};
+
+export const pauseGameAction = () => {
+    return {
+        type: "PAUSE"
+    }
+};
+
+export const hitATreeAction = () => {
+    return {
+        type: "HIT_A_TREE"
+    }
+};
+
+// const sceneInteractionsReducer = (state = defaultState.sceneInteractions, action) => {
+//     switch(action.type) {
+//         case "REGISTER_SCENE_OBJECT":
+//             return {
+//                 ...state,
+//                 objects: {
+//                     ...(state.objects),
+//                     [action.className]: action.sceneObject
+//                 }
+//             };
+//         default:
+//             return state;
+//     }
+// };
+//
+// export const registerSceneObjectAction = (sceneObject: SceneObject) => {
+//     return {
+//         type: "REGISTER_SCENE_OBJECT",
+//         className: sceneObject.getClassName(),
+//         sceneObject: sceneObject
+//     }
+// };
+
+
+let store = createStore(combineReducers({
+    game: gameStateReducer,
+    scene: sceneReducer/*,
+    sceneInteractions: sceneInteractionsReducer*/
+}));
 (window as any).store = store;
 
 export default store;

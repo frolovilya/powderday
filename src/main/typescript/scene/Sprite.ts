@@ -9,13 +9,11 @@ import {SceneObject} from "scene/SceneObject";
 export abstract class Sprite extends AbstractSceneObject {
 
     protected image: HTMLImageElement;
-    protected size: Size;
-    //
-    // protected coords: Coords;
-
-    // protected isImageLoaded: boolean = false;
+    // protected size: Size;
 
     props: {
+        imageSrc: string,
+        size: Size;
         coords: Coords;
         canvas: Canvas;
     };
@@ -25,43 +23,27 @@ export abstract class Sprite extends AbstractSceneObject {
         imageLoaded: boolean
     };
 
-    // private imageLoaded: boolean = false;
-
-    // constructor(imageSrc: string, size: Size, coords: Coords = {x: 0, y: 0}) {
-    //     this.image = new Image();
-    //     this.image.src = imageSrc;
-    //
-    //     this.size = size;
-    //
-    //     this.coords = coords;
-    // }
-
     constructor(props) {
         super(props);
 
         this.state.imageLoaded = false;
-    }
 
-    protected initImage(imageSrc: string, size: Size) {
         this.image = new Image();
-        this.image.src = imageSrc;
+        this.image.src = this.props.imageSrc;
 
         this.image.onload = () => {
-            // console.log("image loaded!");
             this.setState({
                 imageLoaded: true
             });
         };
-
-        this.size = size;
     }
 
     getSize() {
-        return this.size;
+        return this.props.size;
     }
 
     getRatio() {
-        return this.size.width / this.size.height;
+        return this.props.size.width / this.props.size.height;
     }
 
     getImage() {

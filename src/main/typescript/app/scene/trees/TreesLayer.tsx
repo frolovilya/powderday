@@ -13,18 +13,8 @@ import store from "app/Store";
 
 export default class TreesLayer extends SceneLayer {
 
-    // state: {
-    //     size: Size;
-    //     canvas: Canvas;
-    //     childrenObjects: any;
-    // };
-
-    // private ConnectedForest;
-
     constructor(props) {
         super(props);
-
-        // console.log("init TreesLayer");
 
         const wrap = function(mapStateToProps: (state) => object, sceneObject: SceneObject) {
             store.subscribe(() => {
@@ -36,8 +26,8 @@ export default class TreesLayer extends SceneLayer {
 
         const mapStateToProps = (state) => {
             return {
-                Sx: state.movement.Sx,
-                Sy: state.movement.Sy
+                Sx: state.scene.movement.Sx,
+                Sy: state.scene.movement.Sy
             }
         };
 
@@ -50,14 +40,6 @@ export default class TreesLayer extends SceneLayer {
         ];
 
         (window as any).treesLayer = this;
-
-        // this.ConnectedForest = connect(mapStateToProps)(Forest);
     }
-
-    // getChildrenObjects() {
-    //     return [
-    //         <this.ConnectedForest canvas={this.getCanvas()} key="forest_1" />
-    //     ];
-    // }
 
 }

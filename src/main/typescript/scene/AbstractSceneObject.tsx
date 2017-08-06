@@ -3,12 +3,10 @@ import SceneLayer from "scene/SceneLayer";
 import {Coords} from "scene/types/Coords";
 import * as React from "react";
 import Canvas from "./Canvas";
+import Circle from "./shapes/Circle";
+import objectsRegistry, {registerSceneObjectsAction} from "scene/interactions/ObjectsRegistry";
 
 export abstract class AbstractSceneObject implements SceneObject {
-
-    // protected layer: SceneLayer;
-    // protected coords: Coords;
-    // protected scale: number = 1;
 
     props: {
         canvas: Canvas;
@@ -19,10 +17,6 @@ export abstract class AbstractSceneObject implements SceneObject {
     state: {
         childrenObjects: SceneObject[];
     };
-    //
-    // props: {
-    //     canvas: Canvas;
-    // };
 
     constructor(props) {
         this.props = {
@@ -40,14 +34,6 @@ export abstract class AbstractSceneObject implements SceneObject {
         };
     }
 
-    // setLayer(layer: SceneLayer) {
-    //     console.log("set layer!", layer);
-    //     this.layer = layer;
-    // }
-    // getLayer() {
-    //     return this.props.layer;
-    // }
-
     setState(stateUpdates) {
         const state = this.state;
         this.state = {
@@ -61,38 +47,24 @@ export abstract class AbstractSceneObject implements SceneObject {
     getCanvas() {
         return this.props.canvas;
     }
-    //
-    // getCoords() {
-    //     return this.props.coords;
-    // }
-    // //
-    // setScale(scale: number) {
-    //     this.setState({
-    //         scale: scale
-    //     });
-    // }
-    // getScale() {
-    //     return this.state.scale;
-    // }
 
     getClassName() {
         return "generic";
     }
 
-    // getSize() {
-    //     return {
-    //         width: 0,
-    //         height: 0
-    //     };
-    // }
-    //
-    // getShapes() {
-    //     return [];
-    // }
-
     getChildrenObjects() {
         return this.state.childrenObjects || [];
     }
+
+    registerObject() {
+        objectsRegistry.dispatch(registerSceneObjectsAction(this));
+    }
+
+    // getShapes() {
+    //     return this.getChildrenObjects().filter((sceneObject) => {
+    //         return sceneObject instanceof Circle;
+    //     });
+    // }
 
     update(props?) {
 
@@ -107,13 +79,13 @@ export abstract class AbstractSceneObject implements SceneObject {
 
             this.getChildrenObjects().map((sceneObject) => {
                 sceneObject.update({
-                    canvas: this.props.canvas
+                    canvas: this.getCanvas()
                 });
             });
         }
 
     }
 
-    abstract transform();
+    transform() {};
 
 }
