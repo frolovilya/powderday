@@ -1,11 +1,11 @@
-import SceneLayer from "scene/SceneLayer";
-import Circle from "scene/shapes/Circle";
-import {Size} from "scene/types/Size";
-import {Coords} from "scene/types/Coords";
-import * as React from "react";
 import Canvas from "./Canvas";
+import Coords from "scene/types/Coords";
 
 export interface SceneObject {
+
+	getCanvas(): Canvas;
+
+	getCoords(): Coords;
 
 	getClassName(): string;
 

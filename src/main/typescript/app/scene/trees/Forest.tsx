@@ -2,10 +2,11 @@ import {AbstractSceneObject} from "scene/AbstractSceneObject";
 import Screen from "device/Screen"
 import TreeFactory from "app/scene/trees/TreeFactory";
 import * as React from "react";
-import {Coords} from "scene/types/Coords";
+import Coords from "scene/types/Coords";
 import {Size} from "scene/types/Size";
 import Canvas from "../../../scene/Canvas";
-import objectsRegistry, {registerSceneObjectsAction} from "scene/interactions/ObjectsRegistry";
+import {Point} from "scene/types/Point";
+import store, {registerSceneObjectsAction} from "../../Store";
 
 export default class Forest extends AbstractSceneObject {
 
@@ -40,7 +41,7 @@ export default class Forest extends AbstractSceneObject {
         return this.getTreesAroundCurrentPosition();
     }
 
-    private getCurrentScreenPosition(): Coords {
+    private getCurrentScreenPosition(): Point {
         let sceneSize = Screen.getSize();
 
         return {
@@ -49,14 +50,14 @@ export default class Forest extends AbstractSceneObject {
         }
     }
 
-    private getScreenRectByPosition(position: Coords): [Coords, Size] {
+    private getScreenRectByPosition(position: Point): [Coords, Size] {
         let sceneSize = Screen.getSize();
 
         return [
-            {
+            new Coords({
                 x: position.x * sceneSize.width,
                 y: position.y * sceneSize.height
-            },
+            }),
             {
                 width: sceneSize.width,
                 height: sceneSize.height
@@ -64,7 +65,7 @@ export default class Forest extends AbstractSceneObject {
         ]
     }
 
-    private plantRect(position: Coords) {
+    private plantRect(position: Point) {
         if(!this.treesMap[position.y])
             this.treesMap[position.y] = {};
 
@@ -102,10 +103,10 @@ export default class Forest extends AbstractSceneObject {
         return this.cachedTrees;
     }
 
-    private getTreesOnCurrentPosition(curPos: Coords) {
+    private getTreesOnCurrentPosition(curPos: Point) {
         const trees = this.plantRect(curPos);
 
-        objectsRegistry.dispatch(registerSceneObjectsAction(trees));
+        store.dispatch(registerSceneObjectsAction(trees));
 
         return trees;
     }

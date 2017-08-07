@@ -1,4 +1,4 @@
-import {Coords} from "scene/types/Coords";
+import Coords from "scene/types/Coords";
 import {Size} from "scene/types/Size";
 import SceneLayer from "./SceneLayer";
 import * as React from "react";
@@ -7,6 +7,8 @@ import {AbstractSceneObject} from "./AbstractSceneObject";
 import {SceneObject} from "scene/SceneObject";
 
 export abstract class Sprite extends AbstractSceneObject {
+
+    static imageCache = {};
 
     protected image: HTMLImageElement;
     // protected size: Size;
@@ -26,16 +28,23 @@ export abstract class Sprite extends AbstractSceneObject {
     constructor(props) {
         super(props);
 
-        this.state.imageLoaded = false;
+        if(!Sprite.imageCache[this.props.imageSrc]) {
+            this.image = new Image();
+            this.image.src = this.props.imageSrc;
 
-        this.image = new Image();
-        this.image.src = this.props.imageSrc;
+            this.state.imageLoaded = false;
+            this.image.onload = () => {
+                Sprite.imageCache[this.props.imageSrc] = this.image;
 
-        this.image.onload = () => {
-            this.setState({
-                imageLoaded: true
-            });
-        };
+                this.setState({
+                    imageLoaded: true
+                });
+            };
+        } else {
+            this.image = Sprite.imageCache[this.props.imageSrc];
+            this.state.imageLoaded = true;
+        }
+
     }
 
     getSize() {

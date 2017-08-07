@@ -1,6 +1,5 @@
 import {SceneObject} from "scene/SceneObject";
 import {Size} from "scene/types/Size";
-import {Coords} from "scene/types/Coords";
 import Screen from "device/Screen"
 import * as React from "react";
 import Canvas from "scene/Canvas";

@@ -3,7 +3,7 @@
  */
 import {SceneObject} from "scene/SceneObject";
 import SceneLayer from "scene/SceneLayer";
-import {Coords} from "scene/types/Coords";
+import Coords from "scene/types/Coords";
 import Circle from "scene/shapes/Circle";
 import {AbstractSceneObject} from "scene/AbstractSceneObject";
 import TreeSprite from "./TreeSprite";
@@ -24,15 +24,14 @@ export default class TreeObject extends AbstractSceneObject {
 
         this.state.childrenObjects = [
             new Circle({
-                coords: this.props.treeResource.shape.coords,
+                coords: new Coords(this.props.treeResource.shape.coords, this.props.coords),
                 radius: this.props.treeResource.shape.radius,
                 canvas: this.getCanvas(),
-                parentCoords: this.props.coords,
                 scale: this.props.scale
             }),
             new TreeSprite({
                 treeResource: this.props.treeResource,
-                coords: this.props.coords,
+                coords: new Coords({x: 0, y: 0}, this.props.coords),
                 scale: this.props.scale,
                 canvas: this.getCanvas()
             })

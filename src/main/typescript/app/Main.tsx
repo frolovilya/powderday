@@ -16,15 +16,17 @@ import * as ReactDOM from "react-dom";
 import * as React from "react";
 import PlayerLayer from "app/scene/player/PlayerLayer";
 import { Provider } from 'react-redux';
-import store from "app/Store";
+import store, {hitATreeAction, pauseGameAction} from "app/Store";
 import {moveAction} from "app/Store";
-import Game, {GameState} from "./ui/Game";
+import Game from "./ui/Game";
 import { connect } from 'react-redux'
+import ObjectsIntersections from "../scene/interactions/ObjectsIntersections";
+import GameController from "./GameController";
 
 
 export default class Main {
 
-    private animation = new Animation();
+    // private animation = new Animation();
 
     private scene;
 
@@ -35,38 +37,44 @@ export default class Main {
 
          */
 
-        const mapStateToProps = (state) => {
+        // new GameController();
+
+        const GameWrap = connect((state) => {
             return {
                 gameState: state.game.state,
                 score: state.scene.movement.Sy
             }
-        };
+        })(Game);
 
-        const GameController = connect(mapStateToProps)(Game);
+        // const GameControllerWrap = connect((state) => {
+        //     return {
+        //         gameState: state.game.state
+        //     }
+        // })(GameController);
 
         ReactDOM.render(
             <Provider store={store}>
-                <GameController>
+                <GameWrap>
                     <Scene ref={(scene) => { this.scene = scene; }}>
                         <PlayerLayer layerId="player" zIndex={10} />
                         <TreesLayer layerId="tree" zIndex={100} />
                     </Scene>
-                </GameController>
+                </GameWrap>
             </Provider>,
             document.getElementById("game")
         );
 
     }
 
-    private startGame() {
-        Accelerometer.startWatch(Model.parameters.time * 1000);
-        this.animation.start(() => { this.update() });
-    }
-
-    private pauseGame() {
-        this.animation.stop();
-        Accelerometer.stopWatch();
-    }
+    // private startGame() {
+    //     Accelerometer.startWatch(Model.parameters.time * 1000);
+    //     this.animation.start(() => { this.update() });
+    // }
+    //
+    // private pauseGame() {
+    //     this.animation.stop();
+    //     Accelerometer.stopWatch();
+    // }
 
     // private bindButtonsHandlers() {
     //     // start game button
@@ -110,19 +118,26 @@ export default class Main {
     init() {
         this.initScene();
 
+        new ObjectsIntersections().onIntersect("player", "tree", () => {
+            console.log("INTERSECT!");
+            // store.dispatch(pauseGameAction());
+            // store.dispatch(hitATreeAction());
+            GameController.hitATree();
+        });
+
         (window as any).game = this;
     }
 
-    update() {
-        // CommonState.calculate();
-
-        // this.scene.render();
-        // this.scene.forceUpdate();
-        // this.scene.interact();
-
-        store.dispatch(moveAction(Accelerometer.getAcceleration()));
-
-    }
+    // update() {
+    //     // CommonState.calculate();
+    //
+    //     // this.scene.render();
+    //     // this.scene.forceUpdate();
+    //     // this.scene.interact();
+    //
+    //     store.dispatch(moveAction(Accelerometer.getAcceleration()));
+    //
+    // }
 
     
 }

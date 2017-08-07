@@ -10,17 +10,33 @@ export default class PlayerLayer extends SceneLayer {
     constructor(props) {
         super(props);
 
+        function select(state) {
+            return state.scene.movement
+        }
+
         const mapStateToProps = (state) => {
             return {
                 angle: state.scene.movement.angle
             }
         };
 
+        // const wrap = function(mapStateToProps: (state) => object, sceneObject: SceneObject) {
+        //     store.subscribe(() => {
+        //         sceneObject.update(mapStateToProps(store.getState()));
+        //     });
+        //
+        //     return sceneObject;
+        // };
+
+        let currentValue;
         const wrap = function(mapStateToProps: (state) => object, sceneObject: SceneObject) {
             store.subscribe(() => {
-                sceneObject.update(mapStateToProps(store.getState()));
+                let previousValue = currentValue;
+                currentValue = select(store.getState());
+                if(previousValue != currentValue)
+                    sceneObject.update(mapStateToProps(store.getState()));
             });
-            
+
             return sceneObject;
         };
 
@@ -30,6 +46,15 @@ export default class PlayerLayer extends SceneLayer {
             }))
         ]
 
+    }
+
+    componentDidMount() {
+        this.getCanvas().translate({
+            x: this.getCanvas().getElement().width / 2,
+            y: this.getCanvas().getElement().height / 2
+        });
+
+        super.componentDidMount();
     }
 
 }

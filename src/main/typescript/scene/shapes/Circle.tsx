@@ -1,4 +1,4 @@
-import {Coords} from "scene/types/Coords";
+import Coords from "scene/types/Coords";
 import SceneLayer from "scene/SceneLayer";
 import * as React from "react";
 import Canvas from "../Canvas";
@@ -10,7 +10,6 @@ export default class Circle extends AbstractSceneObject {
         coords: Coords;
         radius: number;
         canvas: Canvas;
-        parentCoords: Coords;
         scale: number;
     };
 
@@ -27,9 +26,13 @@ export default class Circle extends AbstractSceneObject {
 
         context.beginPath();
 
+        const coords = this.props.coords.getPoint(this.props.scale);
+
         context.arc(
-            this.props.parentCoords.x + this.props.coords.x / this.props.scale,
-            this.props.parentCoords.y + this.props.coords.y / this.props.scale,
+            // this.props.coords.parentCoords.x + this.props.coords.x / this.props.scale,
+            // this.props.coords.parentCoords.y + this.props.coords.y / this.props.scale,
+            coords.x,
+            coords.y,
             this.props.radius,
             0, 2 * Math.PI, false
         );
@@ -38,8 +41,6 @@ export default class Circle extends AbstractSceneObject {
         context.stroke();
 
         context.closePath();
-
-        return null;
     }
 
 }

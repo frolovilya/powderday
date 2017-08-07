@@ -1,4 +1,4 @@
-import {Coords} from "scene/types/Coords";
+import Coords from "scene/types/Coords";
 import {Size} from "scene/types/Size";
 import TreeObject from "app/scene/trees/TreeObject";
 import Resources from "app/resources/TreeObjectsConfig";
@@ -10,13 +10,15 @@ export default class TreeFactory {
     static plantRect(canvas: Canvas, coords: Coords, size: Size) {
         let trees = [];
 
+        const rectCoords = coords.getPoint();
+
         let treeCount = Math.floor(Math.random() * (10 - 3) + 3);
         for(let i = 0; i < treeCount; i++) {
             // position on area
-            let randomPosition = {
-                x: coords.x + Math.floor(Math.random() * size.width),
-                y: coords.y + Math.floor(Math.random() * size.height)
-            };
+            let randomPosition = new Coords({
+                x: rectCoords.x + Math.floor(Math.random() * size.width),
+                y: rectCoords.y + Math.floor(Math.random() * size.height)
+            });
 
             // get random tree
             let treeNum = Math.round( Math.random() * (Resources.length - 1) );

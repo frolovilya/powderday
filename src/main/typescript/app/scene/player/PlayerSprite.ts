@@ -1,4 +1,4 @@
-import {Coords} from "scene/types/Coords";
+import Coords from "scene/types/Coords";
 import SceneLayer from "scene/SceneLayer";
 import {Size} from "scene/types/Size";
 import {Sprite} from "../../../scene/Sprite";
@@ -70,6 +70,8 @@ export default class PlayerSprite extends Sprite {
         //     //context.rotate(this.rotateAngle * 3.14 / 180 / 2);
         // }
 
+        const point = this.props.coords.getPoint();
+
         // draw player
         context.beginPath();
         context.drawImage(
@@ -78,8 +80,8 @@ export default class PlayerSprite extends Sprite {
             0, // crop y
             this.getSize().width, // crop width
             this.image.height, // crop height
-            this.props.coords.x, // canvas x
-            this.props.coords.y, // canvas y
+            point.x, // canvas x
+            point.y, // canvas y
             this.getSize().width / this.props.scale, // image width
             this.getSize().height / this.props.scale // image height
         );

@@ -1,8 +1,8 @@
 import {createStore} from "redux";
 import { combineReducers } from 'redux'
 import Model from "app/Model";
-import {GameState} from "./ui/Game";
 import {SceneObject} from "../scene/SceneObject";
+import {default as GameController, GameState} from "app/GameController";
 
 const defaultState = {
     game: {
@@ -22,7 +22,7 @@ const defaultState = {
             Sy: 0
         }
     },
-    sceneInteractions: {
+    registry: {
         objects: {}
     }
 };
@@ -107,34 +107,36 @@ export const hitATreeAction = () => {
     }
 };
 
-// const sceneInteractionsReducer = (state = defaultState.sceneInteractions, action) => {
-//     switch(action.type) {
-//         case "REGISTER_SCENE_OBJECT":
-//             return {
-//                 ...state,
-//                 objects: {
-//                     ...(state.objects),
-//                     [action.className]: action.sceneObject
-//                 }
-//             };
-//         default:
-//             return state;
-//     }
-// };
-//
-// export const registerSceneObjectAction = (sceneObject: SceneObject) => {
-//     return {
-//         type: "REGISTER_SCENE_OBJECT",
-//         className: sceneObject.getClassName(),
-//         sceneObject: sceneObject
-//     }
-// };
+const sceneInteractionsReducer = (state = defaultState.registry, action) => {
+    switch(action.type) {
+        case "REGISTER_SCENE_OBJECT":
+            return {
+                ...state,
+                objects: {
+                    ...(state.objects),
+                    [action.className]: action.sceneObjects
+                }
+            };
+        default:
+            return state;
+    }
+};
+
+export const registerSceneObjectsAction = (sceneObjects: SceneObject[] | SceneObject) => {
+    const objects = Array.isArray(sceneObjects) ? sceneObjects : [sceneObjects];
+
+    return {
+        type: "REGISTER_SCENE_OBJECT",
+        className: objects[0].getClassName(),
+        sceneObjects: objects
+    }
+};
 
 
 let store = createStore(combineReducers({
     game: gameStateReducer,
-    scene: sceneReducer/*,
-    sceneInteractions: sceneInteractionsReducer*/
+    scene: sceneReducer,
+    registry: sceneInteractionsReducer
 }));
 (window as any).store = store;
 

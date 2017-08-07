@@ -2,7 +2,7 @@ import * as React from "react";
 import {Size} from "./types/Size";
 import SceneLayer from "./SceneLayer";
 import {SceneObject} from "./SceneObject";
-import {Coords} from "scene/types/Coords";
+import {Point} from "./types/Point";
 
 export default class Canvas extends React.Component {
 
@@ -13,7 +13,7 @@ export default class Canvas extends React.Component {
         // children: any;
     };
 
-    private translation: Coords;
+    private translation: Point;
 
     private canvas: HTMLCanvasElement;
     private renderingContext: CanvasRenderingContext2D;
@@ -42,11 +42,11 @@ export default class Canvas extends React.Component {
         this.renderingContext.restore();
     }
 
-    translate(coords: Coords) {
-        this.translation.x += coords.x;
-        this.translation.y += coords.y;
+    translate(point: Point) {
+        this.translation.x += point.x;
+        this.translation.y += point.y;
 
-        this.renderingContext.translate(coords.x, coords.y);
+        this.renderingContext.translate(point.x, point.y);
     }
 
     getTranslation() {

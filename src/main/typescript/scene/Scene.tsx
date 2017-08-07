@@ -7,7 +7,7 @@ export default class Scene extends React.Component {
 
     private domNode: HTMLElement;
 
-    private intersections = new SceneIntersections();
+    // private intersections = new SceneIntersections();
 
     state: {
         size: Size;

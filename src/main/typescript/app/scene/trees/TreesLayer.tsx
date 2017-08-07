@@ -16,9 +16,17 @@ export default class TreesLayer extends SceneLayer {
     constructor(props) {
         super(props);
 
+        function select(state) {
+            return state.scene.movement
+        }
+
+        let currentValue;
         const wrap = function(mapStateToProps: (state) => object, sceneObject: SceneObject) {
             store.subscribe(() => {
-                sceneObject.update(mapStateToProps(store.getState()));
+                let previousValue = currentValue;
+                currentValue = select(store.getState());
+                if(previousValue != currentValue)
+                    sceneObject.update(mapStateToProps(store.getState()));
             });
 
             return sceneObject;

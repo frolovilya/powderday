@@ -1,10 +1,8 @@
 import {SceneObject} from "scene/SceneObject";
-import SceneLayer from "scene/SceneLayer";
-import {Coords} from "scene/types/Coords";
 import * as React from "react";
 import Canvas from "./Canvas";
-import Circle from "./shapes/Circle";
-import objectsRegistry, {registerSceneObjectsAction} from "scene/interactions/ObjectsRegistry";
+import Coords from "./types/Coords";
+import store, {registerSceneObjectsAction} from "../app/Store";
 
 export abstract class AbstractSceneObject implements SceneObject {
 
@@ -21,10 +19,10 @@ export abstract class AbstractSceneObject implements SceneObject {
     constructor(props) {
         this.props = {
             canvas: null,
-            coords: {
+            coords: new Coords({
                 x: 0,
                 y: 0
-            },
+            }),
             scale: 1,
             ...props
         };
@@ -48,6 +46,10 @@ export abstract class AbstractSceneObject implements SceneObject {
         return this.props.canvas;
     }
 
+    getCoords() {
+        return this.props.coords;
+    }
+
     getClassName() {
         return "generic";
     }
@@ -57,14 +59,8 @@ export abstract class AbstractSceneObject implements SceneObject {
     }
 
     registerObject() {
-        objectsRegistry.dispatch(registerSceneObjectsAction(this));
+        store.dispatch(registerSceneObjectsAction(this));
     }
-
-    // getShapes() {
-    //     return this.getChildrenObjects().filter((sceneObject) => {
-    //         return sceneObject instanceof Circle;
-    //     });
-    // }
 
     update(props?) {
 

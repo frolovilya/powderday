@@ -1,21 +1,33 @@
 import Circle from "scene/shapes/Circle";
 import Scene from "scene/Scene";
 import {SceneObject} from "scene/SceneObject";
-import {Coords} from "scene/types/Coords";
+import Coords from "scene/types/Coords";
 import SceneLayer from "scene/SceneLayer";
 import objectsRegistry from "./ObjectsRegistry";
+import {Point} from "../types/Point";
+import store from "../../app/Store";
 
 export default class ObjectsIntersections {
 
     private intersectCallbacks = {};
     
     constructor() {
-        objectsRegistry.subscribe(() => {
-            this.check(objectsRegistry.getState());
+        function select(state) {
+            return state.scene
+        }
+
+        let currentValue;
+        store.subscribe(() => {
+            let previousValue = currentValue;
+            currentValue = select(store.getState());
+
+            if(previousValue != currentValue)
+                this.check(store.getState());
         });
     }
 
-    private check(sceneObjectsRegistry) {
+    private check(state) {
+        let sceneObjectsRegistry = state.registry.objects;
 
         // let sceneObjects = [];
         // let sceneLayers = scene.getLayers();
@@ -92,38 +104,50 @@ export default class ObjectsIntersections {
         let aShape = this.getShapes(objectA)[0];
         let bShape = this.getShapes(objectB)[0];
 
-        let aAbsoluteCoords = this.toAbsoluteCoords(
-            this.toLayerCoords(aShape.getCoords(), objectA), objectA.getLayer());
+        // let aAbsoluteCoords = this.toAbsoluteCoords(
+        //     this.toLayerCoords(aShape.getCoords(), objectA), objectA.getLayer());
+        //
+        // let bAbsoluteCoords = this.toAbsoluteCoords(
+        //     this.toLayerCoords(bShape.getCoords(), objectB), objectB.getLayer());
 
-        let bAbsoluteCoords = this.toAbsoluteCoords(
-            this.toLayerCoords(bShape.getCoords(), objectB), objectB.getLayer());
+        let aAbsoluteCoords = this.toAbsoluteCoords(aShape);
+        let bAbsoluteCoords = this.toAbsoluteCoords(bShape);
 
-        let isIntersect = this.checkCircles(aAbsoluteCoords, aShape.getRadius(),
-                                 bAbsoluteCoords, bShape.getRadius());
+        let isIntersect = this.checkCircles(aAbsoluteCoords, (aShape as Circle).getRadius(),
+                                 bAbsoluteCoords, (bShape as Circle).getRadius());
         if(isIntersect) {
-            console.log(aAbsoluteCoords, aShape.getRadius(), bAbsoluteCoords, bShape.getRadius());
+            // console.log(aAbsoluteCoords, aShape.getRadius(), bAbsoluteCoords, bShape.getRadius());
         }
 
         return isIntersect;
 
     }
 
-    toLayerCoords(coords: Coords, sceneObject: SceneObject): Coords {
+    // toLayerCoords(coords: Coords, sceneObject: SceneObject): Coords {
+    //     return {
+    //         x: sceneObject.getCoords().x + Math.round(coords.x / sceneObject.getScale() * 100) / 100,
+    //         y: sceneObject.getCoords().y + Math.round(coords.y / sceneObject.getScale() * 100) / 100
+    //     };
+    // }
+    //
+    toAbsoluteCoords(sceneObject: SceneObject): Point {
+        // return {
+        //     x: coords.x + layer.getCanvas().getTranslation().x,
+        //     y: coords.y + layer.getCanvas().getTranslation().y
+        // };
+
+        const translation = sceneObject.getCanvas().getTranslation();
+        const coords = sceneObject.getCoords().getPoint();
+
         return {
-            x: sceneObject.getCoords().x + Math.round(coords.x / sceneObject.getScale() * 100) / 100,
-            y: sceneObject.getCoords().y + Math.round(coords.y / sceneObject.getScale() * 100) / 100
-        };
+            x: coords.x + translation.x,
+            y: coords.y + translation.y
+        }
+
     }
 
-    toAbsoluteCoords(coords: Coords, layer: SceneLayer) {
-        return {
-            x: coords.x + layer.getCanvas().getTranslation().x,
-            y: coords.y + layer.getCanvas().getTranslation().y
-        };
-    }
-
-    checkCircles(coords1: Coords, radius1: number,
-                 coords2: Coords, radius2: number): boolean {
+    checkCircles(coords1: Point, radius1: number,
+                 coords2: Point, radius2: number): boolean {
         let distance = Math.sqrt(
             Math.pow(coords2.x - coords1.x, 2)
             + Math.pow(coords2.y - coords1.y, 2)
