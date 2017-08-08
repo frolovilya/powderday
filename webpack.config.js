@@ -38,11 +38,11 @@ module.exports = {
         /*"react": "React",
         "react-dom": "ReactDOM"*/
         "jquery": "jQuery"
-    },
+    }/*,
 
     plugins: [
         new CopyWebpackPlugin([
             { from: 'node_modules/jquery/dist/jquery.min.js' }
         ])
-    ]
+    ]*/
 };

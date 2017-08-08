@@ -30,7 +30,7 @@ export default class Main {
         const GameWrap = connect((state) => {
             return {
                 gameState: state.game.state,
-                score: state.scene.movement.Sy
+                score: state.scene.score
             }
         })(Game);
 

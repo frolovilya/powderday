@@ -20,7 +20,8 @@ const defaultState = {
             Vx: 0,
             Sx: 0,
             Sy: 0
-        }
+        },
+        score: 0
     },
     registry: {
         objects: {}
@@ -49,6 +50,8 @@ const sceneReducer = (state = defaultState.scene, action) => {
             const Sx = Vx * Model.parameters.time * 10;
             const Sy = -Vy * Model.parameters.time * 10 * 1.5;
 
+            const score = state.score + Math.round( Math.abs(Sy) / 5 );
+
             return {
                 ...state,
                 acceleration: acc,
@@ -58,7 +61,8 @@ const sceneReducer = (state = defaultState.scene, action) => {
                     Vx,
                     Sx,
                     Sy
-                }
+                },
+                score: score
             }
         }
         default:

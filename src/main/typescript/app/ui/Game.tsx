@@ -1,18 +1,7 @@
 import * as React from "react";
-import store, {pauseGameAction, startGameAction, moveAction} from "../Store";
 import { Provider } from 'react-redux';
-import Accelerometer from "../../device/Accelerometer";
-import Model from "app/Model";
-import Animation from "scene/Animation";
 import {GameState} from "app/GameState";
 import GameController from "../GameController";
-//
-// export enum GameState {
-//     STOPPED,
-//     PAUSED,
-//     STARTED,
-//     HIT_A_TREE
-// }
 
 export default class Game extends React.Component {
 
@@ -22,52 +11,21 @@ export default class Game extends React.Component {
         score: number;
     };
 
-    // private animation = new Animation();
-
-    // private gameController = new GameController();
-
-    constructor(props) {
-        super(props);
-
-    //     this.startGame = this.startGame.bind(this);
-    //     this.pauseGame = this.pauseGame.bind(this);
-    }
-
     private startGame = (e) => {
         e.stopPropagation();
 
-        // if(this.props.gameState != GameState.STARTED) {
-        //     store.dispatch(startGameAction());
-
         GameController.getInstance().startGame();
 
-            // Accelerometer.startWatch(Model.parameters.time * 1000);
-            // this.animation.start(() => {
-            //     store.dispatch(moveAction(Accelerometer.getAcceleration()));
-            // });
-
-            console.log("startGame");
-        // }
+        console.log("startGame");
     };
 
     private pauseGame = (e) => {
         e.stopPropagation();
 
-        // if (this.props.gameState == GameState.STARTED) {
-            // this.animation.stop();
-            // Accelerometer.stopWatch();
-
-            // store.dispatch(pauseGameAction());
-
         GameController.getInstance().stopGame();
 
-            console.log("pauseGame");
-        // }
+        console.log("pauseGame");
     };
-
-    // componentWillUpdate(nextProps) {
-    //     this.gameController.update(nextProps.gameState);
-    // }
 
     render() {
         return <div onClick={this.pauseGame}>
@@ -77,7 +35,7 @@ export default class Game extends React.Component {
                     <div className="blueOverlay"/>
                     <div className="container">
                         {this.props.gameState == GameState.STOPPED &&
-                            <div className="button" onClick={this.startGame}>Start game</div>
+                            <div className="button" onClick={this.startGame}>Start Game</div>
                         }
                         {this.props.gameState == GameState.PAUSED &&
                             <div className="button" onClick={this.startGame}>Continue</div>
@@ -86,7 +44,7 @@ export default class Game extends React.Component {
                             <div className="end">
                                 <div>You hit a tree!</div>
                                 <div>Score: <span id="score">{this.props.score}</span></div>
-                                {/*<div className="button" onClick={this.startGame}>Replay</div>*/}
+                                <div className="button" onClick={this.startGame}>Replay</div>
                             </div>
                         }
                     </div>
