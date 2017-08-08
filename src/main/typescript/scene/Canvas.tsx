@@ -1,7 +1,5 @@
 import * as React from "react";
 import {Size} from "./types/Size";
-import SceneLayer from "./SceneLayer";
-import {SceneObject} from "./SceneObject";
 import {Point} from "./types/Point";
 
 export default class Canvas extends React.Component {

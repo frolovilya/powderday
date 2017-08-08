@@ -4,7 +4,8 @@ import { Provider } from 'react-redux';
 import Accelerometer from "../../device/Accelerometer";
 import Model from "app/Model";
 import Animation from "scene/Animation";
-import {default as GameController, GameState} from "app/GameController";
+import {GameState} from "app/GameState";
+import GameController from "../GameController";
 //
 // export enum GameState {
 //     STOPPED,
@@ -38,7 +39,7 @@ export default class Game extends React.Component {
         // if(this.props.gameState != GameState.STARTED) {
         //     store.dispatch(startGameAction());
 
-        GameController.startGame();
+        GameController.getInstance().startGame();
 
             // Accelerometer.startWatch(Model.parameters.time * 1000);
             // this.animation.start(() => {
@@ -58,7 +59,7 @@ export default class Game extends React.Component {
 
             // store.dispatch(pauseGameAction());
 
-        GameController.stopGame();
+        GameController.getInstance().stopGame();
 
             console.log("pauseGame");
         // }

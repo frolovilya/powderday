@@ -2,15 +2,9 @@ import * as React from "react";
 import store, {pauseGameAction, startGameAction, moveAction, hitATreeAction} from "app/Store";
 import { Provider } from 'react-redux';
 import Model from "app/Model";
+import ObjectsIntersections from "scene/interactions/ObjectsIntersections";
 import Animation from "scene/Animation";
 import Accelerometer from "../device/Accelerometer";
-
-export enum GameState {
-    STOPPED,
-    PAUSED,
-    STARTED,
-    HIT_A_TREE
-}
 
 export default class GameController {
 
@@ -22,43 +16,57 @@ export default class GameController {
     //     isStarted: boolean;
     // };
 
-    private static animation = new Animation();
+    private static instance = null;
 
-    constructor() {
-        // function select(state) {
-        //     return state.game.state
-        // }
-        //
-        // let currentValue;
-        // store.subscribe(() => {
-        //     let previousValue = currentValue;
-        //     currentValue = select(store.getState());
-        //
-        //     if(previousValue != currentValue)
-        //         this.update(currentValue);
-        // });
+    private animation;// = new Animation();
 
-        // this.state = {
-        //     isStarted: false
-        // };
+    private objectsIntersections;// = new ObjectsIntersections();
+
+    private constructor() {
+        this.animation = new Animation();
+        this.objectsIntersections = new ObjectsIntersections();
+
+        function select(state) {
+            return state.scene.movement
+        }
+
+        let currentValue;
+        store.subscribe(() => {
+            let previousValue = currentValue;
+            currentValue = select(store.getState());
+
+            if(previousValue != currentValue)
+                this.objectsIntersections.check(store.getState());
+        });
+
     }
 
-    public static startGame = () => {
+    public static getInstance() {
+        if(!GameController.instance) {
+            GameController.instance = new GameController();
+        }
+
+        return GameController.instance;
+    }
+
+    public startGame = () => {
         // if(!this.state.isStarted) {
             store.dispatch(startGameAction());
 
             Accelerometer.startWatch(Model.parameters.time * 1000);
-            GameController.animation.start(() => {
+            this.animation.start(() => {
                 store.dispatch(moveAction(Accelerometer.getAcceleration()));
+
+                // this.objectsIntersections.check(store.getState());
             });
 
             // this.state.isStarted = true;
         // }
     };
 
-    public static stopGame = () => {
+    public stopGame = () => {
         // if(this.state.isStarted) {
-            GameController.animation.stop();
+            this.animation.stop();
             Accelerometer.stopWatch();
 
             // this.state.isStarted = false;
@@ -67,14 +75,14 @@ export default class GameController {
         // }
     };
 
-    public static hitATree = () => {
-        GameController.animation.stop();
+    public hitATree = () => {
+        this.animation.stop();
         Accelerometer.stopWatch();
 
         // this.state.isStarted = false;
 
         store.dispatch(hitATreeAction());
-    }
+    };
 
     // update(gameState: GameState) {
     //     switch(gameState) {
@@ -90,5 +98,9 @@ export default class GameController {
     //             break;
     //     }
     // }
+
+    public getIntersections() {
+        return this.objectsIntersections;
+    }
 
 }

@@ -1,8 +1,7 @@
+import {AbstractSceneObject} from "scene/AbstractSceneObject";
 import Coords from "scene/types/Coords";
-import SceneLayer from "scene/SceneLayer";
 import * as React from "react";
-import Canvas from "../Canvas";
-import {AbstractSceneObject} from "../AbstractSceneObject";
+import Canvas from "scene/Canvas";
 
 export default class Circle extends AbstractSceneObject {
 

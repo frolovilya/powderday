@@ -12,7 +12,7 @@ export default [
                 x: 37,
                 y: 125
             },
-            radius: 7,
+            radius: 12, // 7
             type: "circle"
         }
     },
@@ -29,7 +29,7 @@ export default [
                 x: 45,
                 y: 230
             },
-            radius: 10,
+            radius: 15, // 10
             type: "circle"
         }
     },
@@ -46,7 +46,7 @@ export default [
                 x: 28,
                 y: 117
             },
-            radius: 5,
+            radius: 10, // 5
             type: "circle"
         }
     },
@@ -63,7 +63,7 @@ export default [
                 x: 52,
                 y: 137
             },
-            radius: 8,
+            radius: 13, // 8
             type: "circle"
         }
     }

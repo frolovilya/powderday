@@ -1,28 +1,16 @@
 /*
  * Application logic
  */
-import Model from "app/Model";
 import Scene from "scene/Scene";
-import PlayerObject from "app/scene/player/PlayerObject";
-import Animation from "scene/Animation";
-import Accelerometer from "device/Accelerometer";
-import Screen from "device/Screen"
-import {Size} from "scene/types/Size";
-import SceneLayer from "scene/SceneLayer";
-import CommonState from "app/SharedState";
 import TreesLayer from "app/scene/trees/TreesLayer";
-import DebugLayer from "app/scene/debug/DebugLayer";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import PlayerLayer from "app/scene/player/PlayerLayer";
 import { Provider } from 'react-redux';
-import store, {hitATreeAction, pauseGameAction} from "app/Store";
-import {moveAction} from "app/Store";
+import store from "app/Store";
 import Game from "./ui/Game";
 import { connect } from 'react-redux'
-import ObjectsIntersections from "../scene/interactions/ObjectsIntersections";
 import GameController from "./GameController";
-
 
 export default class Main {
 
@@ -118,11 +106,11 @@ export default class Main {
     init() {
         this.initScene();
 
-        new ObjectsIntersections().onIntersect("player", "tree", () => {
+        GameController.getInstance().getIntersections().onIntersect("player", "tree", () => {
             console.log("INTERSECT!");
             // store.dispatch(pauseGameAction());
             // store.dispatch(hitATreeAction());
-            GameController.hitATree();
+            GameController.getInstance().hitATree();
         });
 
         (window as any).game = this;

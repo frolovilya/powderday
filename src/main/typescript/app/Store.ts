@@ -2,7 +2,7 @@ import {createStore} from "redux";
 import { combineReducers } from 'redux'
 import Model from "app/Model";
 import {SceneObject} from "../scene/SceneObject";
-import {default as GameController, GameState} from "app/GameController";
+import {GameState} from "./GameState";
 
 const defaultState = {
     game: {
@@ -46,8 +46,8 @@ const sceneReducer = (state = defaultState.scene, action) => {
             const Vy = Model.Va(state.movement.Vy, angle, kp, Model.parameters.time);
             const Vx = Model.Vax(Vy, angle);
 
-            const Sx = Vx * Model.parameters.time * 10;
-            const Sy = -Vy * Model.parameters.time * 10 * 1.5;
+            const Sx = Vx * Model.parameters.time * 10 * 0.5;
+            const Sy = -Vy * Model.parameters.time * 10 * 0.9;
 
             return {
                 ...state,

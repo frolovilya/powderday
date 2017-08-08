@@ -30,7 +30,8 @@ export default class TreeFactory {
 
             // scale
             let newWidth = Math.floor( Math.random() * (maxWidth - minWidth) + minWidth );
-            let scale = tree.sprite.size.width / newWidth;
+            // let scale = tree.sprite.size.width / newWidth;
+            let scale = 1;
 
             trees.push(new TreeObject({
                 treeResource: tree,
