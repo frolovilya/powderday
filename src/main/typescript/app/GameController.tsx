@@ -26,18 +26,18 @@ export default class GameController {
         this.animation = new Animation();
         this.objectsIntersections = new ObjectsIntersections();
 
-        function select(state) {
-            return state.scene.movement
-        }
-
-        let currentValue;
-        store.subscribe(() => {
-            let previousValue = currentValue;
-            currentValue = select(store.getState());
-
-            if(previousValue != currentValue)
-                this.objectsIntersections.check(store.getState());
-        });
+        // function select(state) {
+        //     return state.scene.movement
+        // }
+        //
+        // let currentValue;
+        // store.subscribe(() => {
+        //     let previousValue = currentValue;
+        //     currentValue = select(store.getState());
+        //
+        //     if(previousValue != currentValue)
+        //         this.objectsIntersections.check(store.getState());
+        // });
 
     }
 
@@ -51,13 +51,17 @@ export default class GameController {
 
     public startGame = () => {
         // if(!this.state.isStarted) {
+        //console.log("start dispatch startGameAction()");
             store.dispatch(startGameAction());
+        //console.log("end dispatch startGameAction()");
 
             Accelerometer.startWatch(Model.parameters.time * 1000);
             this.animation.start(() => {
+                //console.log("start dispatch moveAction1()");
                 store.dispatch(moveAction(Accelerometer.getAcceleration()));
+                //console.log("end dispatch moveAction1()")
 
-                // this.objectsIntersections.check(store.getState());
+                this.objectsIntersections.check(store.getState());
             });
 
             // this.state.isStarted = true;
@@ -66,13 +70,14 @@ export default class GameController {
 
     public stopGame = () => {
         // if(this.state.isStarted) {
-            this.animation.stop();
+        this.animation.stop();
             Accelerometer.stopWatch();
 
             // this.state.isStarted = false;
-
+        //console.log("start dispatch pauseGameAction()");
             store.dispatch(pauseGameAction());
-        // }
+        //console.log("end dispatch pauseGameAction()");
+        //}
     };
 
     public hitATree = () => {
@@ -80,8 +85,9 @@ export default class GameController {
         Accelerometer.stopWatch();
 
         // this.state.isStarted = false;
-
+        //console.log("start dispatch hitATreeAction()");
         store.dispatch(hitATreeAction());
+        //console.log("end dispatch hitATreeAction()");
     };
 
     // update(gameState: GameState) {

@@ -107,7 +107,7 @@ export default class Main {
         this.initScene();
 
         GameController.getInstance().getIntersections().onIntersect("player", "tree", () => {
-            console.log("INTERSECT!");
+            console.log("inside intersect callback!");
             // store.dispatch(pauseGameAction());
             // store.dispatch(hitATreeAction());
             GameController.getInstance().hitATree();

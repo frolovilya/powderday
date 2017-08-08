@@ -23,6 +23,8 @@ export default class ObjectsIntersections {
 
 
     public check(state) {
+        // console.log("ObjectsIntersections.check()", state);
+
         let sceneObjectsRegistry = state.registry.objects;
 
         // let sceneObjects = [];
@@ -171,6 +173,8 @@ export default class ObjectsIntersections {
 
         if(this.intersectCallbacks[id] == undefined)
             return;
+
+        console.log("ObjectsIntersections.fireCallbacks", a, b);
 
         let cb = this.intersectCallbacks[id];
         for(let i = 0; i < cb.length; i++) {

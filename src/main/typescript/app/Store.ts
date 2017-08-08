@@ -46,8 +46,8 @@ const sceneReducer = (state = defaultState.scene, action) => {
             const Vy = Model.Va(state.movement.Vy, angle, kp, Model.parameters.time);
             const Vx = Model.Vax(Vy, angle);
 
-            const Sx = Vx * Model.parameters.time * 10 * 0.5;
-            const Sy = -Vy * Model.parameters.time * 10 * 0.9;
+            const Sx = Vx * Model.parameters.time * 10;
+            const Sy = -Vy * Model.parameters.time * 10 * 1.5;
 
             return {
                 ...state,

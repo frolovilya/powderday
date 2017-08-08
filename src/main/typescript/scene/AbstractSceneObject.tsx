@@ -16,7 +16,7 @@ export abstract class AbstractSceneObject implements SceneObject {
         childrenObjects: SceneObject[];
     };
 
-    constructor(props) {
+    constructor(props?) {
         this.props = {
             canvas: null,
             coords: new Coords({
@@ -63,6 +63,8 @@ export abstract class AbstractSceneObject implements SceneObject {
     }
 
     update(props?) {
+
+        // console.log("update() sceneObject " + this.getClassName(), props);
 
         this.props = {
             ...(this.props),
