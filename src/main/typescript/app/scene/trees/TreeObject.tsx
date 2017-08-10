@@ -24,14 +24,14 @@ export default class TreeObject extends AbstractSceneObject {
 
         this.state.childrenObjects = [
             new Circle({
-                coords: new Coords(this.props.treeResource.shape.coords, this.props.coords),
+                coords: new Coords(this.props.treeResource.shape.coords, this.props.coords, this.props.scale),
+                scale: this.props.scale,
                 radius: this.props.treeResource.shape.radius,
-                canvas: this.getCanvas(),
-                scale: this.props.scale
+                canvas: this.getCanvas()
             }),
             new TreeSprite({
                 treeResource: this.props.treeResource,
-                coords: new Coords({x: 0, y: 0}, this.props.coords),
+                coords: new Coords({x: 0, y: 0}, this.props.coords, this.props.scale),
                 scale: this.props.scale,
                 canvas: this.getCanvas()
             })

@@ -138,7 +138,7 @@ export default class ObjectsIntersections {
         // };
 
         const translation = sceneObject.getCanvas().getTranslation();
-        const coords = sceneObject.getCoords().getPoint((sceneObject as any).props.scale);
+        const coords = sceneObject.getCoords().getPoint();
 
         return {
             x: coords.x + translation.x,

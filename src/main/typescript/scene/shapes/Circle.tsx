@@ -25,11 +25,9 @@ export default class Circle extends AbstractSceneObject {
 
         context.beginPath();
 
-        const coords = this.props.coords.getPoint(this.props.scale);
+        const coords = this.props.coords.getPoint();
 
         context.arc(
-            // this.props.coords.parentCoords.x + this.props.coords.x / this.props.scale,
-            // this.props.coords.parentCoords.y + this.props.coords.y / this.props.scale,
             coords.x,
             coords.y,
             this.props.radius,

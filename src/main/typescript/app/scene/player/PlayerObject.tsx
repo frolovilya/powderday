@@ -24,13 +24,24 @@ export default class PlayerObject extends AbstractSceneObject {
     };
 
     constructor(props) {
+        // super({
+        //     ...props,
+        //     scale: Math.round(PlayerResource.sprite.size.width / PlayerResource.sprite.scaleToSize.width * 100) / 100,
+        //     coords: new Coords({
+        //         x: -PlayerResource.sprite.scaleToSize.width / 2,
+        //         y: -PlayerResource.sprite.scaleToSize.height / 2
+        //     })
+        // });
+
+        const scale = 0.65;
+
         super({
             ...props,
-            scale: Math.round(PlayerResource.sprite.size.width / PlayerResource.sprite.scaleToSize.width * 100) / 100,
+            scale: scale,
             coords: new Coords({
-                x: -PlayerResource.sprite.scaleToSize.width / 2,
-                y: -PlayerResource.sprite.scaleToSize.height / 2
-            }, null)
+                x: -PlayerResource.sprite.size.width / 2,
+                y: -PlayerResource.sprite.size.height / 2
+            }, null, scale)
         });
 
         const wrap = function(getUpdateProps: () => object, sceneObject: SceneObject) {
@@ -46,20 +57,19 @@ export default class PlayerObject extends AbstractSceneObject {
         };
 
         this.state = {
-            // movedToCenter: false,
             childrenObjects: [
                 new Circle({
-                    coords: new Coords(PlayerResource.shape.coords, this.props.coords),
+                    coords: new Coords(PlayerResource.shape.coords, this.props.coords, this.props.scale),
+                    scale: this.props.scale,
                     radius: PlayerResource.shape.radius,
-                    canvas: this.props.canvas,
-                    scale: this.props.scale
+                    canvas: this.props.canvas
                 }),
                 wrap(() => {
                     return {
                         rotateAngle: this.props.angle
                     }
                 }, new PlayerSprite({
-                    coords: new Coords({x: 0, y: 0}, this.props.coords),
+                    coords: new Coords({x: 0, y: 0}, this.props.coords, this.props.scale),
                     scale: this.props.scale,
                     canvas: this.props.canvas,
                     rotateAngle: this.props.angle
@@ -77,19 +87,7 @@ export default class PlayerObject extends AbstractSceneObject {
     }
 
     transform() {
-        let canvas = this.getCanvas();
-
-        // if(!this.state.movedToCenter) {
-        //     canvas.getContext().lineWidth = 10;
-        //     canvas.translate({
-        //         x: canvas.getElement().width / 2,
-        //         y: canvas.getElement().height / 2
-        //     });
-        //
-        //     this.state.movedToCenter = true;
-        // }
-
-        canvas.clear();
+        this.getCanvas().clear();
     }
 
 }

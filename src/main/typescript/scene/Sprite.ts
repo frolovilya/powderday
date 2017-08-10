@@ -17,6 +17,7 @@ export abstract class Sprite extends AbstractSceneObject {
         imageSrc: string,
         size: Size;
         coords: Coords;
+        scale: number;
         canvas: Canvas;
     };
 
@@ -51,13 +52,13 @@ export abstract class Sprite extends AbstractSceneObject {
         return this.props.size;
     }
 
-    getRatio() {
-        return this.props.size.width / this.props.size.height;
-    }
-
-    getImage() {
-        return this.image;
-    }
+    // getRatio() {
+    //     return this.props.size.width / this.props.size.height;
+    // }
+    //
+    // getImage() {
+    //     return this.image;
+    // }
 
     getCoords() {
         return this.props.coords;

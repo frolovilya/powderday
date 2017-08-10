@@ -82,8 +82,8 @@ export default class PlayerSprite extends Sprite {
             this.image.height, // crop height
             point.x, // canvas x
             point.y, // canvas y
-            this.getSize().width / this.props.scale, // image width
-            this.getSize().height / this.props.scale // image height
+            this.getSize().width * this.props.scale, // image width
+            this.getSize().height * this.props.scale // image height
         );
         context.closePath();
     }

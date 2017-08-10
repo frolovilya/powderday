@@ -8,8 +8,8 @@ export abstract class AbstractSceneObject implements SceneObject {
 
     props: {
         canvas: Canvas;
-        coords?: Coords;
-        scale?: number;
+        coords: Coords;
+        scale: number;
     };
 
     state: {

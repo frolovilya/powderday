@@ -14,6 +14,8 @@ export default class Forest extends AbstractSceneObject {
         Sx: number;
         Sy: number;
         canvas: Canvas;
+        scale: number;
+        coords: Coords;
     };
 
     private treesMap = {};
@@ -22,12 +24,6 @@ export default class Forest extends AbstractSceneObject {
 
     constructor(props) {
         super(props);
-
-        // this.state = {
-        //     Sx: 0,
-        //     Sy: 0,
-        //     childrenObjects: []
-        // };
 
         (window as any).forest = this;
     }
