@@ -50,7 +50,7 @@ export default class SceneLayer extends React.Component {
                    zIndex={this.props.zIndex}
                    size={Screen.getSize()}
                    ref={(canvas: Canvas) => this.canvas = canvas } />
-             {this.getChildrenObjects().map((sceneObject) => {
+            {this.getChildrenObjects().map((sceneObject) => {
                 sceneObject.update({
                     canvas: this.state.canvas
                 });

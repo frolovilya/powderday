@@ -42,15 +42,15 @@ const sceneReducer = (state = defaultState.scene, action) => {
         case "MOVE": {
             const acc = action.acceleration;
 
-            const angle = Model.calcAngle(state.movement.angle, acc.x);
-            const kp = Model.calcKantPressure(acc.y);
-            const Vy = Model.Va(state.movement.Vy, angle, kp, Model.parameters.time);
+            const angle = Model.angle(state.movement.angle, acc.x);
+
+            const Vy = Model.Va(state.movement.Vy, angle, acc.y);
             const Vx = Model.Vax(Vy, angle);
 
-            const Sx = Vx * Model.parameters.time * 10;
-            const Sy = -Vy * Model.parameters.time * 10 * 1.5;
+            const Sx = Model.Sx(Vx);
+            const Sy = Model.Sy(Vy);
 
-            const score = state.score + Math.round( Math.abs(Sy) / 5 );
+            const score = Model.score(state.score, Sy);
 
             return {
                 ...state,

@@ -11,6 +11,7 @@ import store from "app/Store";
 import Game from "./ui/Game";
 import { connect } from 'react-redux'
 import GameController from "./GameController";
+import DebugLayer from "./scene/debug/DebugLayer";
 
 export default class Main {
 
@@ -21,7 +22,6 @@ export default class Main {
     private initScene() {
 
         /*
-         <DebugLayer layerId="debug" zIndex={200} />
 
          */
 
@@ -30,7 +30,8 @@ export default class Main {
         const GameWrap = connect((state) => {
             return {
                 gameState: state.game.state,
-                score: state.scene.score
+                score: state.scene.score,
+                acceleration: state.scene.acceleration
             }
         })(Game);
 
@@ -46,6 +47,7 @@ export default class Main {
                     <Scene ref={(scene) => { this.scene = scene; }}>
                         <PlayerLayer layerId="player" zIndex={10} />
                         <TreesLayer layerId="tree" zIndex={100} />
+                        <DebugLayer layerId="debug" zIndex={200} />
                     </Scene>
                 </GameWrap>
             </Provider>,
