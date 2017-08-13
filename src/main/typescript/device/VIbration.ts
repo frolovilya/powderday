@@ -1,7 +1,3 @@
-export default class Vibration {
-
-    static vibrate(duration: number) {
-        (<any>navigator).notification.vibrate(duration);
-    }
-
+export default function(duration: number) {
+    (<any>navigator).notification.vibrate(duration);
 }

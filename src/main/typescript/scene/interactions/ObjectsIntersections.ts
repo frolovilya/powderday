@@ -1,79 +1,19 @@
-import {SceneObject} from "scene/SceneObject";
+import {LayerObject} from "scene/layers/objects/LayerObject";
 import {Point} from "scene/types/Point";
-import Circle from "scene/shapes/Circle";
+import Circle from "scene/layers/objects/shapes/Circle";
+import Shape from "scene/layers/objects/shapes/Shape";
 
 export default class ObjectsIntersections {
 
     private intersectCallbacks = {};
-    
-    // constructor() {
-    //     function select(state) {
-    //         return state.scene.movement
-    //     }
-    //
-    //     let currentValue;
-    //     store.subscribe(() => {
-    //         let previousValue = currentValue;
-    //         currentValue = select(store.getState());
-    //
-    //         if(previousValue != currentValue)
-    //             this.check(store.getState());
-    //     });
-    // }
-
 
     public check(state) {
-        // console.log("ObjectsIntersections.check()", state);
 
         let sceneObjectsRegistry = state.registry.objects;
-
-        // let sceneObjects = [];
-        // let sceneLayers = scene.getLayers();
-        // for(let sceneLayer of sceneLayers) {
-        //     sceneObjects = sceneObjects.concat(sceneLayer.getObjects());
-        // }
-        //
-        // // let sceneObjects = scene.getLayers()
-        // //     .map((layer: SceneLayer) => layer.getObjects())
-        // //     .reduce((a, b) => a.concat(b), []);
-        // //
-        // // Object.keys(this.intersectCallbacks).map((callbackName) => {
-        // //
-        // //     // let objectsByClasses = callbackName.split(",").map((className) => {
-        // //     //     return sceneObjects.filter(sceneObject => sceneObject.getClassName() == className)
-        // //     // })
-        // //
-        // //     let [classA, classB] = callbackName.split(",");
-        // //     sceneObjects.reduce(([objectsA, objectsB], sceneObject) => {
-        // //
-        // //         if(sceneObject.getClassName() == classA) {
-        // //             objectsA.push(sceneObject)
-        // //         } else if(sceneObject.getClassName() == classB) {
-        // //             objectsB.push(sceneObject)
-        // //         }
-        // //
-        // //         return [objectsA, objectsB]
-        // //
-        // //     }, [[], []]);
-        // //
-        // //
-        // //
-        // // });
-
 
         // get callback classes
         for(let callbackName in this.intersectCallbacks) {
             let [classA, classB] = callbackName.split(",");
-
-            // let aObjects = [];
-            // let bObjects = [];
-            // for(let sceneObject of sceneObjects) {
-            //     if(sceneObject.getClassName() == classA) {
-            //         aObjects.push(sceneObject)
-            //     } else if(sceneObject.getClassName() == classB) {
-            //         bObjects.push(sceneObject);
-            //     }
-            // }
 
             const aObjects = sceneObjectsRegistry[classA];
             const bObjects = sceneObjectsRegistry[classB];
@@ -92,21 +32,15 @@ export default class ObjectsIntersections {
         }
     }
 
-    private getShapes(sceneObject: SceneObject) {
-        return sceneObject.getChildrenObjects().filter((sceneObject) => {
-            return sceneObject instanceof Circle;
+    private getShapes(layerObject: LayerObject) {
+        return layerObject.getChildrenObjects().filter((layerObject) => {
+            return layerObject instanceof Shape;
         });
     }
 
-    private checkObjectsIntersection(objectA: SceneObject, objectB: SceneObject) {
+    private checkObjectsIntersection(objectA: LayerObject, objectB: LayerObject) {
         let aShape = this.getShapes(objectA)[0];
         let bShape = this.getShapes(objectB)[0];
-
-        // let aAbsoluteCoords = this.toAbsoluteCoords(
-        //     this.toLayerCoords(aShape.getCoords(), objectA), objectA.getLayer());
-        //
-        // let bAbsoluteCoords = this.toAbsoluteCoords(
-        //     this.toLayerCoords(bShape.getCoords(), objectB), objectB.getLayer());
 
         let aAbsoluteCoords = this.toAbsoluteCoords(aShape);
         let bAbsoluteCoords = this.toAbsoluteCoords(bShape);
@@ -124,21 +58,10 @@ export default class ObjectsIntersections {
 
     }
 
-    // toLayerCoords(coords: Coords, sceneObject: SceneObject): Coords {
-    //     return {
-    //         x: sceneObject.getCoords().x + Math.round(coords.x / sceneObject.getScale() * 100) / 100,
-    //         y: sceneObject.getCoords().y + Math.round(coords.y / sceneObject.getScale() * 100) / 100
-    //     };
-    // }
-    //
-    private toAbsoluteCoords(sceneObject: SceneObject): Point {
-        // return {
-        //     x: coords.x + layer.getCanvas().getTranslation().x,
-        //     y: coords.y + layer.getCanvas().getTranslation().y
-        // };
+    private toAbsoluteCoords(layerObject: LayerObject): Point {
 
-        const translation = sceneObject.getCanvas().getTranslation();
-        const coords = sceneObject.getCoords().getPoint();
+        const translation = layerObject.getCanvas().getTranslation();
+        const coords = layerObject.getCoords().getPoint();
 
         return {
             x: coords.x + translation.x,
@@ -181,7 +104,6 @@ export default class ObjectsIntersections {
             cb[i]();
         }
 
-        //this.intersectCallbacks[id].length = 0;
     }
 
 }

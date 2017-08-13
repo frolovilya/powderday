@@ -1,48 +1,46 @@
-export default class Accelerometer {
+export default {
 
     // accelerometer state
-    private static acceleration = {
+    _acceleration: {
         x: 0,
         y: 0,
         z: 0
-    };
+    },
 
     // the watch id references the current `watchAcceleration`
-    private static watchID = null;
+    _watchID: null,
 
-    private constructor() {}
-
-    static startWatch(frequency: number) {
+    startWatch(frequency: number) {
         let options = {
             frequency: frequency
         };
 
-        Accelerometer.watchID = (<any>navigator).accelerometer.watchAcceleration(
-            (acceleration) => Accelerometer.onSuccess(acceleration),
-            () => Accelerometer.onError(),
+        this._watchID = (<any>navigator).accelerometer.watchAcceleration(
+            (acceleration) => this._onSuccess(acceleration),
+            () => this._onError(),
             options
         );
-    }
+    },
 
-    static stopWatch() {
-        if (Accelerometer.watchID) {
-            (<any>navigator).accelerometer.clearWatch(Accelerometer.watchID);
-            Accelerometer.watchID = null;
+    stopWatch() {
+        if (this._watchID) {
+            (<any>navigator).accelerometer.clearWatch(this._watchID);
+            this._watchID = null;
         }
-    }
+    },
 
     // onSuccess: get a snapshot of the current acceleration
-    private static onSuccess(acceleration) {
-        Accelerometer.acceleration = acceleration;
-    }
+    _onSuccess(acceleration) {
+        this._acceleration = acceleration;
+    },
 
     // onError: failed to get the acceleration
-    private static onError() {
+    _onError() {
         alert('failed to get the acceleration');
-    }
+    },
 
-    static getAcceleration() {
-        return Accelerometer.acceleration;
+    getAcceleration() {
+        return this._acceleration;
     }
 
 }

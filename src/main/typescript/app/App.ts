@@ -1,8 +1,4 @@
-/*
- * Application
- */
-
-import Main from "app/Main"
+import Game from "app/game/Game"
 
 class App {
 
@@ -27,7 +23,7 @@ class App {
      * The scope of 'this' is the event. 
      */
     onDeviceReady() {
-        new Main().init();
+        new Game().init();
     }
     
 }
