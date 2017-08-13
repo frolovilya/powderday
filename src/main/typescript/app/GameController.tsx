@@ -1,5 +1,7 @@
 import * as React from "react";
-import store, {pauseGameAction, startGameAction, moveAction, hitATreeAction} from "app/Store";
+import store, {
+    pauseGameAction, startGameAction, moveAction, hitATreeAction, resetAction
+} from "app/Store";
 import { Provider } from 'react-redux';
 import Model from "app/Model";
 import ObjectsIntersections from "scene/interactions/ObjectsIntersections";
@@ -104,6 +106,10 @@ export default class GameController {
     //             break;
     //     }
     // }
+
+    public restartGame = () => {
+        store.dispatch(resetAction());
+    };
 
     public getIntersections() {
         return this.objectsIntersections;

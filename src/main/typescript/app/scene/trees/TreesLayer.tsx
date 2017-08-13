@@ -21,7 +21,8 @@ export default class TreesLayer extends SceneLayer {
             wrap((state) => {
                 return {
                     Sx: state.scene.movement.Sx,
-                    Sy: state.scene.movement.Sy
+                    Sy: state.scene.movement.Sy,
+                    gameState: state.game.state
                 }
             }, new Forest({
                 canvas: this.getCanvas(),

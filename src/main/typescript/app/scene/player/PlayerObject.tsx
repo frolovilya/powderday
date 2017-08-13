@@ -8,6 +8,7 @@ import * as React from "react";
 import Canvas from "../../../scene/Canvas";
 import Coords from "../../../scene/types/Coords";
 import store from "../../Store";
+import {GameState} from "../../GameState";
 
 export default class PlayerObject extends AbstractSceneObject {
 
@@ -21,6 +22,7 @@ export default class PlayerObject extends AbstractSceneObject {
         coords: Coords;
         scale: number;
         canvas: Canvas;
+        gameState: GameState;
     };
 
     constructor(props) {
@@ -33,15 +35,13 @@ export default class PlayerObject extends AbstractSceneObject {
         //     })
         // });
 
-        const scale = 0.65;
-
         super({
             ...props,
-            scale: scale,
+            scale: PlayerResource.sprite.scale,
             coords: new Coords({
                 x: -PlayerResource.sprite.size.width / 2,
                 y: -PlayerResource.sprite.size.height / 2
-            }, null, scale)
+            }, null, PlayerResource.sprite.scale)
         });
 
         const wrap = function(getUpdateProps: () => object, sceneObject: SceneObject) {
@@ -77,7 +77,7 @@ export default class PlayerObject extends AbstractSceneObject {
             ]
         };
 
-        this.registerObject();
+        // this.registerObject();
 
         (window as any).playerObject = this;
     }
@@ -87,6 +87,10 @@ export default class PlayerObject extends AbstractSceneObject {
     }
 
     transform() {
+        if(this.props.gameState == GameState.STOPPED) {
+            this.registerObject();
+        }
+
         this.getCanvas().clear();
     }
 

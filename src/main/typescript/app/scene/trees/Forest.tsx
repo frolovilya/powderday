@@ -7,6 +7,7 @@ import {Size} from "scene/types/Size";
 import Canvas from "../../../scene/Canvas";
 import {Point} from "scene/types/Point";
 import store, {registerSceneObjectsAction} from "../../Store";
+import {GameState} from "../../GameState";
 
 export default class Forest extends AbstractSceneObject {
 
@@ -16,6 +17,7 @@ export default class Forest extends AbstractSceneObject {
         canvas: Canvas;
         scale: number;
         coords: Coords;
+        gameState: GameState;
     };
 
     private treesMap = {};
@@ -29,8 +31,11 @@ export default class Forest extends AbstractSceneObject {
     }
 
     transform() {
+        if(this.props.gameState == GameState.STOPPED) {
+            this.reset();
+        }
+
         this.moveForest();
-        // console.log("trees around", this.state.childrenObjects.length)
     }
 
     getChildrenObjects() {
@@ -116,6 +121,14 @@ export default class Forest extends AbstractSceneObject {
             x: Math.round(this.props.Sx),
             y: Math.round(this.props.Sy)
         });
+    }
+
+    private reset() {
+        this.getCanvas().clear();
+        this.getCanvas().clearTranslation();
+
+        this.treesMap = {};
+        this.prevPosition = {x: -1, y: -1}
     }
 
 }

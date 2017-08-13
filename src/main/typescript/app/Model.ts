@@ -4,13 +4,13 @@
 export default {
 
     parameters: {
-        time: 0.06, // update frequency ??? (sec)
-        mass: 75, // player mass (kg)
+        time: 0.06, // update frequency (time delta) (sec)
+        mass: 80, // player mass (kg)
         gravity: 9.81, // gravity (m/sec^2)
-        kGravityHeight: 0.2, // ???
+        kGravity: 0.2,
         kSnowFriction: 150, // snow friction k.
-        kAirFriction: 0.00025, // air friction k.
-        powAir: 3,
+        kSpeedCompensation: 0.00025,
+        powSpeedCompensation: 3,
         kAngleAccelerationMultiplier: 2,
         kEdgePressureAccelerationMultiplier: 0.3
     },
@@ -41,12 +41,8 @@ export default {
      * @param accY acceleration on Y
      */
     edgePressure: function(accY) {
+        //return Math.abs(accY < -1 ? accY : 1) * this.parameters.kEdgePressureAccelerationMultiplier;
         return this.parameters.kEdgePressureAccelerationMultiplier;
-        /*if(acceleration < 0) {
-         return acceleration * this.parameters.kKantPressureAccelerationMultiplier;
-         } else {
-         return 0;
-         }*/
     },
 
     /**
@@ -56,23 +52,16 @@ export default {
      * @param edgePressure
      */
     snowFrictionForce: function(angle, edgePressure) {
-        return this.parameters.kSnowFriction * Math.abs(Math.sin(angle * 3.14 / 180)) * (1 + edgePressure);
-    },
-
-    /**
-     * Calculate air friction force ???
-     *
-     * @param V speed ???
-     */
-    airFrictionForce: function(V) {
-        return this.parameters.kAirFriction * Math.pow(V, this.parameters.powAir);
+        return Math.abs(Math.sin(angle * 3.14 / 180)) * (1 + edgePressure) * this.parameters.kSnowFriction;
     },
 
     /**
      * Calculate gravity force
+     *
+     * F = kg * (m / sec^2)
      */
     gravityForce: function() {
-        return this.parameters.mass * this.parameters.gravity * this.parameters.kGravityHeight;
+        return this.parameters.mass * this.parameters.gravity * this.parameters.kGravity;
     },
 
     /**
@@ -86,13 +75,13 @@ export default {
     },
 
     /**
-     * Acceleration ???
+     * Acceleration
      *
      * @param angle deck angle
      * @param edgePressure deck edge pressure
      */
     acceleration: function(angle, edgePressure) {
-        return this.resultForce(angle, edgePressure) / this.parameters.mass; // ???
+        return this.resultForce(angle, edgePressure) / this.parameters.mass;
     },
 
     /**
@@ -110,7 +99,20 @@ export default {
     },
 
     /**
-     * Compensate speed based on air friction
+     * Calculate speed compensation
+     *
+     * Vcomp = k * V^3
+     *
+     * @param V speed
+     */
+    speedCompensation: function(V) {
+        return this.parameters.kSpeedCompensation * Math.pow(V, this.parameters.powSpeedCompensation);
+    },
+
+    /**
+     * Calculate current speed
+     *
+     * Va = V - Vcomp = V - k * V^3
      *
      * @param V0 start speed
      * @param angle deck angle
@@ -119,7 +121,7 @@ export default {
     Va: function(V0, angle, accY) {
         let edgePressure = this.edgePressure(accY);
         let speed = this.V(V0, angle, edgePressure, this.parameters.time);
-        let speedCompensated = speed - this.airFrictionForce(speed);
+        let speedCompensated = speed - this.speedCompensation(speed);
 
         return (speedCompensated > 0 ? speedCompensated : 0);
     },
@@ -139,10 +141,10 @@ export default {
      *
      * @param V
      * @param angle
-     */
+     *
     Vay: function(V, angle) {
         return V * Math.cos(angle * 3.14 / 180);
-    },
+    },*/
 
     /**
      * Calculate X distance

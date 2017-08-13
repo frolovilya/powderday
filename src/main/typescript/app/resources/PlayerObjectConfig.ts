@@ -9,6 +9,7 @@ export default {
             width: 80,
             height: 80
         },*/
+        "scale": 0.65,
         "positions": {
             "front": 0,
             "frontLeft": 120,

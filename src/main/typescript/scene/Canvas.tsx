@@ -47,20 +47,29 @@ export default class Canvas extends React.Component {
         this.renderingContext.translate(point.x, point.y);
     }
 
+    clearTranslation() {
+        this.translate({
+            x: -this.translation.x,
+            y: -this.translation.y
+        })
+    }
+
     getTranslation() {
         return this.translation;
     }
 
     clearTransform() {
-        this.renderingContext.setTransform(1, 0, 0, 1, 0, 0);
+        // this.renderingContext.save();
+        this.renderingContext.setTransform(1, 0, 0, 1, this.translation.x, this.translation.y);
+        // this.renderingContext.restore();
         /*this.translate(
          this.canvas.width / 2,
          this.canvas.height / 2
          );*/
-        this.translation.x = this.canvas.width / 2;
-        this.translation.y = this.canvas.height / 2;
-
-        this.renderingContext.translate(this.translation.x, this.translation.y);
+        // this.translation.x = this.canvas.width / 2;
+        // this.translation.y = this.canvas.height / 2;
+        //
+        // this.renderingContext.translate(this.translation.x, this.translation.y);
         /*layer.renderingContext.translate(
          layer.canvas.width / 2,
          layer.canvas.height / 2

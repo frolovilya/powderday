@@ -15,7 +15,8 @@ export default class PlayerLayer extends SceneLayer {
         this.state.childrenObjects = [
             wrap((state) => {
                 return {
-                    angle: state.scene.movement.angle
+                    angle: state.scene.movement.angle,
+                    gameState: state.game.state
                 }
             }, new PlayerObject({
                 canvas: this.getCanvas()

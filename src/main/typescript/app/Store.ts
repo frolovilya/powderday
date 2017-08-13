@@ -35,7 +35,13 @@ export const moveAction = (acceleration) => {
     }
 };
 
-(window as any).moveAction = moveAction;
+export const resetAction = () => {
+    return {
+        type: "RESET"
+    }
+};
+
+// (window as any).moveAction = moveAction;
 
 const sceneReducer = (state = defaultState.scene, action) => {
     switch(action.type) {
@@ -65,6 +71,8 @@ const sceneReducer = (state = defaultState.scene, action) => {
                 score: score
             }
         }
+        case "RESET":
+            return defaultState.scene;
         default:
             return state;
     }
@@ -88,6 +96,8 @@ const gameStateReducer = (state = defaultState.game, action) => {
                 ...state,
                 state: GameState.HIT_A_TREE
             };
+        case "RESET":
+            return defaultState.game;
         default:
             return state;
     }
@@ -121,6 +131,8 @@ const sceneInteractionsReducer = (state = defaultState.registry, action) => {
                     [action.className]: action.sceneObjects
                 }
             };
+        case "RESET":
+            return defaultState.registry;
         default:
             return state;
     }

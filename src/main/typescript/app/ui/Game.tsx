@@ -27,6 +27,14 @@ export default class Game extends React.Component {
         console.log("pauseGame");
     };
 
+    private restartGame = (e) => {
+        e.stopPropagation();
+
+        GameController.getInstance().restartGame();
+
+        console.log("restartGame");
+    };
+
     render() {
         return <div onClick={this.pauseGame}>
             <div id="scene">{this.props.children}</div>
@@ -44,7 +52,7 @@ export default class Game extends React.Component {
                             <div className="end">
                                 <div>You hit a tree!</div>
                                 <div>Score: <span id="score">{this.props.score}</span></div>
-                                <div className="button" onClick={this.startGame}>Replay</div>
+                                <div className="button" onClick={this.restartGame}>Replay</div>
                             </div>
                         }
                     </div>
