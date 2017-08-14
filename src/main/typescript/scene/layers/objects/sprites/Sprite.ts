@@ -38,9 +38,11 @@ export abstract class Sprite extends AbstractLayerObject {
                     imageLoaded: true
                 });
             };
+
         } else {
             this.image = Sprite.imageCache[this.props.imageSrc];
             this.state.imageLoaded = true;
+
         }
 
     }

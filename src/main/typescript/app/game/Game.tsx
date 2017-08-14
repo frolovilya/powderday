@@ -9,6 +9,7 @@ import GameScreen from "app/game/screens/GameScreen";
 import { connect } from 'react-redux'
 import GameController from "app/game/GameController";
 import DebugLayer from "app/game/scene/layers/debug/DebugLayer";
+import {InteractionType} from "scene/interactions/InteractionType";
 
 export default class Main {
 
@@ -39,15 +40,17 @@ export default class Main {
 
     }
 
-    init() {
-        this.initScene();
-
-        GameController.getIntersections().onIntersect("player", "tree", () => {
-            console.log("inside intersect callback!");
+    private initSceneInteractions() {
+        GameController.interactions().observe(InteractionType.INTERSECT, "player", "tree")(() => {
             GameController.hitATree();
         });
+    }
 
-        (window as any).game = this;
+    init() {
+        this.initScene();
+        this.initSceneInteractions();
+
+        // (window as any).game = this;
     }
 
 }

@@ -16,4 +16,13 @@ export default class Coords {
         }
     }
 
+    public getAbsolutePoint(layerTranslation: Point) {
+        const coords = this.getPoint();
+
+        return {
+            x: coords.x + layerTranslation.x,
+            y: coords.y + layerTranslation.y
+        }
+    }
+
 }

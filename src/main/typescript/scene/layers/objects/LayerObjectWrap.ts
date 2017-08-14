@@ -1,9 +1,9 @@
 import {LayerObject} from "scene/layers/objects/LayerObject";
 
-export const wrap = function(store, getUpdateProps: (state) => object, sceneObject: LayerObject) {
+export const wrap = function(store, getUpdateProps: (state?) => object, sceneObject: LayerObject) {
     let LayerObjectWrap = class {
         update(props) {
-            const propsToUpdate = getUpdateProps(store.getState());
+            const propsToUpdate = getUpdateProps(store ? store.getState() : null);
             sceneObject.update({
                 ...propsToUpdate,
                 ...props
@@ -24,7 +24,6 @@ export const wrap = function(store, getUpdateProps: (state) => object, sceneObje
         getChildrenObjects() {
             return sceneObject.getChildrenObjects();
         }
-
         transform() {
             return sceneObject.transform();
         }

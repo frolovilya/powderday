@@ -1,15 +1,15 @@
 import Model from "app/game/Model";
-import ObjectsIntersections from "scene/interactions/ObjectsIntersections";
 import Animation from "scene/Animation";
 import Accelerometer from "device/Accelerometer";
-import store from "./Store";
+import store from "app/game/Store";
 import {hitATreeAction, pauseGameAction, startGameAction} from "app/game/reducers/GameReducer";
 import {moveAction, resetAction} from "app/game/scene/reducers/SceneReducer";
+import ObjectsInteractions from "scene/interactions/ObjectsInteractions";
 
 export default {
 
     _animation: new Animation(),
-    _objectsIntersections: new ObjectsIntersections(),
+    _objectsInteractions: new ObjectsInteractions(),
 
     startGame() {
         store.dispatch(startGameAction());
@@ -17,7 +17,7 @@ export default {
         Accelerometer.startWatch(Model.parameters.time * 1000);
         this._animation.start(() => {
             store.dispatch(moveAction(Accelerometer.getAcceleration()));
-            this._objectsIntersections.check(store.getState());
+            this._objectsInteractions.check(store.getState());
         });
     },
 
@@ -39,8 +39,8 @@ export default {
         store.dispatch(resetAction());
     },
 
-    getIntersections() {
-        return this._objectsIntersections;
+    interactions() {
+        return this._objectsInteractions;
     }
 
 }

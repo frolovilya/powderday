@@ -1,4 +1,3 @@
-import {LayerObject} from "scene/layers/objects/LayerObject";
 import PlayerSprite from "app/game/scene/layers/player/objects/PlayerSprite";
 import Circle from "scene/layers/objects/shapes/Circle";
 import {AbstractLayerObject} from "scene/layers/objects/AbstractLayerObject";
@@ -8,6 +7,7 @@ import Coords from "scene/Coords";
 import {GameState} from "app/game/GameState";
 import store from "app/game/Store";
 import {registerSceneObjectsAction} from "scene/interactions/reducers/ObjectsRegistryReducer";
+import {wrap} from "scene/layers/objects/LayerObjectWrap";
 
 export default class Player extends AbstractLayerObject {
 
@@ -34,18 +34,6 @@ export default class Player extends AbstractLayerObject {
             }, null, PlayerResource.sprite.scale)
         });
 
-        const wrap = function(getUpdateProps: () => object, layerObject: LayerObject) {
-            return {
-                update: function(props) {
-                    const propsToUpdate = getUpdateProps();
-                    layerObject.update({
-                        ...propsToUpdate,
-                        ...props
-                    })
-                }
-            }
-        };
-
         this.state = {
             childrenObjects: [
                 new Circle({
@@ -54,7 +42,7 @@ export default class Player extends AbstractLayerObject {
                     radius: PlayerResource.shape.radius,
                     canvas: this.props.canvas
                 }),
-                wrap(() => {
+                wrap(null, () => {
                     return {
                         rotateAngle: this.props.angle
                     }
