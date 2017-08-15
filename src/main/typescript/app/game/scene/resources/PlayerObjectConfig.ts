@@ -1,3 +1,6 @@
+/**
+ * Player object configuration
+ */
 export default {
     "sprite": {
         "src": "img/player.png", // 960 x 120

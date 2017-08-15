@@ -9,6 +9,9 @@ import store from "app/game/Store";
 import {registerSceneObjectsAction} from "scene/interactions/reducers/ObjectsRegistryReducer";
 import {wrap} from "scene/layers/objects/LayerObjectWrap";
 
+/**
+ * Player Layer Object
+ */
 export default class Player extends AbstractLayerObject {
 
     state: {
@@ -70,6 +73,9 @@ export default class Player extends AbstractLayerObject {
         this.getCanvas().clear();
     }
 
+    /**
+     * Add instance to objects registry
+     */
     private registerObject() {
         store.dispatch(registerSceneObjectsAction(this));
     }

@@ -2,11 +2,14 @@ import Coords from "scene/Coords";
 import Canvas from "scene/layers/Canvas";
 import Shape from "scene/layers/objects/shapes/Shape";
 
+/**
+ * Circle Shape
+ */
 export default class Circle extends Shape {
 
     props: {
-        coords: Coords;
-        radius: number;
+        coords: Coords; // circle center relative (to parent) coords
+        radius: number; // circle radius
         canvas: Canvas;
         scale: number;
     };
@@ -15,6 +18,9 @@ export default class Circle extends Shape {
         return this.props.radius;
     }
 
+    /**
+     * Draw circle
+     */
     transform() {
         let context = this.props.canvas.getContext();
         let coords = this.props.coords.getPoint();

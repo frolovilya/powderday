@@ -3,8 +3,18 @@ import Circle from "scene/layers/objects/shapes/Circle";
 import {Point} from "scene/types/Point";
 import {LayerObject} from "scene/layers/objects/LayerObject";
 
+/**
+ * Geometry behind objects intersections
+ */
 export default {
 
+    /**
+     * Check two shapes intersection
+     *
+     * @param shapesA first shape
+     * @param shapesB second shape
+     * @returns {boolean} true if shapes intersects
+     */
     check([shapesA, shapesB]: Shape[][]) {
         let shapeA = shapesA[0];
         let shapeB = shapesB[0];
@@ -17,6 +27,14 @@ export default {
         }
     },
 
+    /**
+     * Check that two Circle Shapes intersect each other
+     *
+     * @param circleA first circle
+     * @param circleB second circle
+     * @returns {boolean} true if circles intersects
+     * @private
+     */
     _checkCircles(circleA: Circle, circleB: Circle) {
         let coordsA = this._toAbsoluteCoords(circleA);
         let radiusA = circleA.getRadius();

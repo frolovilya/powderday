@@ -5,6 +5,9 @@ import TreeSprite from "app/game/scene/layers/trees/objects/TreeSprite";
 import Canvas from "scene/layers/Canvas";
 import {Size} from "scene/types/Size";
 
+/**
+ * Tree Layer Object
+ */
 export default class Tree extends AbstractLayerObject {
 
     props: {
@@ -34,7 +37,6 @@ export default class Tree extends AbstractLayerObject {
                 checkVisibility: false
             })
         ]
-
     }
 
     getClassName() {

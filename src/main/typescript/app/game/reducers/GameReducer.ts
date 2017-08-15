@@ -1,11 +1,20 @@
 import {GameState} from "app/game/GameState";
 
+/**
+ * Game state
+ */
 const defaultState = {
     game: {
         state: GameState.STOPPED
     }
 };
 
+/**
+ * (Redux) state reducer that reacts to actions changing game state
+ *
+ * @param state
+ * @param action
+ */
 export const gameReducer = (state = defaultState.game, action) => {
     switch(action.type) {
         case "START":

@@ -22,8 +22,6 @@ export default class TreesLayer extends SceneLayer {
                 Sy: 0
             }))
         ];
-
-        (window as any).treesLayer = this;
     }
 
 }

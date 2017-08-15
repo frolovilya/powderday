@@ -23,6 +23,7 @@ export default class PlayerLayer extends SceneLayer {
     }
 
     componentDidMount() {
+        // translate canvas to center once after mounting
         this.getCanvas().translate({
             x: this.getCanvas().getElement().width / 2,
             y: this.getCanvas().getElement().height / 2

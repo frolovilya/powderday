@@ -1,10 +1,20 @@
 import {Size} from "scene/types/Size";
 import * as React from "react";
 import Screen from "device/Screen"
+import SceneLayer from "scene/layers/SceneLayer";
 
+/**
+ * Scene.
+ *
+ * Wrapper component for all scene elements (Scene Layers).
+ */
 export default class Scene extends React.Component {
 
     private domNode: HTMLElement;
+
+    props: {
+        children: React.ReactElement<SceneLayer>[]
+    };
 
     state: {
         size: Size;
@@ -21,7 +31,13 @@ export default class Scene extends React.Component {
     render() {
         return <div className="scene"
                     style={{width: this.state.size.width, height: this.state.size.height}}
-                    ref={(div) => { this.domNode = div; }}>{this.props.children}</div>;
+                    ref={(div) => { this.domNode = div; }}>
+            {React.Children.map(this.props.children, (child: any) => (
+                React.cloneElement(child, {
+                    size: this.state.size
+                })
+            ))}
+            </div>;
     }
 
 }

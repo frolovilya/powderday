@@ -1,5 +1,5 @@
-/*
- * Application math model
+/**
+ * Game math model
  */
 export default {
 

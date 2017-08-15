@@ -11,7 +11,10 @@ import GameController from "app/game/GameController";
 import DebugLayer from "app/game/scene/layers/debug/DebugLayer";
 import {InteractionType} from "scene/interactions/InteractionType";
 
-export default class Main {
+/**
+ * Game main class
+ */
+export default class Game {
 
     private scene;
 
@@ -49,8 +52,6 @@ export default class Main {
     init() {
         this.initScene();
         this.initSceneInteractions();
-
-        // (window as any).game = this;
     }
 
 }

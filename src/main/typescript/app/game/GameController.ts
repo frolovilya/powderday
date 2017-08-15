@@ -6,6 +6,9 @@ import {hitATreeAction, pauseGameAction, startGameAction} from "app/game/reducer
 import {moveAction, resetAction} from "app/game/scene/reducers/SceneReducer";
 import ObjectsInteractions from "scene/interactions/ObjectsInteractions";
 
+/**
+ * Methods to change game state
+ */
 export default {
 
     _animation: new Animation(),
@@ -17,6 +20,7 @@ export default {
         Accelerometer.startWatch(Model.parameters.time * 1000);
         this._animation.start(() => {
             store.dispatch(moveAction(Accelerometer.getAcceleration()));
+            // checking interactions after each scene update
             this._objectsInteractions.check(store.getState());
         });
     },

@@ -1,15 +1,28 @@
+/**
+ * Device accelerometer
+ */
 export default {
 
-    // accelerometer state
+    /**
+     * Accelerometer state.
+     * Changed by turning device in x,y,z axises.
+     */
     _acceleration: {
         x: 0,
         y: 0,
         z: 0
     },
 
-    // the watch id references the current `watchAcceleration`
+    /**
+     * The watch id references the current "watchAcceleration"
+     */
     _watchID: null,
 
+    /**
+     * Start watching current device acceleration
+     *
+     * @param frequency acceleration update frequency
+     */
     startWatch(frequency: number) {
         let options = {
             frequency: frequency
@@ -22,6 +35,9 @@ export default {
         );
     },
 
+    /**
+     * Stop watching current device acceleration
+     */
     stopWatch() {
         if (this._watchID) {
             (<any>navigator).accelerometer.clearWatch(this._watchID);
@@ -29,17 +45,23 @@ export default {
         }
     },
 
-    // onSuccess: get a snapshot of the current acceleration
-    _onSuccess(acceleration) {
+    /**
+     * Get a snapshot of the current acceleration
+     * @private
+     */
+    _onSuccess(acceleration: DeviceAcceleration) {
         this._acceleration = acceleration;
     },
 
-    // onError: failed to get the acceleration
+    /**
+     * Failed to get the acceleration
+     * @private
+     */
     _onError() {
-        alert('failed to get the acceleration');
+        alert("Failed to get the acceleration");
     },
 
-    getAcceleration() {
+    getAcceleration(): DeviceAcceleration {
         return this._acceleration;
     }
 

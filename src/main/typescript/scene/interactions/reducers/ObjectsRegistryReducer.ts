@@ -1,11 +1,20 @@
 import {LayerObject} from "scene/layers/objects/LayerObject";
 
+/**
+ * Objects registry contains objects grouped by class names (LayerObject.getClassName())
+ */
 const defaultState = {
     registry: {
         objects: {}
     }
 };
 
+/**
+ * (Redux) state reducer that reacts to actions changing Objects Registry
+ *
+ * @param state
+ * @param action
+ */
 export const objectsRegistryReducer = (state = defaultState.registry, action) => {
     switch(action.type) {
         case "REGISTER_SCENE_OBJECT":
@@ -23,6 +32,11 @@ export const objectsRegistryReducer = (state = defaultState.registry, action) =>
     }
 };
 
+/**
+ * Add LayerObject to objects registry
+ *
+ * @param layerObject
+ */
 export const registerSceneObjectsAction = (layerObject: LayerObject[] | LayerObject) => {
     const objects = Array.isArray(layerObject) ? layerObject : [layerObject];
 
@@ -33,6 +47,9 @@ export const registerSceneObjectsAction = (layerObject: LayerObject[] | LayerObj
     }
 };
 
+/**
+ * Reset registry to default state
+ */
 export const resetAction = () => {
     return {
         type: "RESET"

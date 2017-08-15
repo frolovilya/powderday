@@ -1,14 +1,19 @@
 import Game from "app/game/Game"
 
+/**
+ * Application entry point
+ */
 class App {
 
-    // start application
+    /**
+     * Start application
+     */
     static start() {
         new App().bindEvents();
     }
 
-    /*
-     * bind event listeners
+    /**
+     * Bind event listeners
      *
      * Bind any events that are required on startup. Common events are:
      * 'load', 'deviceready', 'offline', and 'online'.
@@ -17,8 +22,8 @@ class App {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     }
 
-    /*
-     * deviceready event handler
+    /**
+     * DeviceReady event handler
      *
      * The scope of 'this' is the event. 
      */

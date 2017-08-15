@@ -1,9 +1,13 @@
 import {LayerObject} from "scene/layers/objects/LayerObject";
 import {Size} from "scene/types/Size";
-import Screen from "device/Screen"
 import * as React from "react";
 import Canvas from "scene/layers/Canvas";
 
+/**
+ * Scene Layer.
+ *
+ * Connects Canvas with Layer Objects.
+ */
 export default class SceneLayer extends React.Component {
 
     protected canvas: Canvas;
@@ -11,10 +15,17 @@ export default class SceneLayer extends React.Component {
     props: {
         layerId: string;
         zIndex: number;
+        size?: Size;
+    };
+
+    static defaultProps = {
+        size: {
+            width: 0,
+            height: 0
+        }
     };
 
     state: {
-        size: Size;
         childrenObjects: LayerObject[];
         canvas: Canvas;
     };
@@ -23,7 +34,6 @@ export default class SceneLayer extends React.Component {
         super(props);
 
         this.state = {
-            size: Screen.getSize(),
             childrenObjects: [],
             canvas: null
         };
@@ -40,6 +50,12 @@ export default class SceneLayer extends React.Component {
         return this.canvas;
     }
 
+    /**
+     * Get the list of children layer objects to render.
+     * Override this method to dynamically set children layer objects.
+     *
+     * @returns {LayerObject[]}
+     */
     getChildrenObjects() {
         return this.state.childrenObjects;
     }
@@ -48,7 +64,7 @@ export default class SceneLayer extends React.Component {
         return <span>
             <Canvas layerId={this.props.layerId}
                    zIndex={this.props.zIndex}
-                   size={Screen.getSize()}
+                   size={this.props.size}
                    ref={(canvas: Canvas) => this.canvas = canvas } />
             {this.getChildrenObjects().map((sceneObject) => {
                 sceneObject.update({

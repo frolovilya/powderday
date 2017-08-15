@@ -31,8 +31,8 @@ export default class TreeSprite extends Sprite {
             this.image,
             spriteCoords.x,
             spriteCoords.y,
-            this.props.size.width * this.props.scale,
-            this.props.size.height * this.props.scale
+            Math.round(this.props.size.width * this.props.scale),
+            Math.round(this.props.size.height * this.props.scale)
         );
         context.closePath();
     }

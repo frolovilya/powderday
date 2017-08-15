@@ -5,6 +5,9 @@ import {InteractionType} from "scene/interactions/InteractionType";
 
 type Callback = () => void
 
+/**
+ * Check interactions of defined interactionType, notify callbacks
+ */
 export default class InteractionObserver {
 
     private callbacks: Callback[];
@@ -14,6 +17,11 @@ export default class InteractionObserver {
         this.callbacks = [];
     }
 
+    /**
+     * Add Callback function that will be called when interaction occurs
+     *
+     * @param callback
+     */
     public addCallback(callback: Callback) {
         this.callbacks.push(callback);
     }
@@ -24,6 +32,12 @@ export default class InteractionObserver {
         }
     }
 
+    /**
+     * Check interaction of this.interactionType for objects with this.classNames.
+     * Current implementation is simplified to check only two objects classes.
+     *
+     * @param sceneObjectsRegistry
+     */
     public check(sceneObjectsRegistry) {
         let [aObjects, bObjects] = this.classNames.map((className) => sceneObjectsRegistry[className]);
 
@@ -38,6 +52,13 @@ export default class InteractionObserver {
         }
     }
 
+    /**
+     * To interact with others, Layer Object must contain
+     * at least on children Layer Object of type Shape
+     *
+     * @param layerObject
+     * @returns {Shape[]}
+     */
     private getShapes(layerObject: LayerObject) {
         return layerObject.getChildrenObjects().filter((layerObject) => {
             return layerObject instanceof Shape;

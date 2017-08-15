@@ -15,7 +15,7 @@ export default class PlayerSprite extends Sprite {
         scale: number;
     };
 
-    private positions: any;
+    private positions: any; // sprite positions (offsetX)
 
     constructor(props) {
         super({
@@ -27,6 +27,11 @@ export default class PlayerSprite extends Sprite {
         this.positions = PlayerResource.sprite.positions;
     }
 
+    /**
+     * Get sprite position (offsetX) based on current player rotation angle
+     *
+     * @returns {number}
+     */
     private getPosition = () => {
         let position = 0;
 
@@ -56,12 +61,11 @@ export default class PlayerSprite extends Sprite {
         canvas.clearTransform();
 
         let position = this.getPosition();
-
         if(position == this.positions.front) {
             context.rotate(this.props.rotateAngle * 3.14/180 / 2);
         }
 
-        const point = this.props.coords.getPoint();
+        let point = this.props.coords.getPoint();
 
         // draw player
         context.beginPath();
@@ -69,12 +73,12 @@ export default class PlayerSprite extends Sprite {
             this.image, // image
             position, // crop x
             0, // crop y
-            this.getSize().width, // crop width
+            this.props.size.width, // crop width
             this.image.height, // crop height
             point.x, // canvas x
             point.y, // canvas y
-            this.getSize().width * this.props.scale, // image width
-            this.getSize().height * this.props.scale // image height
+            Math.round(this.props.size.width * this.props.scale), // image width
+            Math.round(this.props.size.height * this.props.scale) // image height
         );
         context.closePath();
     }

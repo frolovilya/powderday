@@ -1,3 +1,6 @@
+/**
+ * Tree objects configuration
+ */
 export default [
     {
         "sprite": {

@@ -1,5 +1,8 @@
 import Model from "app/game/Model";
 
+/**
+ * Scene state
+ */
 const defaultState = {
     scene: {
         acceleration: {
@@ -18,6 +21,12 @@ const defaultState = {
     }
 };
 
+/**
+ * (Redux) state reducer that reacts to actions changing game scene
+ *
+ * @param state
+ * @param action
+ */
 export const sceneReducer = (state = defaultState.scene, action) => {
     switch(action.type) {
         case "MOVE": {
@@ -53,7 +62,12 @@ export const sceneReducer = (state = defaultState.scene, action) => {
     }
 };
 
-export const moveAction = (acceleration) => {
+/**
+ * Move scene
+ *
+ * @param acceleration device acceleration
+ */
+export const moveAction = (acceleration: DeviceAcceleration) => {
     return {
         type: "MOVE",
         acceleration

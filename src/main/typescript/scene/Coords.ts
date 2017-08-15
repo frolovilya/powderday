@@ -7,7 +7,12 @@ export default class Coords {
                 private scale: number = 1) {
     }
 
-    public getPoint() {
+    /**
+     * Get coords relative to Canvas
+     *
+     * @returns {{x: number, y: number}}
+     */
+    public getPoint(): Point {
         const parentPoint = this.parentCoords ? this.parentCoords.getPoint() : {x: 0, y: 0};
 
         return {
@@ -16,12 +21,18 @@ export default class Coords {
         }
     }
 
-    public getAbsolutePoint(layerTranslation: Point) {
+    /**
+     * Get absolute coords
+     *
+     * @param canvasTranslation - Canvas translation
+     * @returns {{x: number, y: number}}
+     */
+    public getAbsolutePoint(canvasTranslation: Point): Point {
         const coords = this.getPoint();
 
         return {
-            x: coords.x + layerTranslation.x,
-            y: coords.y + layerTranslation.y
+            x: coords.x + canvasTranslation.x,
+            y: coords.y + canvasTranslation.y
         }
     }
 

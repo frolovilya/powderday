@@ -1,5 +1,8 @@
 import {Size} from "scene/types/Size";
 
+/**
+ * Device screen
+ */
 export default {
 
     getSize(): Size {

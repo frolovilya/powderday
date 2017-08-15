@@ -2,12 +2,15 @@ import * as React from "react";
 import {GameState} from "app/game/GameState";
 import GameController from "app/game/GameController";
 
-export default class Game extends React.Component {
+/**
+ * Main Game screen UI component
+ */
+export default class GameScreen extends React.Component {
 
     props: {
         children;
         gameState: GameState;
-        score: number;
+        score: number; // game score
     };
 
     private startGame = (e) => {
