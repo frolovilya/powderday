@@ -5,7 +5,7 @@ import {LayerObject} from "scene/layers/objects/LayerObject";
 
 export default {
 
-    check: function([shapesA, shapesB]: Shape[][]) {
+    check([shapesA, shapesB]: Shape[][]) {
         let shapeA = shapesA[0];
         let shapeB = shapesB[0];
 
@@ -17,7 +17,7 @@ export default {
         }
     },
 
-    _checkCircles: function(circleA: Circle, circleB: Circle) {
+    _checkCircles(circleA: Circle, circleB: Circle) {
         let coordsA = this._toAbsoluteCoords(circleA);
         let radiusA = circleA.getRadius();
 

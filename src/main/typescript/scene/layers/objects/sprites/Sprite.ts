@@ -51,10 +51,6 @@ export abstract class Sprite extends AbstractLayerObject {
         return this.props.size;
     }
 
-    getCoords() {
-        return this.props.coords;
-    }
-
     transform() {
         if(this.state.imageLoaded) {
             this.draw()

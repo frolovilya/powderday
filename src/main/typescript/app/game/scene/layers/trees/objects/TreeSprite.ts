@@ -24,8 +24,7 @@ export default class TreeSprite extends Sprite {
 
     draw() {
         let context = this.props.canvas.getContext();
-
-        const spriteCoords = this.props.coords.getPoint();
+        let spriteCoords = this.props.coords.getPoint();
 
         context.beginPath();
         context.drawImage(

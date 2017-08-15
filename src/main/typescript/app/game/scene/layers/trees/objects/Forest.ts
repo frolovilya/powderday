@@ -20,12 +20,22 @@ export default class Forest extends AbstractLayerObject {
         gameState: GameState;
     };
 
+    state: {
+        sceneSize: Size;
+        childrenObjects;
+    };
+
     private treesMap = {};
     private cachedTrees = [];
     private prevPosition = {x: -1, y: -1};
 
     constructor(props) {
-        super(props);
+        super({
+            ...props,
+            checkVisibility: false
+        });
+
+        this.state.sceneSize = Screen.getSize();
 
         (window as any).forest = this;
     }
@@ -43,11 +53,9 @@ export default class Forest extends AbstractLayerObject {
     }
 
     private getCurrentScreenPosition(): Point {
-        let sceneSize = Screen.getSize();
-
         return {
-            x: Math.floor(-this.getCanvas().getTranslation().x / sceneSize.width),
-            y: Math.floor(Math.abs(this.getCanvas().getTranslation().y) / sceneSize.height)
+            x: Math.floor(-this.getCanvas().getTranslation().x / this.state.sceneSize.width),
+            y: Math.floor(Math.abs(this.getCanvas().getTranslation().y) / this.state.sceneSize.height)
         }
     }
 
@@ -78,10 +86,9 @@ export default class Forest extends AbstractLayerObject {
         return this.treesMap[position.y][position.x];
     }
 
-    private cleanupTrees() {
-        let currentPosition = this.getCurrentScreenPosition();
+    private cleanupTrees(currentPosition) {
         for (let i = 0; i < currentPosition.y - 1; i++) {
-            this.treesMap[i] = {};
+            this.treesMap[i] = undefined;
         }
     }
 
@@ -89,10 +96,9 @@ export default class Forest extends AbstractLayerObject {
         let curPos = this.getCurrentScreenPosition();
 
         if(this.prevPosition.x != curPos.x || this.prevPosition.y != curPos.y) {
-            this.cleanupTrees();
+            this.cleanupTrees(curPos);
 
             this.cachedTrees = [].concat(this.plantRect({x: curPos.x - 1, y: curPos.y}))
-                // .concat(this.getTreesOnCurrentPosition(curPos))
                 .concat(this.plantRect(curPos))
                 .concat(this.plantRect({x: curPos.x + 1, y: curPos.y}))
                 .concat(this.plantRect({x: curPos.x - 1, y: curPos.y + 1}))

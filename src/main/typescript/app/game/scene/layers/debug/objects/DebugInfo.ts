@@ -16,6 +16,13 @@ export default class DebugInfo extends AbstractLayerObject {
         canvas: Canvas;
     };
 
+    constructor(props) {
+        super({
+            ...props,
+            checkVisibility: false
+        })
+    }
+
     transform() {
         this.getCanvas().clear();
 
@@ -41,6 +48,8 @@ export default class DebugInfo extends AbstractLayerObject {
 
         context.fillText("acc: " + (state.scene.acceleration.x).toFixed(5) + ", "
             + (state.scene.acceleration.y).toFixed(5), 10, 40);
+
+        context.fillText("Vy: " + (state.scene.movement.Vy).toFixed(5), 10, 60);
 
     }
 

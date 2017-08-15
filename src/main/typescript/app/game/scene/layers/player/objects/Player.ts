@@ -24,14 +24,14 @@ export default class Player extends AbstractLayerObject {
     };
 
     constructor(props) {
-
         super({
             ...props,
             scale: PlayerResource.sprite.scale,
             coords: new Coords({
                 x: -PlayerResource.sprite.size.width / 2,
                 y: -PlayerResource.sprite.size.height / 2
-            }, null, PlayerResource.sprite.scale)
+            }, null, PlayerResource.sprite.scale),
+            checkVisibility: false
         });
 
         this.state = {
@@ -40,7 +40,8 @@ export default class Player extends AbstractLayerObject {
                     coords: new Coords(PlayerResource.shape.coords, this.props.coords, this.props.scale),
                     scale: this.props.scale,
                     radius: PlayerResource.shape.radius,
-                    canvas: this.props.canvas
+                    canvas: this.props.canvas,
+                    checkVisibility: false
                 }),
                 wrap(null, () => {
                     return {
@@ -50,7 +51,8 @@ export default class Player extends AbstractLayerObject {
                     coords: new Coords({x: 0, y: 0}, this.props.coords, this.props.scale),
                     scale: this.props.scale,
                     canvas: this.props.canvas,
-                    rotateAngle: this.props.angle
+                    rotateAngle: this.props.angle,
+                    checkVisibility: false
                 }))
             ]
         };

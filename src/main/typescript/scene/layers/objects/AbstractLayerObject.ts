@@ -1,13 +1,16 @@
 import {LayerObject} from "scene/layers/objects/LayerObject";
 import Canvas from "scene/layers/Canvas";
 import Coords from "scene/Coords";
+import {Size} from "scene/types/Size";
 
 export abstract class AbstractLayerObject implements LayerObject {
 
     props: {
         canvas: Canvas;
         coords: Coords;
-        scale: number;
+        size?: Size;
+        scale?: number;
+        checkVisibility?: boolean;
     };
 
     state: {
@@ -22,6 +25,11 @@ export abstract class AbstractLayerObject implements LayerObject {
                 y: 0
             }),
             scale: 1,
+            size: {
+                width: 0,
+                height: 0
+            },
+            checkVisibility: true,
             ...props
         };
 
@@ -56,17 +64,37 @@ export abstract class AbstractLayerObject implements LayerObject {
         return this.state.childrenObjects || [];
     }
 
+    getSize() {
+        return this.props.size;
+    }
+
+    protected getVisibilityPoints() {
+        let topLeft = this.props.coords.getPoint();
+        let size = this.getSize();
+
+        return [
+            topLeft,
+            {x: topLeft.x + size.width, y: topLeft.y},
+            {x: topLeft.x, y: topLeft.y + size.height},
+            {x: topLeft.x + size.width, y: topLeft.y + size.height}
+        ];
+    }
+
+    private isVisible() {
+        if(!this.props.checkVisibility)
+            return true;
+
+        return this.getVisibilityPoints()
+                .filter((point) => this.getCanvas().isPointVisible(point)).length > 0;
+    }
+
     update(props?) {
-
-        // console.log("update() sceneObject " + this.getClassName(), props);
-
         this.props = {
             ...(this.props),
             ...props
         };
-        
-        if(this.getCanvas()) {
 
+        if(this.getCanvas() && this.isVisible()) {
             this.transform();
 
             this.getChildrenObjects().map((sceneObject) => {
@@ -75,9 +103,8 @@ export abstract class AbstractLayerObject implements LayerObject {
                 });
             });
         }
-
     }
 
-    transform() {};
+    transform() {}
 
 }

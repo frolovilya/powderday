@@ -1,6 +1,6 @@
 import Coords from "scene/Coords";
 import Canvas from "scene/layers/Canvas";
-import Shape from "./Shape";
+import Shape from "scene/layers/objects/shapes/Shape";
 
 export default class Circle extends Shape {
 
@@ -11,20 +11,15 @@ export default class Circle extends Shape {
         scale: number;
     };
 
-    getCoords() {
-        return this.props.coords;
-    }
-
     getRadius() {
         return this.props.radius;
     }
 
     transform() {
         let context = this.props.canvas.getContext();
+        let coords = this.props.coords.getPoint();
 
         context.beginPath();
-
-        const coords = this.props.coords.getPoint();
 
         context.arc(
             coords.x,
@@ -37,6 +32,18 @@ export default class Circle extends Shape {
         context.stroke();
 
         context.closePath();
+    }
+
+    getVisibilityPoints() {
+        let center = this.props.coords.getPoint();
+        let radius = this.props.radius;
+
+        return [
+                {x: center.x, y: center.y - radius},
+                {x: center.x + radius, y: center.y},
+                {x: center.x, y: center.y + radius},
+                {x: center.x - radius, y: center.y}
+            ];
     }
 
 }

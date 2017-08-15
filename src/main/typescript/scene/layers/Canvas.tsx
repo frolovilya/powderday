@@ -21,7 +21,7 @@ export default class Canvas extends React.Component {
         this.translation = {
             x: 0,
             y: 0
-        }
+        };
     }
 
     componentDidMount() {
@@ -72,6 +72,14 @@ export default class Canvas extends React.Component {
 
     getElement() {
         return this.canvas;
+    }
+
+    isPointVisible(point: Point) {
+        let x = point.x + this.translation.x;
+        let y = point.y + this.translation.y;
+
+        return ( x > 0 && x < this.props.size.width
+                && y > 0 && y < this.props.size.height );
     }
 
     getContext() {

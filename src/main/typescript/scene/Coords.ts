@@ -11,8 +11,8 @@ export default class Coords {
         const parentPoint = this.parentCoords ? this.parentCoords.getPoint() : {x: 0, y: 0};
 
         return {
-            x: parentPoint.x + this.point.x * this.scale,
-            y: parentPoint.y + this.point.y * this.scale
+            x: Math.round(parentPoint.x + this.point.x * this.scale),
+            y: Math.round(parentPoint.y + this.point.y * this.scale)
         }
     }
 

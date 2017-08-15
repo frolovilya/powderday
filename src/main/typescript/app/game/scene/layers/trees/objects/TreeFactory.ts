@@ -9,8 +9,6 @@ export default class TreeFactory {
     static plantRect(canvas: Canvas, coords: Coords, size: Size) {
         let trees = [];
 
-        // const rectCoords = coords.getPoint();
-
         let treeCount = Math.floor(Math.random() * (10 - 3) + 3);
         for(let i = 0; i < treeCount; i++) {
             // get random tree
@@ -18,6 +16,11 @@ export default class TreeFactory {
             let tree = Resources[treeNum];
 
             let scale = Math.random() * (1 - 0.6) + 0.6;
+
+            let treeSize = {
+                width: tree.sprite.size.width * scale,
+                height: tree.sprite.size.height * scale
+            };
 
             // position on area
             let randomPosition = new Coords({
@@ -29,7 +32,8 @@ export default class TreeFactory {
                 treeResource: tree,
                 coords: randomPosition,
                 scale: scale,
-                canvas: canvas
+                canvas: canvas,
+                size: treeSize
             }));
         }
 
