@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import GameController from "app/game/GameController";
 import DebugLayer from "app/game/scene/layers/debug/DebugLayer";
 import {InteractionType} from "scene/interactions/InteractionType";
+import ScoreLayer from "app/game/scene/layers/score/ScoreLayer";
 
 /**
  * Game main class
@@ -28,13 +29,15 @@ export default class Game {
             }
         })(GameScreen);
 
+        {/*<DebugLayer layerId="debug" zIndex={200} />*/}
+
         ReactDOM.render(
             <Provider store={store}>
                 <GameScreenWrap>
                     <Scene ref={(scene) => { this.scene = scene; }}>
                         <PlayerLayer layerId="player" zIndex={10} />
                         <TreesLayer layerId="tree" zIndex={100} />
-                        <DebugLayer layerId="debug" zIndex={200} />
+                        <ScoreLayer layerId="score" zIndex={300} />
                     </Scene>
                 </GameScreenWrap>
             </Provider>,

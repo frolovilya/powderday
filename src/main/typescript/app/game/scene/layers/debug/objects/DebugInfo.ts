@@ -8,15 +8,6 @@ import store from "app/game/Store";
  */
 export default class DebugInfo extends AbstractLayerObject {
 
-    state: {
-        childrenObjects;
-    };
-
-    props: {
-        coords: Coords;
-        canvas: Canvas;
-    };
-
     constructor(props) {
         super({
             ...props,

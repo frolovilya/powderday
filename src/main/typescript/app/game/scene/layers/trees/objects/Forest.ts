@@ -61,7 +61,7 @@ export default class Forest extends AbstractLayerObject {
     }
 
     /**
-     * Screen position: number of visible screens (rects) from Canvas (0, 0) point
+     * Screen position: offset number of visible screens (rects) from Canvas (0, 0) point
      *
      * @returns {{x: number, y: number}}
      */
