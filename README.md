@@ -3,7 +3,7 @@
 Snowboarding canvas game written in TypeScript with React and Redux running on top of Phonegap.
 
 Gain score by going through the forest on a powder day. 
-Uses device accelerometer to change player's movement direction.
+Use device accelerometer to change player's movement direction.
 
 ## Quick Start
 Install **powderday** in production mode:
