@@ -18,5 +18,9 @@
   },
   "dependencies": {
     "phonegap": "^6.5.2"
+  },
+  "scripts": {
+    "init-phonegap-app": "phonegap create ./app --name \"Powder Day\" --id \"com.frolovilya.powderday\" --template blank --link-to \"./www\"; cp ./config.xml ./app",
+    "start-phonegap-server": "cd ./app; phonegap serve --no-autoreload"
   }
 }
