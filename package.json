@@ -20,7 +20,7 @@
     "phonegap": "^6.5.2"
   },
   "scripts": {
-    "init-phonegap-app": "phonegap create ./app --name \"Powder Day\" --id \"com.frolovilya.powderday\" --template blank --link-to \"./www\"; cp ./config.xml ./app",
-    "start-phonegap-server": "cd ./app; phonegap serve --no-autoreload"
+    "init-phonegap-app": "./node_modules/phonegap/bin/phonegap.js create ./app --name \"Powder Day\" --id \"com.frolovilya.powderday\" --template blank --link-to \"./www\"; cp ./config.xml ./app",
+    "start-phonegap-server": "cd ./app; ../node_modules/phonegap/bin/phonegap.js serve --no-autoreload"
   }
 }
