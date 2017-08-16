@@ -45,9 +45,9 @@ export default class GameScreen extends React.Component {
                             <div className="button" onClick={this.startGame}>Continue</div>
                         }
                         {this.props.gameState == GameState.HIT_A_TREE &&
-                            <div className="end">
+                            <div className="hitATreeView">
                                 <div>You hit a tree!</div>
-                                <div>Score: <span id="score">{this.props.score}</span></div>
+                                <div>Score: <span className="score">{this.props.score}</span></div>
                                 <div className="button" onClick={this.restartGame}>Replay</div>
                             </div>
                         }

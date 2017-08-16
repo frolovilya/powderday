@@ -1,7 +1,6 @@
 body {
     margin: 0;
     padding: 0;
-    /*background: url("img/snow2.jpg") no-repeat scroll 0 0 #FFFFFF;*/
     background-color: #DEDEDE;
 	font-family: Arial;
 }
@@ -9,14 +8,12 @@ body {
 .scene {
 	position: relative;
 }
+
 .scene canvas {
 	position: absolute;
 	background-color: transparent;
-	/*webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);*/
 }
-
-.translate3d {
+.scene canvas .translate3d {
 	webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }
@@ -29,9 +26,8 @@ body {
 	height: 100%;
 	opacity: 0.3;
 	top: 0;
-	/*background: url("../img/bg.png") no-repeat fixed center top #13B5C1;
-	background-size: auto 200px;*/
 }
+
 .container {
 	position: absolute;
 	z-index: 1005;
@@ -41,7 +37,8 @@ body {
 	opacity: 0.8;
 	padding: 10px 0;
 }
-.button {
+
+.container .button {
 	border-radius: 5px;
 	margin: 0 auto;
 	padding: 25px;
@@ -55,17 +52,12 @@ body {
     -webkit-focus-ring-color: rgba(0 0 0 0);
 }
 
-#endGameScene {
-	display: none;
-}
-#endGameScene .container {
-	background-color: #f0f0f0;
-}
-.end {
+.container .hitATreeView {
 	font-size: 24px;
 	background-color: #fff;
 	padding: 20px 0;
 }
-#score {
+
+.container span.score {
 	font-weight: bold;
 }

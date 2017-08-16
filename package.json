@@ -1,17 +1,22 @@
 {
   "name": "powderday",
   "version": "1.0.0",
-  "devDependencies": {
-    "awesome-typescript-loader": "^3.2.1",
-    "copy-webpack-plugin": "^4.0.1",
-    "typescript": "^2.4.2"
+  "author": {
+    "name": "Ilya Frolov",
+    "url": "https://github.com/frolovilya"
   },
-  "dependencies": {
+  "devDependencies": {
     "@types/react": "^15.6.0",
     "@types/react-dom": "^15.5.1",
+    "awesome-typescript-loader": "^3.2.1",
+    "typescript": "^2.4.2",
+    "webpack": "^3.5.4",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "redux": "^3.7.2"
+  },
+  "dependencies": {
+    "phonegap": "^6.5.2"
   }
 }
