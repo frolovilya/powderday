@@ -8,7 +8,7 @@ Use device accelerometer to change player's movement direction.
 ## Quick Start
 Install **powderday** in production mode:
 ```
-git checkout https://github.com/frolovilya/powderday.git
+git clone https://github.com/frolovilya/powderday.git
 npm install --production
 npm run init-phonegap-app
 npm run start-phonegap-server
