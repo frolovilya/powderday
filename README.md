@@ -32,6 +32,5 @@ npm install
 
 ## Screenshots
 
-![Screenshot 1](https://user-images.githubusercontent.com/271293/29357638-ee5c75ee-8280-11e7-9a8f-73dae9ca6cbc.png)
-
+![Screenshot 1](https://user-images.githubusercontent.com/271293/29357638-ee5c75ee-8280-11e7-9a8f-73dae9ca6cbc.png) 
 ![Screenshot 2](https://user-images.githubusercontent.com/271293/29357636-eceebcc6-8280-11e7-8acd-01a109916b21.png)
